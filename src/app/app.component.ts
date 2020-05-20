@@ -30,11 +30,46 @@ export class AppComponent {
       ['12', { text: 'Physical Performing', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2]
     ];
 
-    const docDef = this.buildCounselorReport(interests);
+    //const docDef = this.buildCounselorReport(interests);
+    const docDef = this.buildInterestInventory(interests);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
 
+  }
+
+  buildInterestInventory(interests: any[]): any {
+    const documentDefinition = {
+      content: [
+        { text: 'Interest Inventory', style: 'header' },
+        'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.'
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        subheader: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 5]
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15],
+          alignment: 'center'
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: 'black'
+        }
+      },
+      defaultStyle: {
+        // alignment: 'justify'
+      }
+    };
+    return documentDefinition;
   }
 
 
