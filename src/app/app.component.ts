@@ -41,8 +41,9 @@ export class AppComponent {
   buildInterestInventory(interests: any[]): any {
     const documentDefinition = {
       content: [
-        { text: 'Interest Inventory', style: 'header' },
-        'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.'
+        { text: 'INTEREST INVENTORY', style: 'header' },
+        'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.',
+        this.buildInterestAreas(interests)
       ],
       styles: {
         header: {
@@ -70,6 +71,22 @@ export class AppComponent {
       }
     };
     return documentDefinition;
+  }
+
+  buildInterestAreas(interests: any[]): any {
+    var content = [];
+    content.push({text: 'Interest Area Scores', style: 'subheader'});
+    content.push('Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below. Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group. Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.');
+    content.push({
+      style: 'tableExample',
+      table: {
+        body:
+          interests
+      },
+      layout: 'lightHorizontalLines'
+    });
+    content.push('Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.');
+    return content;
   }
 
 
