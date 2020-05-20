@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "pdfmake-test"
+    }
+  },
+  "defaultProject": "pdfmake-test",
+  "cli": {
+    "analytics": "0bf8507e-c6a7-44bf-a555-a929dfc5fbe6"
+  }
 }
