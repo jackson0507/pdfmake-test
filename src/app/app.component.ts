@@ -15,7 +15,8 @@ export class AppComponent {
   generatePdf() {
 
     const interests = [
-      [{ text: 'Interest Area', colSpan: 2 }, '', 'Like', '?', 'Dislike', 'Total', 'Male', 'Female', 'Like', 'IPA'],
+      [{ text: '', colSpan: 5 }, '', '', '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center' }, '', '', 'Percent', ''],
+      [{ text: 'Interest Area', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', style: 'tableHeader' }, { text: 'Like', style: 'tableHeader' }, { text: 'IPA', style: 'tableHeader' }],
       ['01', { text: 'Artistic', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
       ['02', { text: 'Scientific', alignment: 'left' }, 0, 0, 13, 14, 12, 16, 0, ''],
       ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, 0, 11, 14, 12, 16, 0, ''],
@@ -115,7 +116,6 @@ export class AppComponent {
         },
         tableHeader: {
           bold: true,
-          fontSize: 13,
           color: 'black'
         }
       },
@@ -136,7 +136,21 @@ export class AppComponent {
         body:
           interests
       },
-      layout: 'lightHorizontalLines'
+      //layout: 'lightHorizontalLines'
+      layout: {
+				hLineWidth: function (i, node) {
+					return (i === 0 || i === node.table.body.length) ? 2 : 1;
+				},
+				vLineWidth: function (i, node) {
+					return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+				},
+				hLineColor: function (i, node) {
+					return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+				},
+				vLineColor: function (i, node) {
+					return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+        }
+      },
     });
     content.push({ text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.', pageBreak: 'after' });
     return content;
