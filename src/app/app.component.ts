@@ -56,6 +56,38 @@ export class AppComponent {
 
   buildInterestInventory(interests: any[], interestsGraph: any[]): any {
     const documentDefinition = {
+      pageMargins: [40, 80, 40, 80],
+      header: {
+        columns: [
+          {
+            text: "Jackson.McIntyre",
+            width: 148.75
+          },
+          {
+            stack: [
+              {
+                text: "CareerScope Assessment Profile",
+                fontSize: 16
+              },
+              "Jackson McIntyre"
+            ],
+            width: 298
+          },
+          {
+            stack: [
+              {
+                text: "Page 1 of 14",
+                fontSize: 12
+              },
+              "05/03/2019"
+            ],
+            width: 148.75
+          }
+        ],
+        margin: [0, 15],
+        alignment: 'center'
+      },
+
       content: [
         { text: 'INTEREST INVENTORY', style: 'header' },
         'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.',
