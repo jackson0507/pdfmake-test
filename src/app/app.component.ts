@@ -88,8 +88,10 @@ export class AppComponent {
         alignment: 'center'
       },
 
+      footer: { text: 'Standard:N  Audio:N  Untimed:N  Language:E  Intro:Y', alignment: 'right', margin: [15,50] },
+
       content: [
-        { text: 'INTEREST INVENTORY', style: 'header' },
+        { text: 'INTEREST INVENTORY', style: 'header', alignment: 'center' },
         'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.',
         this.buildInterestAreas(interests),
         this.buildIndividualProfileAnalysis(interestsGraph)
@@ -98,12 +100,14 @@ export class AppComponent {
         header: {
           fontSize: 18,
           bold: true,
-          margin: [0, 0, 0, 10]
+          margin: [0, 0, 0, 10],
+          decoration: 'underline'
         },
         subheader: {
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 5]
+          margin: [0, 10, 0, 5],
+          decoration: 'underline'
         },
         tableExample: {
           margin: [0, 5, 0, 15],
