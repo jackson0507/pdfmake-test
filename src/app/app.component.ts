@@ -69,35 +69,39 @@ export class AppComponent {
   buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
-      header: {
-        columns: [
+      header: function(currentPage, pageCount) {
+        return [
           {
-            text: "Jackson.McIntyre",
-            width: 148.75
-          },
-          {
-            stack: [
+            columns: [
               {
-                text: "CareerScope® Assessment Profile",
-                fontSize: 16
+                text: "Jackson.McIntyre",
+                width: 148.75
               },
-              "Jackson McIntyre"
-            ],
-            width: 298
-          },
-          {
-            stack: [
               {
-                text: "Page 1 of 14",
-                fontSize: 12
+                stack: [
+                  {
+                    text: "CareerScope® Assessment Profile",
+                    fontSize: 16
+                  },
+                  "Jackson McIntyre"
+                ],
+                width: 298
               },
-              "05/03/2019"
+              {
+                stack: [
+                  {
+                    text: currentPage.toString() + ' of ' + pageCount,
+                    fontSize: 12
+                  },
+                  "05/13/2020"
+                ],
+                width: 148.75
+              }
             ],
-            width: 148.75
+            margin: [0, 30],
+            alignment: 'center'
           }
-        ],
-        margin: [0, 30],
-        alignment: 'center'
+        ]
       },
 
       footer: { text: 'Standard:N  Audio:N  Untimed:N  Language:E  Intro:Y', alignment: 'right', margin: [15,50] },
@@ -147,6 +151,44 @@ export class AppComponent {
     };
     return documentDefinition;
   }
+
+  /*
+  buildHeader(currentPage: any, pageCount: any): any {
+    var content = [];
+    content.push({
+      columns: [
+        {
+          text: "Jackson.McIntyre",
+          width: 148.75
+        },
+        {
+          stack: [
+            {
+              text: "CareerScope® Assessment Profile",
+              fontSize: 16
+            },
+            "Jackson McIntyre"
+          ],
+          width: 298
+        },
+        {
+          stack: [
+            {
+              text: currentPage.toString() + ' of ' + pageCount,
+              fontSize: 12
+            },
+            "05/03/2019"
+          ],
+          width: 148.75
+        }
+      ],
+      margin: [0, 30],
+      alignment: 'center'
+    });
+
+    return content;
+  }
+  */
 
   buildCover(): any {
     var content = [];
