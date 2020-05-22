@@ -103,6 +103,7 @@ export class AppComponent {
       footer: { text: 'Standard:N  Audio:N  Untimed:N  Language:E  Intro:Y', alignment: 'right', margin: [15,50] },
 
       content: [
+        this.buildCover(),
         { text: 'INTEREST INVENTORY', style: 'header', alignment: 'center' },
         { text: 'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.', margin: [0, 10] },
         this.buildInterestAreas(interests),
@@ -111,6 +112,14 @@ export class AppComponent {
         this.buildPerformanceOnTasks(resultNums)
       ],
       styles: {
+        coverTitle: {
+          fontSize: 20,
+          alignment: 'center'
+        },
+        coverText: {
+          fontSize: 15,
+          alignment: 'center'
+        },
         header: {
           fontSize: 18,
           bold: true,
@@ -137,6 +146,20 @@ export class AppComponent {
       }
     };
     return documentDefinition;
+  }
+
+  buildCover(): any {
+    var content = [];
+    content.push({ text: 'CareerScope®', margin: [0, 175, 0, 0], style: 'coverTitle' });
+    content.push({ text: 'Assessment Profile', margin: [0, 75], style: 'coverTitle' });
+    content.push({ text: 'Date of Report: 5/13/20', margin: [0, 0, 0, 30], style: 'coverText' });
+    content.push({ text: 'Jackson McIntyre', margin: [0, 0, 0, 10], style: 'coverText' });
+    content.push({ text: 'Jackson.McIntyre', margin: [0, 0, 0, 10], style: 'coverText' });
+    content.push({ text: 'Date of Interest Administration: 5/13/20', margin: [0, 0, 0, 10], style: 'coverText' });
+    content.push({ text: 'Date of Aptitude Administration: 5/13/20', margin: [0, 0, 0, 20], style: 'coverText' });
+    content.push({ text: 'Copyright © 2020 Vocational Research Institute', alignment: 'center', fontSize: 10, pageBreak: 'after'});
+
+    return content;
   }
 
   buildInterestAreas(interests: any[]): any {
