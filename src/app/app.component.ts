@@ -47,15 +47,26 @@ export class AppComponent {
       ['12', { text: 'Physical Performing', alignment: 'left' }, 71]
     ];
 
+    const resultNums = [
+      [{ text: 'Task', style: 'tableHeader', alignment: 'left'}, { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader'}],
+      [{ text: 'Object Identification', alignment: 'left' }, 22, 22],
+      [{ text: 'Abstract Shape Matching', alignment: 'left' }, 18, 27],
+      [{ text: 'Clerical Matching', alignment: 'left' }, 18, 18],
+      [{ text: 'Pattern Visualization', alignment: 'left' }, 12, 17],
+      [{ text: 'Computation', alignment: 'left' }, 15, 19],
+      [{ text: 'Numerical Reasoning', alignment: 'left' }, 19, 22],
+      [{ text: 'Word Meanings', alignment: 'left' }, 28, 30]
+    ]
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildInterestInventory(interests, interestsGraph);
+    const docDef = this.buildAssesmentProfile(interests, interestsGraph, resultNums);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
 
   }
 
-  buildInterestInventory(interests: any[], interestsGraph: any[]): any {
+  buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: {
@@ -67,7 +78,7 @@ export class AppComponent {
           {
             stack: [
               {
-                text: "CareerScope Assessment Profile",
+                text: "CareerScope® Assessment Profile",
                 fontSize: 16
               },
               "Jackson McIntyre"
@@ -85,7 +96,7 @@ export class AppComponent {
             width: 148.75
           }
         ],
-        margin: [0, 15],
+        margin: [0, 30],
         alignment: 'center'
       },
 
@@ -93,9 +104,11 @@ export class AppComponent {
 
       content: [
         { text: 'INTEREST INVENTORY', style: 'header', alignment: 'center' },
-        'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.',
+        { text: 'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy.', margin: [0, 10] },
         this.buildInterestAreas(interests),
-        this.buildIndividualProfileAnalysis(interestsGraph)
+        this.buildIndividualProfileAnalysis(interestsGraph),
+        { text: 'APTITUDE ASSESMENT', style: 'header', alignment: 'center', pageBreak: 'before' },
+        this.buildPerformanceOnTasks(resultNums)
       ],
       styles: {
         header: {
@@ -128,8 +141,8 @@ export class AppComponent {
 
   buildInterestAreas(interests: any[]): any {
     var content = [];
-    content.push({text: 'I. Interest Area Scores', style: 'subheader'});
-    content.push('Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below. Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group. Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.');
+    content.push({ text: 'I. Interest Area Scores', style: 'subheader', margin: [0, 5] });
+    content.push({ text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below. Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group. Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.', margin: [0, 10] });
     content.push({
       style: 'tableExample',
       table: {
@@ -153,13 +166,14 @@ export class AppComponent {
       },
     });
     content.push({ text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.', pageBreak: 'after' });
+    
     return content;
   }
 
   buildIndividualProfileAnalysis(interestsGraph: any[]): any {
     var content = [];
-    content.push({text: 'II. Interest Profile Analysis', style: 'subheader'});
-    content.push('The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas. The dark vertical line in the chart is your average percentage of “LIKE” responses (31%) across all twelve Interest Areas');
+    content.push({ text: 'II. Interest Profile Analysis', style: 'subheader', margin: [0, 5] });
+    content.push({ text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas. The dark vertical line in the chart is your average percentage of “LIKE” responses (31%) across all twelve Interest Areas', margin: [0, 10] });
     content.push({
       style: 'tableExample',
       table: {
@@ -169,6 +183,27 @@ export class AppComponent {
       layout: 'lightHorizontalLines'
     });
     content.push('The CareerScope system has analyzed your profile. The following Interest Areas stand out significantly above your average level of interest:');
+    content.push(
+      { text: '\n1. Physical Performing (12)' },
+      { text: '2. Protective (4)' },
+      { text: '3. Leading/Influencing (11)' },
+      { text: '3. Artistic (1)' }
+    );
+
+    return content;
+  }
+
+  buildPerformanceOnTasks(resultNums: any[]): any {
+    var content = [];
+    content.push({ text: 'I. Performance on tasks', style: 'subheader'});
+    content.push('The table below reports the number of correct answers and the number of questions you attempted in each assessment task.');
+    content.push({
+      style: 'tableExample',
+      table: {
+        body: resultNums
+      },
+      layout: 'lightHorizontalLines'
+    });
     return content;
   }
 
