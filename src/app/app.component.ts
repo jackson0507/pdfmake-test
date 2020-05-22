@@ -48,7 +48,7 @@ export class AppComponent {
     ];
 
     const resultNums = [
-      [{ text: 'Task', style: 'tableHeader', alignment: 'left'}, { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader'}],
+      [{ text: 'Task', style: 'tableHeader', alignment: 'left' }, { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader'}],
       [{ text: 'Object Identification', alignment: 'left' }, 22, 22],
       [{ text: 'Abstract Shape Matching', alignment: 'left' }, 18, 27],
       [{ text: 'Clerical Matching', alignment: 'left' }, 18, 18],
@@ -58,15 +58,28 @@ export class AppComponent {
       [{ text: 'Word Meanings', alignment: 'left' }, 28, 30]
     ]
 
+    const aptitudeResults = [
+      [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }],
+      [{ text: 'General Learning', alignment: 'left' }, 119, 83],
+      [{ text: 'Verbal Aptitude', alignment: 'left' }, 124, 88],
+      [{ text: 'Numerical Aptitude', alignment: 'left' }, 108, 66],
+      [{ text: 'Spatial Aptitude', alignment: 'left' }, 108, 66],
+      [{ text: 'Form Perception', alignment: 'left' }, 108, 66],
+      [{ text: 'Clerical Perception', alignment: 'left' }, 108, 66],
+      [{ text: 'Motor Coordiantion', alignment: 'left' }, 108, 66],
+      [{ text: 'Finger Dexterity', alignment: 'left' }, 108, 66],
+      [{ text: 'Manual Dexterity', alignment: 'left' }, 108, 66],
+    ]
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildAssesmentProfile(interests, interestsGraph, resultNums);
+    const docDef = this.buildAssesmentProfile(interests, interestsGraph, resultNums, aptitudeResults);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
 
   }
 
-  buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[]): any {
+  buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function(currentPage, pageCount) {
@@ -113,7 +126,8 @@ export class AppComponent {
         this.buildInterestAreas(interests),
         this.buildIndividualProfileAnalysis(interestsGraph),
         { text: 'APTITUDE ASSESMENT', style: 'header', alignment: 'center', pageBreak: 'before' },
-        this.buildPerformanceOnTasks(resultNums)
+        this.buildPerformanceOnTasks(resultNums),
+        this.buildAptitudeProfile(aptitudeResults)
       ],
       styles: {
         coverTitle: {
@@ -135,6 +149,9 @@ export class AppComponent {
           bold: true,
           margin: [0, 10, 0, 5],
           decoration: 'underline'
+        },
+        subtext: {
+          fontSize: 9
         },
         tableExample: {
           margin: [0, 5, 0, 15],
@@ -269,6 +286,25 @@ export class AppComponent {
       },
       layout: 'lightHorizontalLines'
     });
+    return content;
+  }
+
+  buildAptitudeProfile(aptitudeResults: any[]): any {
+    var content = [];
+    content.push({ text: 'II. Aptitude Profile', style: 'subheader'});
+    content.push('The table below reports and graphically displays your aptitudes as standard scores and as percentile scores. Both types of scores involve the comparison of your performance against the performance of other adults.');
+    content.push('\nAn aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths. Different combinations of aptitudes (listed on the left) are important in different Work Groups.');
+    content.push({
+      style: 'tableExample',
+      table: {
+        body: aptitudeResults
+      },
+      layout: 'lightHorizontalLines'
+    });
+    content.push({ text: '--- Score can not be calculated', style: 'subtext' });
+    content.push({ text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext'});
+    
+
     return content;
   }
 
