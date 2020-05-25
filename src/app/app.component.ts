@@ -48,7 +48,7 @@ export class AppComponent {
     ];
 
     const resultNums = [
-      [{ text: 'Task', style: 'tableHeader', alignment: 'left' }, { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader'}],
+      [{ text: 'Task', style: 'tableHeader', alignment: 'left' }, { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader' }],
       [{ text: 'Object Identification', alignment: 'left' }, 22, 22],
       [{ text: 'Abstract Shape Matching', alignment: 'left' }, 18, 27],
       [{ text: 'Clerical Matching', alignment: 'left' }, 18, 18],
@@ -82,7 +82,7 @@ export class AppComponent {
   buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
-      header: function(currentPage, pageCount) {
+      header: function (currentPage, pageCount) {
         return [
           {
             columns: [
@@ -117,7 +117,7 @@ export class AppComponent {
         ]
       },
 
-      footer: { text: 'Standard:N  Audio:N  Untimed:N  Language:E  Intro:Y', alignment: 'right', margin: [15,50] },
+      footer: { text: 'Standard:N  Audio:N  Untimed:N  Language:E  Intro:Y', alignment: 'right', margin: [15, 50] },
 
       content: [
         this.buildCover(),
@@ -127,7 +127,9 @@ export class AppComponent {
         this.buildIndividualProfileAnalysis(interestsGraph),
         { text: 'APTITUDE ASSESMENT', style: 'header', alignment: 'center', pageBreak: 'before' },
         this.buildPerformanceOnTasks(resultNums),
-        this.buildAptitudeProfile(aptitudeResults)
+        this.buildAptitudeProfile(aptitudeResults),
+        { text: 'RECOMMENDATIONS', style: 'header', alignment: 'center', pageBreak: 'before' },
+        this.buildRecommendations()
       ],
       styles: {
         coverTitle: {
@@ -216,7 +218,7 @@ export class AppComponent {
     content.push({ text: 'Jackson.McIntyre', margin: [0, 0, 0, 10], style: 'coverText' });
     content.push({ text: 'Date of Interest Administration: 5/13/20', margin: [0, 0, 0, 10], style: 'coverText' });
     content.push({ text: 'Date of Aptitude Administration: 5/13/20', margin: [0, 0, 0, 20], style: 'coverText' });
-    content.push({ text: 'Copyright © 2020 Vocational Research Institute', alignment: 'center', fontSize: 10, pageBreak: 'after'});
+    content.push({ text: 'Copyright © 2020 Vocational Research Institute', alignment: 'center', fontSize: 10, pageBreak: 'after' });
 
     return content;
   }
@@ -226,29 +228,37 @@ export class AppComponent {
     content.push({ text: 'I. Interest Area Scores', style: 'subheader', margin: [0, 5] });
     content.push({ text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below. Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group. Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.', margin: [0, 10] });
     content.push({
-      style: 'tableExample',
-      table: {
-        body:
-          interests
-      },
-      //layout: 'lightHorizontalLines'
-      layout: {
-				hLineWidth: function (i, node) {
-					return (i === 0 || i === node.table.body.length) ? 2 : 1;
-				},
-				vLineWidth: function (i, node) {
-					return (i === 0 || i === node.table.widths.length) ? 2 : 1;
-				},
-				hLineColor: function (i, node) {
-					return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-				},
-				vLineColor: function (i, node) {
-					return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-        }
-      },
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          style: 'tableExample',
+          table: {
+            body:
+              interests
+          },
+          //layout: 'lightHorizontalLines'
+          layout: {
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 2 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+            },
+            hLineColor: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+            }
+          },
+        },
+        { width: '*', text: '' }
+      ]
     });
+
     content.push({ text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.', pageBreak: 'after' });
-    
+
     return content;
   }
 
@@ -257,12 +267,19 @@ export class AppComponent {
     content.push({ text: 'II. Interest Profile Analysis', style: 'subheader', margin: [0, 5] });
     content.push({ text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas. The dark vertical line in the chart is your average percentage of “LIKE” responses (31%) across all twelve Interest Areas', margin: [0, 10] });
     content.push({
-      style: 'tableExample',
-      table: {
-        body:
-          interestsGraph
-      },
-      layout: 'lightHorizontalLines'
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          style: 'tableExample',
+          table: {
+            body:
+              interestsGraph
+          },
+          layout: 'lightHorizontalLines'
+        },
+        { width: '*', text: '' },
+      ]
     });
     content.push('The CareerScope system has analyzed your profile. The following Interest Areas stand out significantly above your average level of interest:');
     content.push(
@@ -277,37 +294,73 @@ export class AppComponent {
 
   buildPerformanceOnTasks(resultNums: any[]): any {
     var content = [];
-    content.push({ text: 'I. Performance on tasks', style: 'subheader'});
+    content.push({ text: 'I. Performance on tasks', style: 'subheader' });
     content.push('The table below reports the number of correct answers and the number of questions you attempted in each assessment task.');
     content.push({
-      style: 'tableExample',
-      table: {
-        body: resultNums
-      },
-      layout: 'lightHorizontalLines'
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          style: 'tableExample',
+          table: {
+            body:
+              resultNums
+          },
+          layout: 'lightHorizontalLines'
+        },
+        { width: '*', text: '' },
+      ]
     });
     return content;
   }
 
   buildAptitudeProfile(aptitudeResults: any[]): any {
     var content = [];
-    content.push({ text: 'II. Aptitude Profile', style: 'subheader'});
+    content.push({ text: 'II. Aptitude Profile', style: 'subheader' });
     content.push('The table below reports and graphically displays your aptitudes as standard scores and as percentile scores. Both types of scores involve the comparison of your performance against the performance of other adults.');
     content.push('\nAn aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths. Different combinations of aptitudes (listed on the left) are important in different Work Groups.');
     content.push({
-      style: 'tableExample',
-      table: {
-        body: aptitudeResults
-      },
-      layout: 'lightHorizontalLines'
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          style: 'tableExample',
+          table: {
+            body:
+              aptitudeResults
+          },
+          layout: 'lightHorizontalLines'
+        },
+        { width: '*', text: '' },
+      ]
     });
     content.push({ text: '--- Score can not be calculated', style: 'subtext' });
-    content.push({ text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext'});
-    
+    content.push({ text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext' });
+
 
     return content;
   }
 
+  buildRecommendations() {
+    var content = [];
+    content.push('Occupations have been divided into twelve Interest Areas as described in the Guide for Occupational Exploration (GOE) and elsewhere. The Guide for Occupational Exploration further subdivides the Interest Areas into Work Groups, based upon aptitude score requirements. Occupations that belong to the same Work Group require similar interests and similar aptitudes.');
+    content.push('\nReported below are career directions that match your aptitudes as well as your 3 strongest interest areas. When you see a • symbol next to a GOE Work Group number and name it means you can be more confident that your aptitude scores qualify you for that Work Group. Review your CareerScope recommendations and score results with a career guidance and counseling professional to learn about the Work Groups that best match your assessment results.');
+
+    return content;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  /* NOT PART OF ASSESSMENT PROFILE */
 
   buildCounselorReport(interests: any[]): any {
     const documentDefinition = {
