@@ -32,19 +32,19 @@ export class AppComponent {
     ];
 
     const interestsGraph = [
-      [{ text: 'Interest Area', colSpan: 2 }, '', '% Like'],
-      ['01', { text: 'Artistic', alignment: 'left' }, 71],
-      ['02', { text: 'Scientific', alignment: 'left' }, 0],
-      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0],
-      ['04', { text: 'Protective', alignment: 'left' }, 71],
-      ['05', { text: 'Mechanical', alignment: 'left' }, 71],
-      ['06', { text: 'Industrial', alignment: 'left' }, 71],
-      ['07', { text: 'Business Detail', alignment: 'left' }, 71],
-      ['08', { text: 'Selling', alignment: 'left' }, 71],
-      ['09', { text: 'Accomodating', alignment: 'left' }, 71],
-      ['10', { text: 'Humanitarian', alignment: 'left' }, 71],
-      ['11', { text: 'Influencing', alignment: 'left' }, 71],
-      ['12', { text: 'Physical Performing', alignment: 'left' }, 71]
+      [{ text: 'Interest Area', colSpan: 2 }, '', '% Like', ''],
+      ['01', { text: 'Artistic', alignment: 'left' }, 71, this.buildGraph(71)],
+      ['02', { text: 'Scientific', alignment: 'left' }, 0, this.buildGraph(0)],
+      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, this.buildGraph(0)],
+      ['04', { text: 'Protective', alignment: 'left' }, 52, this.buildGraph(52)],
+      ['05', { text: 'Mechanical', alignment: 'left' }, 24, this.buildGraph(24)],
+      ['06', { text: 'Industrial', alignment: 'left' }, 71, this.buildGraph(71)],
+      ['07', { text: 'Business Detail', alignment: 'left' }, 10, this.buildGraph(10)],
+      ['08', { text: 'Selling', alignment: 'left' }, 91, this.buildGraph(91)],
+      ['09', { text: 'Accomodating', alignment: 'left' }, 24, this.buildGraph(24)],
+      ['10', { text: 'Humanitarian', alignment: 'left' }, 4, this.buildGraph(4)],
+      ['11', { text: 'Influencing', alignment: 'left' }, 51, this.buildGraph(51)],
+      ['12', { text: 'Physical Performing', alignment: 'left' }, 71, this.buildGraph(71)]
     ];
 
     const resultNums = [
@@ -77,6 +77,29 @@ export class AppComponent {
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
 
+  }
+
+  buildGraph(width: any): any {
+    var content = {
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: (width * 2), y2: 7,
+          lineWidth: 10,
+          lineColor: 'gray',
+        },
+        { 
+          type: 'line',
+          x1: 104, y1: -4,
+          x2: 104, y2: 14,
+          lineWidth: 1,
+          lineColor: 'black'
+        }
+      ], alignment: 'left'
+    };
+
+    return content;
   }
 
   buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[]): any {
@@ -276,7 +299,7 @@ export class AppComponent {
             body:
               interestsGraph
           },
-          layout: 'lightHorizontalLines'
+          //layout: 'lightHorizontalLines'
         },
         { width: '*', text: '' },
       ]
