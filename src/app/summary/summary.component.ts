@@ -12,15 +12,111 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class SummaryComponent {
 
   generateSummary() {
+    const interestsGraph = [
+      [{ text: 'Interest Area', colSpan: 2 }, '', '% Like', ''],
+      ['01', { text: 'Artistic', alignment: 'left' }, 71, this.buildGraph(71)],
+      ['02', { text: 'Scientific', alignment: 'left' }, 0, this.buildGraph(0)],
+      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, this.buildGraph(0)],
+      ['04', { text: 'Protective', alignment: 'left' }, 52, this.buildGraph(52)],
+      ['05', { text: 'Mechanical', alignment: 'left' }, 24, this.buildGraph(24)],
+      ['06', { text: 'Industrial', alignment: 'left' }, 71, this.buildGraph(71)],
+      ['07', { text: 'Business Detail', alignment: 'left' }, 10, this.buildGraph(10)],
+      ['08', { text: 'Selling', alignment: 'left' }, 91, this.buildGraph(91)],
+      ['09', { text: 'Accomodating', alignment: 'left' }, 24, this.buildGraph(24)],
+      ['10', { text: 'Humanitarian', alignment: 'left' }, 4, this.buildGraph(4)],
+      ['11', { text: 'Influencing', alignment: 'left' }, 51, this.buildGraph(51)],
+      ['12', { text: 'Physical Performing', alignment: 'left' }, 71, this.buildGraph(71)]
+    ];
+
+    const aptitudeResults = [
+      [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }, { text: 'Average Range', style: 'tableHeader' }],
+      [{ text: 'General Learning', alignment: 'left' }, 119, 83, this.buildGraphAptitude(119)],
+      [{ text: 'Verbal Aptitude', alignment: 'left' }, 124, 88, this.buildGraphAptitude(124)],
+      [{ text: 'Numerical Aptitude', alignment: 'left' }, 108, 66, this.buildGraphAptitude(108)],
+      [{ text: 'Spatial Aptitude', alignment: 'left' }, 102, 66, this.buildGraphAptitude(102)],
+      [{ text: 'Form Perception', alignment: 'left' }, 94, 66, this.buildGraphAptitude(94)],
+      [{ text: 'Clerical Perception', alignment: 'left' }, 84, 66, this.buildGraphAptitude(84)],
+      [{ text: 'Motor Coordiantion', alignment: 'left' }, 80, 66, this.buildGraphAptitude(80)],
+      [{ text: 'Finger Dexterity', alignment: 'left' }, 120, 66, this.buildGraphAptitude(120)],
+      [{ text: 'Manual Dexterity', alignment: 'left' }, 66, 66, this.buildGraphAptitude(66)],
+    ];
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildSummaryReport();
+    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
   }
 
+  buildGraph(width: any): any {
+    var content = {
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: (width), y2: 7,
+          lineWidth: 10,
+          lineColor: 'gray',
+        },
+        {
+          type: 'line',
+          x1: 52, y1: -5,
+          x2: 52, y2: 14,
+          lineWidth: 1,
+          lineColor: 'black'
+        }
+      ], alignment: 'left'
+    };
 
-  buildSummaryReport() {
+    return content;
+  }
+
+  buildGraphAptitude(width: any): any {
+    var content = {
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: this.aptWidthToLine(width), y2: 7,
+          lineWidth: 10,
+          lineColor: 'gray',
+        },
+        {
+          type: 'line',
+          x1: 30, y1: -12,
+          x2: 30, y2: 14,
+          lineWidth: 0.5,
+          lineColor: 'black'
+        },
+        {
+          type: 'line',
+          x1: 90, y1: -12,
+          x2: 90, y2: 14,
+          lineWidth: 0.5,
+          lineColor: 'black'
+        }
+      ], alignment: 'left'
+    }
+
+    return content;
+  }
+
+  aptWidthToLine(width: any): any {
+    if (width >= 120) {
+      return width / 1.333;
+    } else if (width <= 80) {
+      return width / 2.666;
+    } else if (width > 100) {
+      return width / 1.5;
+    } else if (width < 100) {
+      return width / 1.8;
+    } else {
+      return width;
+    }
+  }
+
+
+  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -62,7 +158,7 @@ export class SummaryComponent {
 
       content: [
         this.buildCover(),
-        { text: 'INTEREST INVENTORY', style: 'header', alignment: 'center' },
+        this.buildInterestAndAptitudeResults(interestsGraph, aptitudeResults)
       ],
       styles: {
         coverTitle: {
@@ -85,6 +181,12 @@ export class SummaryComponent {
           margin: [0, 10, 0, 5],
           decoration: 'underline'
         },
+        summaryHeader: {
+          fontSize: 14,
+          decoration: 'underline',
+          alignment: 'center',
+          margin: [0, 0, 0, 5]
+        },
         subtext: {
           fontSize: 9
         },
@@ -98,7 +200,7 @@ export class SummaryComponent {
         }
       },
       defaultStyle: {
-        // alignment: 'justify'
+        fontSize: 8
       }
     };
     return documentDefinition;
@@ -117,4 +219,49 @@ export class SummaryComponent {
 
     return content;
   }
+
+  buildInterestAndAptitudeResults(interestsGraph: any[], aptitudeResults: any[]): any {
+    var content = [];
+
+    content.push({
+      columns: [
+        [
+          { text: 'INTEREST RESULTS', style: 'summaryHeader' },
+          'The table below reports and displays the percentage of “LIKE” responses that you recorded for each of the twelve Interest Areas. The dark vertical line in the chart is your average percentage of “LIKE” responses (31%) across all twelve Interest Areas.',
+          {
+            style: 'tableExample',
+            table: {
+              widths: ['auto', 'auto', 'auto', 105],
+              body:
+                interestsGraph
+            },
+          },
+          'The CareerScope system has analyzed your profile. The following Interest Areas stand out significantly above your average level of interest:',
+          { text: '\n1. Physical Performing (12)' },
+          { text: '2. Protective (4)' },
+          { text: '3. Leading/Influencing (11)' },
+          { text: '3. Artistic (1)' }
+        ],
+        [
+          { text: 'APTITUDE RESULTS', style: 'summaryHeader' },
+          'The graph below reports and displays your aptitudes as standard scores and as percentile scores. An aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths.',
+          {
+            style: 'tableExample',
+            table: {
+              widths: ['auto', 'auto', 'auto', 120],
+              body:
+                aptitudeResults
+            },
+          },
+          { text: '--- Score can not be calculated', style: 'subtext' },
+          { text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext' }
+
+        ]
+      ]
+    });
+
+    return content;
+  }
+
+
 }

@@ -56,7 +56,7 @@ export class AppComponent {
       [{ text: 'Computation', alignment: 'left' }, 15, 19],
       [{ text: 'Numerical Reasoning', alignment: 'left' }, 19, 22],
       [{ text: 'Word Meanings', alignment: 'left' }, 28, 30]
-    ]
+    ];
 
     const aptitudeResults = [
       [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }, { text: 'Average Range', style: 'tableHeader' }],
@@ -69,7 +69,7 @@ export class AppComponent {
       [{ text: 'Motor Coordiantion', alignment: 'left' }, 80, 66, this.buildGraphAptitude(80)],
       [{ text: 'Finger Dexterity', alignment: 'left' }, 120, 66, this.buildGraphAptitude(120)],
       [{ text: 'Manual Dexterity', alignment: 'left' }, 66, 66, this.buildGraphAptitude(66)],
-    ]
+    ];
 
     const leadingJobs = [
       [{ text: '', colSpan: 2 }, '', { text: 'GED Req', colSpan: 2 }, '', ''],
@@ -78,7 +78,7 @@ export class AppComponent {
       [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Software Engineer', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Information Scientist', alignment: 'left' }, '189.117-050', 5, 5, 8],
-    ]
+    ];
 
     const leadingJobs2 = [
       [{ text: '', colSpan: 2 }, '', { text: 'GED Req', colSpan: 2 }, '', ''],
@@ -87,7 +87,7 @@ export class AppComponent {
       [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Software Engineer', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Information Scientist', alignment: 'left' }, '189.117-050', 5, 5, 8],
-    ]
+    ];
 
 
     //const docDef = this.buildCounselorReport(interests);
