@@ -72,6 +72,16 @@ export class AppComponent {
     ]
 
     const leadingJobs = [
+      [{ text: '', colSpan: 2}, '', { text: 'GED Req', colSpan: 2}, '', ''],
+      [{ text: 'Job Title', style: 'tableHeader', alignment: 'left' }, { text: 'DOT #', style: 'tableHeader' }, { text: 'M', style: 'tableHeader' }, { text: 'L', style: 'tableHeader' }, { text: 'SVP Req', style: 'tableHeader' }],
+      [{ text: 'Programmer, Eng. & Scient.', alignment: 'left' }, '030.162-018', 6, 6, 8],
+      [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
+      [{ text: 'Software Engineer', alignment: 'left' }, '189.117-050', 5, 5, 8],
+      [{ text: 'Information Scientist', alignment: 'left' }, '189.117-050', 5, 5, 8],
+    ]
+    
+    const leadingJobs2 = [
+      [{ text: '', colSpan: 2}, '', { text: 'GED Req', colSpan: 2}, '', ''],
       [{ text: 'Job Title', style: 'tableHeader', alignment: 'left' }, { text: 'DOT #', style: 'tableHeader' }, { text: 'M', style: 'tableHeader' }, { text: 'L', style: 'tableHeader' }, { text: 'SVP Req', style: 'tableHeader' }],
       [{ text: 'Programmer, Eng. & Scient.', alignment: 'left' }, '030.162-018', 6, 6, 8],
       [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
@@ -79,8 +89,9 @@ export class AppComponent {
       [{ text: 'Information Scientist', alignment: 'left' }, '189.117-050', 5, 5, 8],
     ]
 
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildAssesmentProfile(interests, interestsGraph, resultNums, aptitudeResults, leadingJobs);
+    const docDef = this.buildAssesmentProfile(interests, interestsGraph, resultNums, aptitudeResults, leadingJobs, leadingJobs2);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
@@ -110,7 +121,7 @@ export class AppComponent {
     return content;
   }
 
-  buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[], leadingJobs: any[]): any {
+  buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[], leadingJobs: any[], leadingJobs2: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -160,7 +171,7 @@ export class AppComponent {
         this.buildPerformanceOnTasks(resultNums),
         this.buildAptitudeProfile(aptitudeResults),
         { text: 'RECOMMENDATIONS', style: 'header', alignment: 'center', pageBreak: 'before' },
-        this.buildRecommendations(leadingJobs)
+        this.buildRecommendations(leadingJobs, leadingJobs2)
       ],
       styles: {
         coverTitle: {
@@ -372,7 +383,7 @@ export class AppComponent {
     return content;
   }
 
-  buildRecommendations(leadingJobs: any[]): any {
+  buildRecommendations(leadingJobs: any[], leadingJobs2: any[]): any {
     var content = [];
     content.push('Occupations have been divided into twelve Interest Areas as described in the Guide for Occupational Exploration (GOE) and elsewhere. The Guide for Occupational Exploration further subdivides the Interest Areas into Work Groups, based upon aptitude score requirements. Occupations that belong to the same Work Group require similar interests and similar aptitudes.');
     content.push('\nReported below are career directions that match your aptitudes as well as your 3 strongest interest areas. When you see a • symbol next to a GOE Work Group number and name it means you can be more confident that your aptitude scores qualify you for that Work Group. Review your CareerScope recommendations and score results with a career guidance and counseling professional to learn about the Work Groups that best match your assessment results.');
@@ -393,6 +404,24 @@ export class AppComponent {
               table: {
                 body:
                   leadingJobs
+              },
+              layout: 'lightHorizontalLines'
+            },
+            { width: '*', text: '' },
+          ]
+        }
+        ],
+        [{ text: 'GOE 11.02 Educational & Library Svcs', decoration: 'underline', margin: [0, 10] },
+        { text: 'Workers in this group do general and specialized teaching, vocational training, advising in agriculture and home economics, and library work of various kinds.' },
+        {
+          columns: [
+            { width: '*', text: '' },
+            {
+              width: 'auto',
+              style: 'tableExample',
+              table: {
+                body:
+                  leadingJobs2
               },
               layout: 'lightHorizontalLines'
             },
