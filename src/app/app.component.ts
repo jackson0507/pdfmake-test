@@ -59,29 +59,29 @@ export class AppComponent {
     ]
 
     const aptitudeResults = [
-      [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }],
-      [{ text: 'General Learning', alignment: 'left' }, 119, 83],
-      [{ text: 'Verbal Aptitude', alignment: 'left' }, 124, 88],
-      [{ text: 'Numerical Aptitude', alignment: 'left' }, 108, 66],
-      [{ text: 'Spatial Aptitude', alignment: 'left' }, 108, 66],
-      [{ text: 'Form Perception', alignment: 'left' }, 108, 66],
-      [{ text: 'Clerical Perception', alignment: 'left' }, 108, 66],
-      [{ text: 'Motor Coordiantion', alignment: 'left' }, 108, 66],
-      [{ text: 'Finger Dexterity', alignment: 'left' }, 108, 66],
-      [{ text: 'Manual Dexterity', alignment: 'left' }, 108, 66],
+      [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }, { text: 'Average Range', style: 'tableHeader' }],
+      [{ text: 'General Learning', alignment: 'left' }, 119, 83, this.buildGraphAptitude(119)],
+      [{ text: 'Verbal Aptitude', alignment: 'left' }, 124, 88, this.buildGraphAptitude(124)],
+      [{ text: 'Numerical Aptitude', alignment: 'left' }, 108, 66, this.buildGraphAptitude(108)],
+      [{ text: 'Spatial Aptitude', alignment: 'left' }, 102, 66, this.buildGraphAptitude(102)],
+      [{ text: 'Form Perception', alignment: 'left' }, 94, 66, this.buildGraphAptitude(94)],
+      [{ text: 'Clerical Perception', alignment: 'left' }, 84, 66, this.buildGraphAptitude(84)],
+      [{ text: 'Motor Coordiantion', alignment: 'left' }, 80, 66, this.buildGraphAptitude(80)],
+      [{ text: 'Finger Dexterity', alignment: 'left' }, 120, 66, this.buildGraphAptitude(120)],
+      [{ text: 'Manual Dexterity', alignment: 'left' }, 66, 66, this.buildGraphAptitude(66)],
     ]
 
     const leadingJobs = [
-      [{ text: '', colSpan: 2}, '', { text: 'GED Req', colSpan: 2}, '', ''],
+      [{ text: '', colSpan: 2 }, '', { text: 'GED Req', colSpan: 2 }, '', ''],
       [{ text: 'Job Title', style: 'tableHeader', alignment: 'left' }, { text: 'DOT #', style: 'tableHeader' }, { text: 'M', style: 'tableHeader' }, { text: 'L', style: 'tableHeader' }, { text: 'SVP Req', style: 'tableHeader' }],
       [{ text: 'Programmer, Eng. & Scient.', alignment: 'left' }, '030.162-018', 6, 6, 8],
       [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Software Engineer', alignment: 'left' }, '189.117-050', 5, 5, 8],
       [{ text: 'Information Scientist', alignment: 'left' }, '189.117-050', 5, 5, 8],
     ]
-    
+
     const leadingJobs2 = [
-      [{ text: '', colSpan: 2}, '', { text: 'GED Req', colSpan: 2}, '', ''],
+      [{ text: '', colSpan: 2 }, '', { text: 'GED Req', colSpan: 2 }, '', ''],
       [{ text: 'Job Title', style: 'tableHeader', alignment: 'left' }, { text: 'DOT #', style: 'tableHeader' }, { text: 'M', style: 'tableHeader' }, { text: 'L', style: 'tableHeader' }, { text: 'SVP Req', style: 'tableHeader' }],
       [{ text: 'Programmer, Eng. & Scient.', alignment: 'left' }, '030.162-018', 6, 6, 8],
       [{ text: 'Consultant', alignment: 'left' }, '189.117-050', 5, 5, 8],
@@ -110,7 +110,7 @@ export class AppComponent {
         },
         {
           type: 'line',
-          x1: 104, y1: -4,
+          x1: 104, y1: -5,
           x2: 104, y2: 14,
           lineWidth: 1,
           lineColor: 'black'
@@ -119,6 +119,50 @@ export class AppComponent {
     };
 
     return content;
+  }
+
+  buildGraphAptitude(width: any): any {
+    var content = {
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: this.aptWidthToLine(width), y2: 7,
+          lineWidth: 10,
+          lineColor: 'gray',
+        },
+        {
+          type: 'line',
+          x1: 50, y1: -12,
+          x2: 50, y2: 14,
+          lineWidth: 0.5,
+          lineColor: 'black'
+        },
+        {
+          type: 'line',
+          x1: 150, y1: -12,
+          x2: 150, y2: 14,
+          lineWidth: 0.5,
+          lineColor: 'black'
+        }
+      ], alignment: 'left'
+    }
+
+    return content;
+  }
+
+  aptWidthToLine(width: any): any {
+    if (width >= 120) {
+      return width * 1.25;
+    } else if (width <= 80) {
+      return width / 1.6;
+    } else if (width > 100) {
+      return width * 1.1;
+    } else if (width < 100) {
+      return width / 1.2;
+    } else {
+      return width;
+    }
   }
 
   buildAssesmentProfile(interests: any[], interestsGraph: any[], resultNums: any[], aptitudeResults: any[], leadingJobs: any[], leadingJobs2: any[]): any {
@@ -362,19 +406,13 @@ export class AppComponent {
     content.push('The table below reports and graphically displays your aptitudes as standard scores and as percentile scores. Both types of scores involve the comparison of your performance against the performance of other adults.');
     content.push('\nAn aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths. Different combinations of aptitudes (listed on the left) are important in different Work Groups.');
     content.push({
-      columns: [
-        { width: '*', text: '' },
-        {
-          width: 'auto',
-          style: 'tableExample',
-          table: {
-            body:
-              aptitudeResults
-          },
-          layout: 'lightHorizontalLines'
-        },
-        { width: '*', text: '' },
-      ]
+      style: 'tableExample',
+      table: {
+        widths: ['auto', 'auto', 'auto', 200],
+        body:
+          aptitudeResults
+      },
+      //layout: 'lightHorizontalLines'
     });
     content.push({ text: '--- Score can not be calculated', style: 'subtext' });
     content.push({ text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext' });
