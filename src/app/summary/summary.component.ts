@@ -41,8 +41,31 @@ export class SummaryComponent {
       [{ text: 'Manual Dexterity', alignment: 'left' }, 66, 66, this.buildGraphAptitude(66)],
     ];
 
+    const workGroup = [
+      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
+      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
+    ];
+
+    const workGroup1 = [
+      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
+      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
+    ];
+
+    const workGroup2 = [
+      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
+      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
+      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
+    ];
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults);
+    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
@@ -115,8 +138,39 @@ export class SummaryComponent {
     }
   }
 
+  filledInCircle() {
+    var content = {
+      canvas: [
+        {
+          type: 'ellipse',
+          color: 'black',
+          lineColor: 'black',
+          x: 2.5, y: 4,
+          r1: 2.5, r2: 2.5
+        }
+      ]
+    };
 
-  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[]): any {
+    return content;
+  }
+
+  openCircle() {
+    var content = {
+      canvas : [
+        {
+          type: 'ellipse',
+          color: 'white',
+          lineColor: 'black',
+          x: 2.5, y: 4,
+          r1: 2.5, r2: 2.5
+        }
+      ]
+    };
+
+    return content;
+  }
+
+  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[], workGroup: any[], workGroup1: any[], workGroup2: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -130,7 +184,7 @@ export class SummaryComponent {
               {
                 stack: [
                   {
-                    text: "CareerScope® Assessment Profile",
+                    text: "CareerScope® Summary Report",
                     fontSize: 16
                   },
                   "Jackson McIntyre"
@@ -158,7 +212,8 @@ export class SummaryComponent {
 
       content: [
         this.buildCover(),
-        this.buildInterestAndAptitudeResults(interestsGraph, aptitudeResults)
+        this.buildInterestAndAptitudeResults(interestsGraph, aptitudeResults),
+        this.buildRecommendations(workGroup, workGroup1, workGroup2)
       ],
       styles: {
         coverTitle: {
@@ -188,7 +243,7 @@ export class SummaryComponent {
           margin: [0, 0, 0, 5]
         },
         subtext: {
-          fontSize: 9
+          fontSize: 8
         },
         tableExample: {
           margin: [0, 5, 0, 15],
@@ -257,11 +312,53 @@ export class SummaryComponent {
           { text: '•Your aptitude profile may include Motor Coordination, Finger Dexterity and Manual Dexterity scores. The sources of these scores are listed below. If “Counselor” is listed as the source of information, an assumption has been made regarding the score. If “None” is listed as the source, the performance factor will not be considered when making Work Group recommendations. Motor Coordination: Counselor; Finger Dexterity: Counselor; Manual Dexterity: Counselor', style: 'subtext' }
 
         ]
-      ]
+      ],
+      columnGap: 20
     });
 
     return content;
   }
+
+  buildRecommendations(workGroup: any[], workGroup1: any[], workGroup2: any[]): any {
+    var content = [];
+    content.push({ text: 'RECOMMENDATIONS', style: 'summaryHeader', margin: [0, 10] });
+    content.push('The world of work has been divided into Interest Areas. These areas are further divided into Work Groups based upon aptitude requirements. 59 Work Groups are listed in the table below. When a number appears in the “I” column, it means the Work Group falls within one of your significant interest areas (1 = most preferred). When a symbol appears in the “A” column, it means that your aptitude scores qualify you for that Work Group. (You can be even more confident that you qualify for a Work Group when it is marked with a • symbol.)');
+    content.push({
+      columns: [
+        [
+          {
+            style: 'tableExample',
+            table: {
+              widths: ['auto', 100, 'auto', 'auto'],
+              body:
+                workGroup
+            },
+          },
+        ],
+        [
+          {
+            style: 'tableExample',
+            table: {
+              widths: ['auto', 100, 'auto', 'auto'],
+              body:
+                workGroup1
+            },
+          },
+        ],
+        {
+          style: 'tableExample',
+          table: {
+            widths: ['auto', 100, 'auto', 'auto'],
+            body:
+              workGroup2
+          },
+        },
+      ],
+      //columnGap: 10
+    });
+    return content;
+  }
+
 
 
 }
