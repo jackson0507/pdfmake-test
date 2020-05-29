@@ -174,15 +174,18 @@ export class AppComponent {
             columns: [
               {
                 text: "Jackson.McIntyre",
-                width: 148.75
+                width: 148.75,
+                fontSize: 12
               },
               {
                 stack: [
                   {
                     text: "CareerScope® Assessment Profile",
                     fontSize: 16
-                  },
-                  "Jackson McIntyre"
+                  },{
+                    text: "Jackson McIntyre",
+                    fontSize: 12
+                  }
                 ],
                 width: 298
               },
@@ -192,7 +195,10 @@ export class AppComponent {
                     text: currentPage.toString() + ' of ' + pageCount,
                     fontSize: 12
                   },
-                  "05/13/2020"
+                  {
+                    text: "05/13/2020",
+                    fontSize: 12
+                  }
                 ],
                 width: 148.75
               }
