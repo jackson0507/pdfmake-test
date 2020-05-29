@@ -64,8 +64,15 @@ export class SummaryComponent {
       [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
       [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
     ];
+
+    const interestAreas = [
+      [{ text: 'Interest Area', style: 'tableHeader' }, { text: 'Definition', style: 'tableHeader' }, { text: 'Occupational Examples', style: 'tableHeader' }],
+      [{ text: '01 Artistic', alignment: 'left' }, { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts.', alignment: 'left' }, { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', alignment: 'left' }],
+      [{ text: '02 Scientific', alignment: 'left' }, { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.', alignment: 'left'}, { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', alignment: 'left' }],
+
+    ]
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2);
+    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2, interestAreas);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
@@ -170,7 +177,7 @@ export class SummaryComponent {
     return content;
   }
 
-  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[], workGroup: any[], workGroup1: any[], workGroup2: any[]): any {
+  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[], workGroup: any[], workGroup1: any[], workGroup2: any[], interestAreas: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -219,7 +226,8 @@ export class SummaryComponent {
       content: [
         this.buildCover(),
         this.buildInterestAndAptitudeResults(interestsGraph, aptitudeResults),
-        this.buildRecommendations(workGroup, workGroup1, workGroup2)
+        this.buildRecommendations(workGroup, workGroup1, workGroup2),
+        this.buildSummaryInterestAreas(interestAreas),
       ],
       styles: {
         coverTitle: {
@@ -362,6 +370,22 @@ export class SummaryComponent {
       ],
       //columnGap: 10
     });
+    return content;
+  }
+
+  buildSummaryInterestAreas(interestAreas: any[]): any {
+    var content = [];
+    content.push({ text: "INTEREST AREAS", style: 'summaryHeader', pageBreak: 'before' });
+    content.push({ text: 'Occupations have been divided into twelve broad interest areas. The CareerScope Interest Inventory contains items that describe work activities from these Interest Areas. The table below explains the Interest Areas and lists some of the fastest-growing occupations within each area.' });
+    content.push({
+      style: 'tableExample',
+      table: {
+        widths: [75, 250, 160],
+        body:
+          interestAreas
+      }
+    });
+
     return content;
   }
 
