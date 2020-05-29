@@ -42,7 +42,7 @@ export class SummaryComponent {
     ];
 
     const workGroup = [
-      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
       [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
       [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
       [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
@@ -50,7 +50,7 @@ export class SummaryComponent {
     ];
 
     const workGroup1 = [
-      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
       [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
       [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
       [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
@@ -58,7 +58,7 @@ export class SummaryComponent {
     ];
 
     const workGroup2 = [
-      [{ text: 'Work Group', colSpan: 2 },'', 'I', 'A'],
+      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
       [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
       [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
       [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
@@ -68,11 +68,30 @@ export class SummaryComponent {
     const interestAreas = [
       [{ text: 'Interest Area', style: 'tableHeader' }, { text: 'Definition', style: 'tableHeader' }, { text: 'Occupational Examples', style: 'tableHeader' }],
       [{ text: '01 Artistic', alignment: 'left' }, { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts.', alignment: 'left' }, { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', alignment: 'left' }],
-      [{ text: '02 Scientific', alignment: 'left' }, { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.', alignment: 'left'}, { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', alignment: 'left' }],
-
+      [{ text: '02 Scientific', alignment: 'left' }, { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.', alignment: 'left' }, { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', alignment: 'left' }],
     ]
+
+    const aptitudes = [
+      [{ text: 'Aptitude', style: 'tableHeader' }, { text: 'Definition', style: 'tableHeader' }, { text: 'Specific Job Tasks', style: 'tableHeader' }, { text: 'CareerScope Tasks', style: 'tableHeader' }],
+      [{ text: 'General Learning\nG' }, {
+        stack: [
+          {
+            text: 'The ability to "catch on" or understand instructions and underlying principles; ability to reason and make judgements. Closely related to doing well in school.',
+            alignment: 'left'
+          }, {
+            text: 'Examples',
+            decoration: 'underline'
+          }, {
+            text: 'Use logic or scientific facts to define problems and draw conclusions; make decisions and judgements; plan and supervise the work of others.',
+            alignment: 'left'
+          }
+        ]
+      }, { text: 'Diagnose and treat illnesses or injuries; use facts to solve a crime; plan the layout of a computer network; inspect and test engine parts.', alignment: 'left' }, { text: 'Pattern Visualization, Numerical Reasoning, Word Meanings', alignment: 'left' }],
+    ]
+
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2, interestAreas);
+    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2, interestAreas, aptitudes);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
@@ -163,7 +182,7 @@ export class SummaryComponent {
 
   openCircle() {
     var content = {
-      canvas : [
+      canvas: [
         {
           type: 'ellipse',
           color: 'white',
@@ -177,7 +196,7 @@ export class SummaryComponent {
     return content;
   }
 
-  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[], workGroup: any[], workGroup1: any[], workGroup2: any[], interestAreas: any[]): any {
+  buildSummaryReport(interestsGraph: any[], aptitudeResults: any[], workGroup: any[], workGroup1: any[], workGroup2: any[], interestAreas: any[], aptitudes: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -194,7 +213,7 @@ export class SummaryComponent {
                   {
                     text: "CareerScope® Summary Report",
                     fontSize: 16
-                  },{
+                  }, {
                     text: "Jackson McIntyre",
                     fontSize: 12
                   }
@@ -228,6 +247,7 @@ export class SummaryComponent {
         this.buildInterestAndAptitudeResults(interestsGraph, aptitudeResults),
         this.buildRecommendations(workGroup, workGroup1, workGroup2),
         this.buildSummaryInterestAreas(interestAreas),
+        this.buildAptitudes(aptitudes),
       ],
       styles: {
         coverTitle: {
@@ -389,6 +409,21 @@ export class SummaryComponent {
     return content;
   }
 
+  buildAptitudes(aptitudes: any[]): any {
+    var content = [];
+    content.push({ text: 'APTITUDES', style: 'summaryHeader', pageBreak: 'before' });
+    content.push({ text: 'Different combinations of aptitudes are important for different occupations. The table below lists the aptitudes that are measured by CareerScope, and provides general examples and specific job tasks that require these aptitudes.', alignment: 'left' });
+    content.push({
+      style: 'tableExample',
+      table: {
+        widths: [40, 270, 75, 75],
+        body:
+          aptitudes
+      }
+    })
+
+    return content;
+  }
 
 
 }
