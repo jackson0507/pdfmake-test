@@ -12,8 +12,27 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class CounselorComponent {
 
   generateCounselorsReport() {
+
+    const interests = [
+      [{ text: '', colSpan: 5 }, '', '', '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center' }, '', '', 'Percent', ''],
+      [{ text: 'Interest Area', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', style: 'tableHeader' }, { text: 'Like', style: 'tableHeader' }, { text: 'IPA', style: 'tableHeader' }],
+      ['01', { text: 'Artistic', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['02', { text: 'Scientific', alignment: 'left' }, 0, 0, 13, 14, 12, 16, 0, ''],
+      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, 0, 11, 14, 12, 16, 0, ''],
+      ['04', { text: 'Protective', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['05', { text: 'Mechanical', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['06', { text: 'Industrial', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['07', { text: 'Business Detail', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['08', { text: 'Selling', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['09', { text: 'Accomodating', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['10', { text: 'Humanitarian', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['11', { text: 'Influencing', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2],
+      ['12', { text: 'Physical Performing', alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2]
+    ];
+
+
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildCounselorsReport();
+    const docDef = this.buildCounselorsReport(interests);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
@@ -21,7 +40,7 @@ export class CounselorComponent {
 
 
 
-  buildCounselorsReport() {
+  buildCounselorsReport(interests: any[]): any {
     const documentDefinition = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -69,6 +88,7 @@ export class CounselorComponent {
 
       content: [
         this.buildCover(),
+        this.buildInterestInventory(interests),
       ],
       styles: {
         coverTitle: {
@@ -110,7 +130,7 @@ export class CounselorComponent {
         }
       },
       defaultStyle: {
-        fontSize: 8
+        //fontSize: 8
       }
     };
     return documentDefinition;
@@ -130,8 +150,42 @@ export class CounselorComponent {
     return content;
   }
 
-  buildFirst() {
+  buildInterestInventory(interests: any[]): any {
+    var content = [];
+    content.push({ text: 'Interest Inventory Scores', style: 'subheader', margin: [0, 5], alignment: 'center' });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          style: 'tableExample',
+          table: {
+            body:
+              interests
+          },
+          //layout: 'lightHorizontalLines'
+          layout: {
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 2 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+            },
+            hLineColor: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+            }
+          },
+        },
+        { width: '*', text: '' }
+      ]
+    });
 
+    content.push({ text: 'Scores Based Upon Adult Standards', style: 'subtext', alignment: 'center' });
+
+    return content;
   }
 
 
