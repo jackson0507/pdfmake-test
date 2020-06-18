@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InterestsHalfGraphData, AptitudeHalfData, WorkGroup, WorkGroup2, WorkGroup3, InterestAreasKey, AptitudesKey } from '../hardcodedData'
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -12,86 +13,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class SummaryComponent {
 
   generateSummary() {
-    const interestsGraph = [
-      [{ text: 'Interest Area', colSpan: 2 }, '', '% Like', ''],
-      ['01', { text: 'Artistic', alignment: 'left' }, 71, this.buildGraph(71)],
-      ['02', { text: 'Scientific', alignment: 'left' }, 0, this.buildGraph(0)],
-      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, this.buildGraph(0)],
-      ['04', { text: 'Protective', alignment: 'left' }, 52, this.buildGraph(52)],
-      ['05', { text: 'Mechanical', alignment: 'left' }, 24, this.buildGraph(24)],
-      ['06', { text: 'Industrial', alignment: 'left' }, 71, this.buildGraph(71)],
-      ['07', { text: 'Business Detail', alignment: 'left' }, 10, this.buildGraph(10)],
-      ['08', { text: 'Selling', alignment: 'left' }, 91, this.buildGraph(91)],
-      ['09', { text: 'Accomodating', alignment: 'left' }, 24, this.buildGraph(24)],
-      ['10', { text: 'Humanitarian', alignment: 'left' }, 4, this.buildGraph(4)],
-      ['11', { text: 'Influencing', alignment: 'left' }, 51, this.buildGraph(51)],
-      ['12', { text: 'Physical Performing', alignment: 'left' }, 71, this.buildGraph(71)]
-    ];
-
-    const aptitudeResults = [
-      [{ text: 'Aptitude', style: 'tableHeader', alignment: 'left' }, { text: 'Score', style: 'tableHeader', alignment: 'left' }, { text: '%tile', style: 'tableHeader', alignment: 'left' }, { text: 'Average Range', style: 'tableHeader' }],
-      [{ text: 'General Learning', alignment: 'left' }, 119, 83, this.buildGraphAptitude(119)],
-      [{ text: 'Verbal Aptitude', alignment: 'left' }, 124, 88, this.buildGraphAptitude(124)],
-      [{ text: 'Numerical Aptitude', alignment: 'left' }, 108, 66, this.buildGraphAptitude(108)],
-      [{ text: 'Spatial Aptitude', alignment: 'left' }, 102, 66, this.buildGraphAptitude(102)],
-      [{ text: 'Form Perception', alignment: 'left' }, 94, 66, this.buildGraphAptitude(94)],
-      [{ text: 'Clerical Perception', alignment: 'left' }, 84, 66, this.buildGraphAptitude(84)],
-      [{ text: 'Motor Coordiantion', alignment: 'left' }, 80, 66, this.buildGraphAptitude(80)],
-      [{ text: 'Finger Dexterity', alignment: 'left' }, 120, 66, this.buildGraphAptitude(120)],
-      [{ text: 'Manual Dexterity', alignment: 'left' }, 66, 66, this.buildGraphAptitude(66)],
-    ];
-
-    const workGroup = [
-      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
-      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
-      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
-    ];
-
-    const workGroup1 = [
-      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
-      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
-      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
-    ];
-
-    const workGroup2 = [
-      [{ text: 'Work Group', colSpan: 2 }, '', 'I', 'A'],
-      [{ text: '01.01', alignment: 'left' }, { text: 'Literary Arts', alignment: 'left' }, 3, this.filledInCircle()],
-      [{ text: '01.02', alignment: 'left' }, { text: 'Visual Arts', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '03.04', alignment: 'left' }, { text: 'Elem Work: Plants/Animals', alignment: 'left' }, 3, this.openCircle()],
-      [{ text: '10.02', alignment: 'left' }, { text: 'Nursing, Therapy & Specialized', alignment: 'left' }, 3, this.filledInCircle()],
-    ];
-
-    const interestAreas = [
-      [{ text: 'Interest Area', style: 'tableHeader' }, { text: 'Definition', style: 'tableHeader' }, { text: 'Occupational Examples', style: 'tableHeader' }],
-      [{ text: '01 Artistic', alignment: 'left' }, { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts.', alignment: 'left' }, { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', alignment: 'left' }],
-      [{ text: '02 Scientific', alignment: 'left' }, { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.', alignment: 'left' }, { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', alignment: 'left' }],
-    ]
-
-    const aptitudes = [
-      [{ text: 'Aptitude', style: 'tableHeader' }, { text: 'Definition', style: 'tableHeader' }, { text: 'Specific Job Tasks', style: 'tableHeader' }, { text: 'CareerScope Tasks', style: 'tableHeader' }],
-      [{ text: 'General Learning\nG' }, {
-        stack: [
-          {
-            text: 'The ability to "catch on" or understand instructions and underlying principles; ability to reason and make judgements. Closely related to doing well in school.',
-            alignment: 'left'
-          }, {
-            text: 'Examples',
-            decoration: 'underline'
-          }, {
-            text: 'Use logic or scientific facts to define problems and draw conclusions; make decisions and judgements; plan and supervise the work of others.',
-            alignment: 'left'
-          }
-        ]
-      }, { text: 'Diagnose and treat illnesses or injuries; use facts to solve a crime; plan the layout of a computer network; inspect and test engine parts.', alignment: 'left' }, { text: 'Pattern Visualization, Numerical Reasoning, Word Meanings', alignment: 'left' }],
-    ]
-
 
     //const docDef = this.buildCounselorReport(interests);
-    const docDef = this.buildSummaryReport(interestsGraph, aptitudeResults, workGroup, workGroup1, workGroup2, interestAreas, aptitudes);
+    const docDef = this.buildSummaryReport(InterestsHalfGraphData, AptitudeHalfData, WorkGroup, WorkGroup2, WorkGroup3, InterestAreasKey, AptitudesKey);
 
     // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
