@@ -13,11 +13,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class SummaryComponent {
 
   generateSummary() {
-
-    //const docDef = this.buildCounselorReport(interests);
     const docDef = this.buildSummaryReport(InterestsHalfGraphData, AptitudeHalfData, WorkGroup, WorkGroup2, WorkGroup3, InterestAreasKey, AptitudesKey);
-
-    // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
   }
 

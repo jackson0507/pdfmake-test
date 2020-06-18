@@ -15,10 +15,7 @@ export class AppComponent {
 
   generatePdf() {
 
-    //const docDef = this.buildCounselorReport(interests);
     const docDef = this.buildAssesmentProfile(InterestsData, InterestsGraphData, PerformanceData, AptitudeData, RecData1, RecData2);
-
-    // The open command may need to be run from a component
     pdfMake.createPdf(docDef).open();
 
   }
