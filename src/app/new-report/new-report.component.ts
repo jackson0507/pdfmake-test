@@ -20,6 +20,49 @@ export class NewReportComponent {
   buildReport() {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
+      header: function (currentPage, pageCount) {
+        return [
+          {
+            columns: [
+              {
+                stack: [
+                  {
+                    text: "Assessment Profile Report",
+                    fontSize: 9,
+                    color: '#0F4C81'
+                  }, {
+                    text: "Carly Sims   5/18/20",
+                    fontSize: 9,
+                    margin: [0, 2.5, 0, 0],
+                    color: '#0F4C81'
+                  }
+                ],
+                alignment: 'center',
+                width: 125,
+              },
+              {
+                text: 'Pg ' + currentPage.toString(),
+                fontSize: 12,
+                alignment: 'center',
+                margin: [0, 5, 0, 0],
+                color: '#0F4C81'
+              }
+            ],
+            margin: [400, 20, 0, 0]
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 532, y1: -27,
+                x2: 532, y2: 3,
+                lineWidth: 1,
+                lineColor: '#0F4C81',
+              }
+            ]
+          }
+        ]
+      },
       footer: this.buildFooter(),
       content: [
         this.buildCover()
