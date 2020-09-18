@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { SummaryComponent } from './summary/summary.component';
 import { CounselorComponent } from './counselor/counselor.component';
 import { ChartsModule } from 'ng2-charts';
+import { NewReportComponent } from './new-report/new-report.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SummaryComponent,
-    CounselorComponent
+    CounselorComponent,
+    NewReportComponent
   ],
   imports: [
     BrowserModule,
