@@ -13,11 +13,19 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class NewReportComponent {
 
   generatePDFReport() {
-    const docDef = this.buildReport();
+    const tableOfContents = [
+      [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0]}, {text: 'Pg 3', color: '#0F4C81' }],
+      [{ text: 'Interest Inventory', color: '#0F4C81'}, {text: 'Pg 4', color: '#0F4C81' }],
+      [{ text: 'Aptitude Assessment', color: '#0F4C81'}, {text: 'Pg 7', color: '#0F4C81' }],
+      [{ text: 'Recommendations from the GOF/DOT', color: '#0F4C81'}, {text: 'Pg 10', color: '#0F4C81' }],
+      [{ text: 'Recommendations from the DOE', color: '#0F4C81'}, {text: 'Pg 15', color: '#0F4C81' }],
+    ];
+
+    const docDef = this.buildReport(tableOfContents);
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport() {
+  buildReport(tableOfContents: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -65,7 +73,8 @@ export class NewReportComponent {
       },
       footer: this.buildFooter(),
       content: [
-        this.buildCover()
+        this.buildCover(),
+        this.buildTableOfContents(tableOfContents)
       ]
     }
 
@@ -103,7 +112,8 @@ export class NewReportComponent {
       text: '5/18/20',
       fontSize: 20,
       alignment: 'center',
-      color: '#808080'
+      color: '#808080',
+      pageBreak: 'after'
     });
 
     return content;
@@ -127,5 +137,47 @@ export class NewReportComponent {
 
     return content;
 
+  }
+
+  buildTableOfContents(tableOfContents: any) {
+    var content = [];
+
+    content.push({
+      text: 'Table of Contents',
+      fontSize: 25,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 225, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 208, y: 6 }, { x: 222, y: 6 }, { x: 215, y: 12 }]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 30, 0, 0],
+      table: {
+        body: tableOfContents
+      },
+      layout: {
+				fillColor: function (rowIndex, node, columnIndex) {
+					return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
+        },
+        defaultBorder: false
+			}
+    })
+
+    return content;
   }
 }
