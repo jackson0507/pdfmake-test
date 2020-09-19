@@ -15,9 +15,27 @@ export class NewReportComponent {
   generatePDFReport() {
     const tableOfContents = [
       [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0]}, {text: 'Pg 3', color: '#0F4C81' }],
-      [{ text: 'Interest Inventory', color: '#0F4C81'}, {text: 'Pg 4', color: '#0F4C81' }],
-      [{ text: 'Aptitude Assessment', color: '#0F4C81'}, {text: 'Pg 7', color: '#0F4C81' }],
-      [{ text: 'Recommendations from the GOF/DOT', color: '#0F4C81'}, {text: 'Pg 10', color: '#0F4C81' }],
+      [{ stack: [
+        { text: 'Interest Inventory', color: '#0F4C81', margin: [0, 0, 0, 5] },
+        { text: '   Interest Scores', color: '#0F4C81', preserveLeadingSpaces: true},
+        { text: '   Individual Profile Analysis', color: '#0F4C81', preserveLeadingSpaces: true},
+      ]},
+      { stack: [
+        { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
+        { text: 'Pg 5', color: '#0F4C81' },
+        { text: 'Pg 6', color: '#0F4C81' },
+      ]}],
+      [{ stack: [
+        { text: 'Aptitude Assessment', color: '#0F4C81', margin: [0, 0, 0, 5] },
+        { text: '   Performance on tasks', color: '#0F4C81', preserveLeadingSpaces: true},
+        { text: '   Aptitude Profile', color: '#0F4C81', preserveLeadingSpaces: true},
+      ]},
+      { stack: [
+        { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
+        { text: 'Pg 5', color: '#0F4C81' },
+        { text: 'Pg 6', color: '#0F4C81' },
+      ]}],
+      [{ text: 'Recommendations from the GOE/DOT', color: '#0F4C81'}, {text: 'Pg 10', color: '#0F4C81' }],
       [{ text: 'Recommendations from the DOE', color: '#0F4C81'}, {text: 'Pg 15', color: '#0F4C81' }],
     ];
 
@@ -174,7 +192,9 @@ export class NewReportComponent {
 				fillColor: function (rowIndex, node, columnIndex) {
 					return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
         },
-        defaultBorder: false
+        defaultBorder: false,
+        paddingTop: function(i, node) { return 5; },
+        paddingBottom: function(i, node) { return 5; },
 			}
     })
 
