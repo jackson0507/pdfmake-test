@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { careerScopeLogoSVG } from '../svg';
 
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -97,19 +97,7 @@ export class NewReportComponent {
           }
         ]
       },
-      footer: [
-        this.buildFooter(),
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: -40, y1: 6,
-              x2: 400, y2: 6,
-              lineWidth: 3,
-              lineColor: '#0F4C81',
-            },
-          ]
-        }],
+      footer: this.buildFooter(),
       content: [
         this.buildCover(),
         this.buildTableOfContents(tableOfContents),
@@ -161,15 +149,27 @@ export class NewReportComponent {
   buildFooter() {
     var content = [];
 
+
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 30,
+          x2: 700, y2: 30,
+          lineWidth: 4,
+          lineColor: '#0F4C81',
+        }
+      ]
+    });
     content.push({
       columns: [
         {
           width: 'auto',
           svg: careerScopeLogoSVG,
           fit: [100, 100],
-          margin: [20, 40, 0, 0]
+          margin: [20, 10, 0, 0]
         }, {
-          text: 'Copyright © 2020 Vocational Research Institute', alignment: 'right', margin: [15, 50], color: '#0F4C81'
+          text: 'Copyright © 2020 Vocational Research Institute', alignment: 'right', margin: [15, 20], color: '#0F4C81'
         }
       ]
     });
