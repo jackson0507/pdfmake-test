@@ -265,6 +265,88 @@ export class NewReportComponent {
         }
       ]
     });
+    content.push(
+      { text: 'Audio Instructions', fontSize: 12, margin: [0, 60, 0, 12.5] },
+      { text: 'Audio delivery enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
+      { text: 'Yes', fontSize: 10, color: '#0F4C81' }
+    );
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -20, y1: 10,
+          x2: 300, y2: 10,
+          lineWidth: 1,
+          lineColor: '#F0F0F0',
+        },
+      ]
+    });
+    content.push(
+      { text: 'Default Language', fontSize: 12, margin: [0, 10, 0, 12.5] },
+      { text: 'What was the default delivery language?', fontSize: 10, margin: [0, 0, 0, 7.25] },
+      { text: 'English', fontSize: 10, color: '#0F4C81' }
+    );
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -20, y1: 10,
+          x2: 300, y2: 10,
+          lineWidth: 1,
+          lineColor: '#F0F0F0',
+        },
+      ]
+    });
+    content.push(
+      { text: 'Assessment Untiming', fontSize: 12, margin: [0, 10, 0, 12.5] },
+      { text: 'Was untimed delivery enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
+      { text: 'No', fontSize: 10, color: '#0F4C81' }
+    );
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -20, y1: 10,
+          x2: 500, y2: 10,
+          lineWidth: 1,
+          lineColor: '#F0F0F0',
+        },
+      ]
+    });
+    content.push({
+      columns: [
+        {
+          stack: [
+            { text: 'Introduction', fontSize: 12, margin: [0, 10, 0, 12.5] },
+            { text: 'Was the introduction video enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
+            { text: 'No', fontSize: 10, color: '#0F4C81' }
+          ]
+        },
+        {
+          stack: [
+            { text: 'Were closed captions enabled?', fontSize: 10, margin: [0, 36.5, 0, 7.25] },
+            { text: 'No', fontSize: 10, color: '#0F4C81' }
+          ]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 200, 0, 0],
+      table: {
+        widths: [150],
+        body: [
+          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
+        ]
+      },
+      layout: {
+        fillColor: '#F0F0F0',
+        defaultBorder: false,
+        paddingTop: function (i, node) { return 12; },
+        paddingBottom: function (i, node) { return 12; },
+        paddingLeft: function (i, node) { return 10; },
+        paddingRight: function (i, node) { return 2; },
+      },
+    });
 
     return content;
   }
