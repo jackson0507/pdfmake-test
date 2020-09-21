@@ -47,11 +47,30 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    const docDef = this.buildReport(tableOfContents);
+    const interestInventoryTable = [
+      [
+        {
+          stack: [
+            { text: 'Artistic', fontSize: 12, margin: [0, 0, 0, 15] },
+            { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', color: '#0F4C81', fontSize: 10 }
+          ]
+        },
+        {
+          stack: [
+            { text: 'Scientific', fontSize: 12, margin: [0, 0, 0, 15] },
+            { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', color: '#0F4C81', fontSize: 10 }
+          ]
+        }
+      ]
+    ];
+
+    const docDef = this.buildReport(tableOfContents, interestInventoryTable);
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any) {
+  buildReport(tableOfContents: any, interestInventoryTable: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -101,7 +120,8 @@ export class NewReportComponent {
       content: [
         this.buildCover(),
         this.buildTableOfContents(tableOfContents),
-        this.buildAssessmentSettings()
+        this.buildAssessmentSettings(),
+        this.buildInterestInventory(interestInventoryTable),
       ]
     }
 
@@ -347,6 +367,57 @@ export class NewReportComponent {
         paddingRight: function (i, node) { return 2; },
       },
     });
+
+    return content;
+  }
+
+  buildInterestInventory(interestInventoryTable: any) {
+    var content = [];
+
+    content.push({
+      text: 'Interest Inventory',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 40, 0, 0],
+      columns: [
+        {
+          stack: [
+            { text: 'Introduction', fontSize: 12, margin: [0, 0, 0, 10] },
+            { text: 'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy!', fontSize: 10 }
+          ]
+        },
+        { text: 'JOB BOARD 2 PICTURE ', fontSize: 40 }
+      ]
+    });
+    content.push({
+      margin: [0, 30, 0, 0],
+      table: {
+        body: interestInventoryTable
+      },
+      layout: {
+        defaultBorder: false,
+      }
+    })
 
     return content;
   }
