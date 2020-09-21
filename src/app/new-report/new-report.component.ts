@@ -14,29 +14,37 @@ export class NewReportComponent {
 
   generatePDFReport() {
     const tableOfContents = [
-      [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0]}, {text: 'Pg 3', color: '#0F4C81' }],
-      [{ stack: [
-        { text: 'Interest Inventory', color: '#0F4C81', margin: [0, 0, 0, 5] },
-        { text: '   Interest Scores', color: '#0F4C81', preserveLeadingSpaces: true},
-        { text: '   Individual Profile Analysis', color: '#0F4C81', preserveLeadingSpaces: true},
-      ]},
-      { stack: [
-        { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
-        { text: 'Pg 5', color: '#0F4C81' },
-        { text: 'Pg 6', color: '#0F4C81' },
-      ]}],
-      [{ stack: [
-        { text: 'Aptitude Assessment', color: '#0F4C81', margin: [0, 0, 0, 5] },
-        { text: '   Performance on tasks', color: '#0F4C81', preserveLeadingSpaces: true},
-        { text: '   Aptitude Profile', color: '#0F4C81', preserveLeadingSpaces: true},
-      ]},
-      { stack: [
-        { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
-        { text: 'Pg 5', color: '#0F4C81' },
-        { text: 'Pg 6', color: '#0F4C81' },
-      ]}],
-      [{ text: 'Recommendations from the GOE/DOT', color: '#0F4C81'}, {text: 'Pg 10', color: '#0F4C81' }],
-      [{ text: 'Recommendations from the DOE', color: '#0F4C81'}, {text: 'Pg 15', color: '#0F4C81' }],
+      [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0] }, { text: 'Pg 3', color: '#0F4C81' }],
+      [{
+        stack: [
+          { text: 'Interest Inventory', color: '#0F4C81', margin: [0, 0, 0, 5] },
+          { text: '   Interest Scores', color: '#0F4C81', preserveLeadingSpaces: true },
+          { text: '   Individual Profile Analysis', color: '#0F4C81', preserveLeadingSpaces: true },
+        ]
+      },
+      {
+        stack: [
+          { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
+          { text: 'Pg 5', color: '#0F4C81' },
+          { text: 'Pg 6', color: '#0F4C81' },
+        ]
+      }],
+      [{
+        stack: [
+          { text: 'Aptitude Assessment', color: '#0F4C81', margin: [0, 0, 0, 5] },
+          { text: '   Performance on tasks', color: '#0F4C81', preserveLeadingSpaces: true },
+          { text: '   Aptitude Profile', color: '#0F4C81', preserveLeadingSpaces: true },
+        ]
+      },
+      {
+        stack: [
+          { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
+          { text: 'Pg 5', color: '#0F4C81' },
+          { text: 'Pg 6', color: '#0F4C81' },
+        ]
+      }],
+      [{ text: 'Recommendations from the GOE/DOT', color: '#0F4C81' }, { text: 'Pg 10', color: '#0F4C81' }],
+      [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
     const docDef = this.buildReport(tableOfContents);
@@ -89,10 +97,23 @@ export class NewReportComponent {
           }
         ]
       },
-      footer: this.buildFooter(),
+      footer: [
+        this.buildFooter(),
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: -40, y1: 6,
+              x2: 400, y2: 6,
+              lineWidth: 3,
+              lineColor: '#0F4C81',
+            },
+          ]
+        }],
       content: [
         this.buildCover(),
-        this.buildTableOfContents(tableOfContents)
+        this.buildTableOfContents(tableOfContents),
+        this.buildAssessmentSettings()
       ]
     }
 
@@ -148,10 +169,10 @@ export class NewReportComponent {
           fit: [100, 100],
           margin: [20, 40, 0, 0]
         }, {
-          text: 'Copyright © 2020 Vocational Research Institute', alignment: 'right', margin: [15, 50]
+          text: 'Copyright © 2020 Vocational Research Institute', alignment: 'right', margin: [15, 50], color: '#0F4C81'
         }
       ]
-    })
+    });
 
     return content;
 
@@ -162,7 +183,7 @@ export class NewReportComponent {
 
     content.push({
       text: 'Table of Contents',
-      fontSize: 25,
+      fontSize: 23,
       color: '#0F4C81'
     });
     content.push({
@@ -170,7 +191,7 @@ export class NewReportComponent {
         {
           type: 'line',
           x1: -40, y1: 6,
-          x2: 225, y2: 6,
+          x2: 240, y2: 6,
           lineWidth: 3,
           lineColor: '#0F4C81',
         },
@@ -179,7 +200,7 @@ export class NewReportComponent {
           lineWidth: 2,
           color: '#0F4C81',
           closePath: true,
-          points: [{ x: 208, y: 6 }, { x: 222, y: 6 }, { x: 215, y: 12 }]
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
         }
       ]
     });
@@ -189,14 +210,61 @@ export class NewReportComponent {
         body: tableOfContents
       },
       layout: {
-				fillColor: function (rowIndex, node, columnIndex) {
-					return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
+        fillColor: function (rowIndex, node, columnIndex) {
+          return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
         },
         defaultBorder: false,
-        paddingTop: function(i, node) { return 5; },
-        paddingBottom: function(i, node) { return 5; },
-			}
-    })
+        paddingTop: function (i, node) { return 5; },
+        paddingBottom: function (i, node) { return 5; },
+      }
+    });
+    content.push({
+      margin: [0, 325, 0, 0],
+      table: {
+        widths: [150],
+        body: [
+          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
+        ]
+      },
+      layout: {
+        fillColor: '#F0F0F0',
+        defaultBorder: false,
+        paddingTop: function (i, node) { return 12; },
+        paddingBottom: function (i, node) { return 12; },
+        paddingLeft: function (i, node) { return 10; },
+        paddingRight: function (i, node) { return 2; },
+      },
+    });
+
+    return content;
+  }
+
+  buildAssessmentSettings() {
+    var content = [];
+
+    content.push({
+      text: 'Assessment Settings',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
 
     return content;
   }
