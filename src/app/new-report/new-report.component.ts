@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { careerScopeLogoSVG } from '../svg';
+import { careerScopeLogoSVG, artisticIcon, scientificIcon } from '../svg';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -50,27 +50,85 @@ export class NewReportComponent {
     const interestInventoryTable = [
       [
         {
-          stack: [
-            { text: 'Artistic', fontSize: 12, margin: [0, 0, 0, 15] },
-            { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts', fontSize: 10, margin: [0, 0, 0, 10] },
-            { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', color: '#0F4C81', fontSize: 10 }
+          columns: [
+            { svg: artisticIcon, width: 50 },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: 'Artistic', fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts', fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', color: '#0F4C81', fontSize: 10 }
+              ]
+            }
           ]
         },
         {
-          stack: [
-            { text: 'Scientific', fontSize: 12, margin: [0, 0, 0, 15] },
-            { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research', fontSize: 10, margin: [0, 0, 0, 10] },
-            { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', color: '#0F4C81', fontSize: 10 }
+          columns: [
+            { svg: scientificIcon, width: 50 },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: 'Scientific', fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research', fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', color: '#0F4C81', fontSize: 10 }
+              ]
+            }
           ]
-        }
+        },
       ]
     ];
 
-    const docDef = this.buildReport(tableOfContents, interestInventoryTable);
+    const IPAGraphs = [
+      [{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }],
+      [{ svg: artisticIcon, width: 25 }, { text: 'Artistic', alignment: 'left' }, 71, this.buildIPAGraphLine(71, '#FF69B4')],
+      [{ svg: scientificIcon, width: 25 }, { text: 'Scientific', alignment: 'left' }, 32, this.buildIPAGraphLine(32, '#90ee90')],
+      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, 71],
+      ['04', { text: 'Protective', alignment: 'left' }, 52, 71],
+      ['05', { text: 'Mechanical', alignment: 'left' }, 24, 71],
+      ['06', { text: 'Industrial', alignment: 'left' }, 71, 71],
+      ['07', { text: 'Business Detail', alignment: 'left' }, 10, 71],
+      ['08', { text: 'Selling', alignment: 'left' }, 91, 71],
+      ['09', { text: 'Accomodating', alignment: 'left' }, 24, 71],
+      ['10', { text: 'Humanitarian', alignment: 'left' }, 4, 71],
+      ['11', { text: 'Influencing', alignment: 'left' }, 51, 71],
+      ['12', { text: 'Physical Performing', alignment: 'left' }, 71, 71]
+    ];
+
+    const docDef = this.buildReport(tableOfContents, interestInventoryTable, IPAGraphs);
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any, interestInventoryTable: any) {
+  buildIPAGraphLine(width: any, color: any) {
+    var content = {
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: 250, y2: 7,
+          lineWidth: 15,
+          lineColor: '#F0F0F0',
+        },
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: (width * 2), y2: 7,
+          lineWidth: 15,
+          lineColor: color,
+        },
+        {
+          type: 'line',
+          x1: 104, y1: -15,
+          x2: 104, y2: 25,
+          lineWidth: 1,
+          lineColor: 'black'
+        }
+      ], alignment: 'left'
+    };
+
+    return content;
+  }
+
+  buildReport(tableOfContents: any, interestInventoryTable: any, IPAGraphs: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -122,6 +180,7 @@ export class NewReportComponent {
         this.buildTableOfContents(tableOfContents),
         this.buildAssessmentSettings(),
         this.buildInterestInventory(interestInventoryTable),
+        this.buildIndividualProfileAnalysis(IPAGraphs)
       ]
     }
 
@@ -416,8 +475,72 @@ export class NewReportComponent {
       },
       layout: {
         defaultBorder: false,
-      }
-    })
+      },
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
+  buildIndividualProfileAnalysis(IPAGraphs: any) {
+    var content = [];
+    content.push({
+      text: 'Interest Inventory',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 40, 0, 0],
+      columns: [
+        {
+          width: 350,
+          stack: [
+            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10] },
+            { text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas.', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'The dark vertical line in the chart is your average percentage of “LIKE” responses (XX%) across all twelve Interest Areas.', fontSize: 10 },
+          ]
+        },
+        { text: 'JOB BOARD 2 PICTURE ', fontSize: 40 }
+      ]
+    });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              IPAGraphs
+          },
+          layout: {
+            defaultBorder: false,
+            paddingTop: function (i, node) { return 5; },
+            paddingBottom: function (i, node) { return 5; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
+          }
+        },
+        { width: '*', text: '' },
+      ]
+    });
 
     return content;
   }
