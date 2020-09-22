@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { careerScopeLogoSVG, artisticIcon, scientificIcon } from '../svg';
+import { interests } from '../populateInterests';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -12,7 +13,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class NewReportComponent {
 
+  interestInventoryTable: any = [];
+  IPATable: any = [];
+
   generatePDFReport() {
+
     const tableOfContents = [
       [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0] }, { text: 'Pg 3', color: '#0F4C81' }],
       [{
@@ -47,16 +52,25 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    const interestInventoryTable = [
-      [
+    this.populateInterestInventoryTable();
+    this.populateIPAGraph();
+
+    const docDef = this.buildReport(tableOfContents);
+    pdfMake.createPdf(docDef).open();
+  }
+
+  populateInterestInventoryTable() {
+    var i;
+    for (i = 0; i < interests.length; i += 2) {
+      this.interestInventoryTable.push([
         {
           columns: [
-            { svg: artisticIcon, width: 50 },
+            { svg: interests[i].svgLogo, width: 50 },
             {
               margin: [5, 0],
               stack: [
-                { text: 'Artistic', fontSize: 12, margin: [0, 15, 0, 15] },
-                { text: 'An interest in creative expression of feeling or ideas through literary arts, visual arts, performing arts, or crafts', fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i].name, fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
                 { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', color: '#0F4C81', fontSize: 10 }
               ]
             }
@@ -64,42 +78,32 @@ export class NewReportComponent {
         },
         {
           columns: [
-            { svg: scientificIcon, width: 50 },
+            { svg: interests[i + 1].svgLogo, width: 50 },
             {
               margin: [5, 0],
               stack: [
-                { text: 'Scientific', fontSize: 12, margin: [0, 15, 0, 15] },
-                { text: 'An interest in discovering, collecting, and analyzing information about the natural world and applying scientific research', fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i + 1].name, fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
                 { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', color: '#0F4C81', fontSize: 10 }
               ]
             }
           ]
         },
-      ]
-    ];
+      ]);
+    }
+  }
 
-    const IPAGraphs = [
-      [{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }],
-      [{ svg: artisticIcon, width: 25 }, { text: 'Artistic', alignment: 'left' }, 71, this.buildIPAGraphLine(71, '#FF69B4')],
-      [{ svg: scientificIcon, width: 25 }, { text: 'Scientific', alignment: 'left' }, 32, this.buildIPAGraphLine(32, '#90ee90')],
-      ['03', { text: 'Plants/Animals', alignment: 'left' }, 0, 71],
-      ['04', { text: 'Protective', alignment: 'left' }, 52, 71],
-      ['05', { text: 'Mechanical', alignment: 'left' }, 24, 71],
-      ['06', { text: 'Industrial', alignment: 'left' }, 71, 71],
-      ['07', { text: 'Business Detail', alignment: 'left' }, 10, 71],
-      ['08', { text: 'Selling', alignment: 'left' }, 91, 71],
-      ['09', { text: 'Accomodating', alignment: 'left' }, 24, 71],
-      ['10', { text: 'Humanitarian', alignment: 'left' }, 4, 71],
-      ['11', { text: 'Influencing', alignment: 'left' }, 51, 71],
-      ['12', { text: 'Physical Performing', alignment: 'left' }, 71, 71]
-    ];
-
-    const docDef = this.buildReport(tableOfContents, interestInventoryTable, IPAGraphs);
-    pdfMake.createPdf(docDef).open();
+  populateIPAGraph() {
+    this.IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
+    interests.forEach(i => {
+      this.IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left' }, i.plikes, this.buildIPAGraphLine(i.plikes, i.color)]);
+    });
   }
 
   buildIPAGraphLine(width: any, color: any) {
-    var content = {
+    var content = [];
+
+    content.push({
       canvas: [
         {
           type: 'line',
@@ -111,7 +115,7 @@ export class NewReportComponent {
         {
           type: 'line',
           x1: 0, y1: 7,
-          x2: (width * 2), y2: 7,
+          x2: (width * 2.5), y2: 7,
           lineWidth: 15,
           lineColor: color,
         },
@@ -121,14 +125,14 @@ export class NewReportComponent {
           x2: 104, y2: 25,
           lineWidth: 1,
           lineColor: 'black'
-        }
+        },
       ], alignment: 'left'
-    };
+    });
 
     return content;
   }
 
-  buildReport(tableOfContents: any, interestInventoryTable: any, IPAGraphs: any) {
+  buildReport(tableOfContents: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -179,8 +183,8 @@ export class NewReportComponent {
         this.buildCover(),
         this.buildTableOfContents(tableOfContents),
         this.buildAssessmentSettings(),
-        this.buildInterestInventory(interestInventoryTable),
-        this.buildIndividualProfileAnalysis(IPAGraphs)
+        this.buildInterestInventory(),
+        this.buildIndividualProfileAnalysis()
       ]
     }
 
@@ -430,7 +434,7 @@ export class NewReportComponent {
     return content;
   }
 
-  buildInterestInventory(interestInventoryTable: any) {
+  buildInterestInventory() {
     var content = [];
 
     content.push({
@@ -471,7 +475,7 @@ export class NewReportComponent {
     content.push({
       margin: [0, 30, 0, 0],
       table: {
-        body: interestInventoryTable
+        body: this.interestInventoryTable
       },
       layout: {
         defaultBorder: false,
@@ -482,7 +486,7 @@ export class NewReportComponent {
     return content;
   }
 
-  buildIndividualProfileAnalysis(IPAGraphs: any) {
+  buildIndividualProfileAnalysis() {
     var content = [];
     content.push({
       text: 'Interest Inventory',
@@ -528,7 +532,7 @@ export class NewReportComponent {
           width: 'auto',
           table: {
             body:
-              IPAGraphs
+              this.IPATable
           },
           layout: {
             defaultBorder: false,
