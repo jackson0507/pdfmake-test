@@ -13,7 +13,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class NewReportComponent {
 
-  interestInventoryTable: any = [];
+  interestInventoryTable1: any = [];
+  interestInventoryTable2: any = [];
   IPATable: any = [];
 
   generatePDFReport() {
@@ -52,39 +53,40 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    this.populateInterestInventoryTable();
+    this.populateInterestInventoryTable1();
+    this.populateInterestInventoryTable2();
     this.populateIPAGraph();
 
     const docDef = this.buildReport(tableOfContents);
     pdfMake.createPdf(docDef).open();
   }
 
-  populateInterestInventoryTable() {
+  populateInterestInventoryTable1() {
     var i;
-    for (i = 0; i < interests.length; i += 2) {
-      this.interestInventoryTable.push([
+    for (i = 0; i < interests.length / 2; i += 2) {
+      this.interestInventoryTable1.push([
         {
           columns: [
-            { svg: interests[i].svgLogo, width: 50 },
+            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
             {
               margin: [5, 0],
               stack: [
-                { text: interests[i].name, fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
                 { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer', color: '#0F4C81', fontSize: 10 }
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
               ]
             }
           ]
         },
         {
           columns: [
-            { svg: interests[i + 1].svgLogo, width: 50 },
+            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
             {
               margin: [5, 0],
               stack: [
-                { text: interests[i + 1].name, fontSize: 12, margin: [0, 15, 0, 15] },
+                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
                 { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician', color: '#0F4C81', fontSize: 10 }
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
               ]
             }
           ]
@@ -92,6 +94,42 @@ export class NewReportComponent {
       ]);
     }
   }
+
+  populateInterestInventoryTable2() {
+    var i;
+    for (i = interests.length / 2; i < interests.length; i += 2) {
+      this.interestInventoryTable2.push([
+        {
+          columns: [
+            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+      ]);
+    }
+  }
+
+
 
   populateIPAGraph() {
     this.IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
@@ -475,7 +513,40 @@ export class NewReportComponent {
     content.push({
       margin: [0, 30, 0, 0],
       table: {
-        body: this.interestInventoryTable
+        body: this.interestInventoryTable1
+      },
+      layout: {
+        defaultBorder: false,
+      },
+      pageBreak: 'after'
+    });
+    content.push({
+      text: 'Interest Inventory',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 30, 0, 0],
+      table: {
+        body: this.interestInventoryTable2
       },
       layout: {
         defaultBorder: false,

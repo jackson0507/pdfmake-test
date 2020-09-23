@@ -2,6 +2,7 @@ export interface Interest {
     interestCategory: 'Art' | 'Sci' | 'Pla' | 'Prt' | 'Mch' | 'Ind' | 'Bus' | 'Sel' | 'Acc' | 'Hum' | 'Ldi' | 'Phy';
     name: string;
     description: string;
+    exampleProfessions: string;
     color: string;
     svgLogo: string;
     scoring: InterestScorePercentiles[];

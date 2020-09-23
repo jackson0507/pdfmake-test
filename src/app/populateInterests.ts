@@ -7,6 +7,7 @@ export const interests: Interest[] = [
         interestCategory: 'Art',
         name: 'Artistic',
         description: 'An interest in the creative expression of feelings or ideas.',
+        exampleProfessions: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer',
         color: '#ee509c',
         svgLogo: artisticIcon,
         scoring: [{
@@ -19,6 +20,7 @@ export const interests: Interest[] = [
         interestCategory: 'Sci',
         name: 'Scientific',
         description: 'An interest in discovering, collecting, and analyzing information about the natural world, and in applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.',
+        exampleProfessions: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician',
         color: '#82c55b',
         svgLogo: scientificIcon,
         scoring: [{
@@ -31,6 +33,7 @@ export const interests: Interest[] = [
         interestCategory: 'Pla',
         name: 'Plants/Animals',
         description: 'An interest in working with plants and animals, usually outdoors.',
+        exampleProfessions: 'Gardener, Animal Groomer, Landscaper, Forester, Animal Caretaker',
         color: '#00a88e',
         svgLogo: plantsIcon,
         scoring: [{
@@ -43,6 +46,7 @@ export const interests: Interest[] = [
         interestCategory: 'Prt',
         name: 'Protective',
         description: 'An interest in using authority to protect people and property.',
+        exampleProfessions: 'Police Officer, Private Investigator, Security Guard, Bodyguard, Park Ranger, Correctional Officer',
         color: '#2b3c73',
         svgLogo: protectIcon,
         scoring: [{
@@ -55,6 +59,7 @@ export const interests: Interest[] = [
         interestCategory: 'Mch',
         name: 'Mechanical',
         description: 'An interest in applying mechanical principles to practical situations by use of machines or hand tools.',
+        exampleProfessions: 'Electrical Engineer, Architect, Carpenter, Chef, Mechanic, Ambulance Driver, Project Engineer, Computer Equipment Repairer',
         color: '#9676b5',
         svgLogo: mechanicalIcon,
         scoring: [{
@@ -67,6 +72,7 @@ export const interests: Interest[] = [
         interestCategory: 'Ind',
         name: 'Industrial',
         description: 'An interest in repetitive, concrete, organized activities done in a factory setting.',
+        exampleProfessions: 'Machinist, Dry Cleaner, Baker, Welder, Laborer, Lathe Operator, Hand Packager',
         color: '#9aa2ae',
         svgLogo: industrialIcon,
         scoring: [{
@@ -79,6 +85,7 @@ export const interests: Interest[] = [
         interestCategory: 'Bus',
         name: 'Business Detail',
         description: 'An interest in organized, clearly defined activities requiring accuracy and attention to details, primarily in an office setting.',
+        exampleProfessions: 'Bill Collector, Secretary, Receptionist, Customer Service Representative, Health Information Technician',
         color: '#006fba',
         svgLogo: businessIcon,
         scoring: [{
@@ -91,6 +98,7 @@ export const interests: Interest[] = [
         interestCategory: 'Sel',
         name: 'Selling',
         description: 'An interest in bringing others to a particular point of view by personal persuasion, using sales and promotional techniques.',
+        exampleProfessions: 'Sales Representative, Stadium Vendor, Clothing Salesperson, Telephone Solicitor, Financial Planner',
         color: '#005c27',
         svgLogo: sellingIcon,
         scoring: [{
@@ -103,6 +111,7 @@ export const interests: Interest[] = [
         interestCategory: 'Acc',
         name: 'Accommodating',
         description: 'An interest in catering to the wishes and needs of others, usually on a one-to-one basis.',
+        exampleProfessions: 'Manicurist, Restaurant Host, Waiter, Waitress, Personal Shopper, Flight Attendant',
         color: '#7d002e',
         svgLogo: accommodatingIcon,
         scoring: [{
@@ -115,6 +124,7 @@ export const interests: Interest[] = [
         interestCategory: 'Hum',
         name: 'Humanitarian',
         description: 'An interest in helping others with their mental, spiritual, social, physical, or vocational needs.',
+        exampleProfessions: 'Home Care Aide, Physical Therapist, Nurse, Medical Assistant, Child Care Worker, Dental Hygienist, Counselor, Probation Officer',
         color: '#69489d',
         svgLogo: humanitarianIcon,
         scoring: [{
@@ -127,6 +137,7 @@ export const interests: Interest[] = [
         interestCategory: 'Ldi',
         name: 'Leading/Influencing',
         description: 'An interest in leading and influencing others by using high-level verbal or numerical abilities.',
+        exampleProfessions: 'Database Administrator, Paralegal, Teacher, Computer Engineer, Lawyer, Stock Broker, Computer Programmer',
         color: '#deb407',
         svgLogo: leadingIcon,
         scoring: [{
@@ -138,7 +149,8 @@ export const interests: Interest[] = [
     {
         interestCategory: 'Phy',
         name: 'Physical Performing',
-        description: ' ',
+        description: 'An interest in physical activities performed before an audience, such as sports or daring physical feats.',
+        exampleProfessions: 'Athlete, Coach, Movie Stunt Performer, Juggler, Sports Instructor',
         color: '#00aeef',
         svgLogo: physicalIcon,
         scoring: [{
