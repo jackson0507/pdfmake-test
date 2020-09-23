@@ -15,6 +15,7 @@ export class NewReportComponent {
 
   interestInventoryTable1: any = [];
   interestInventoryTable2: any = [];
+  interestTable: any = [];
   IPATable: any = [];
 
   generatePDFReport() {
@@ -55,6 +56,7 @@ export class NewReportComponent {
 
     this.populateInterestInventoryTable1();
     this.populateInterestInventoryTable2();
+    this.populateInterestTable();
     this.populateIPAGraph();
 
     const docDef = this.buildReport(tableOfContents);
@@ -129,7 +131,13 @@ export class NewReportComponent {
     }
   }
 
-
+  populateInterestTable() {
+    this.interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center' }, '', '', 'Percent', 'Result']);
+    this.interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total' }, { text: 'Male' }, { text: 'Female' }, { text: 'Like' }, { text: 'IPA' }]);
+    interests.forEach(i => {
+      this.interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2]);
+    });
+  }
 
   populateIPAGraph() {
     this.IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
@@ -222,6 +230,7 @@ export class NewReportComponent {
         this.buildTableOfContents(tableOfContents),
         this.buildAssessmentSettings(),
         this.buildInterestInventory(),
+        this.buildInterestAreaScores(),
         this.buildIndividualProfileAnalysis()
       ]
     }
@@ -551,6 +560,76 @@ export class NewReportComponent {
       layout: {
         defaultBorder: false,
       },
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
+  buildInterestAreaScores() {
+    var content = [];
+
+    content.push({
+      text: 'Interest Inventory',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({
+      margin: [0, 40, 0, 0],
+      columns: [
+        {
+          width: 400,
+          stack: [
+            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10] },
+            { text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below.', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group.', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.', fontSize: 10, margin: [0, 0, 0, 10] },
+          ]
+        }
+      ]
+    });
+    content.push({ text: 'My Top Interest', fontSize: 12 });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              this.interestTable
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (columnIndex === 9) ? '#F0F0F0' : null;
+            },
+            defaultBorder: false,
+            paddingTop: function (i, node) { return 5; },
+            paddingBottom: function (i, node) { return 5; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
+          }
+        },
+        { width: '*', text: '' },
+      ],
       pageBreak: 'after'
     });
 
