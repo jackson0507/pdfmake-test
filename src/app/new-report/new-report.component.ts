@@ -17,6 +17,7 @@ export class NewReportComponent {
   interestInventoryTable2: any = [];
   interestTable: any = [];
   IPATable: any = [];
+  tablesPopulated: boolean = false;
 
   generatePDFReport() {
 
@@ -54,10 +55,13 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    this.populateInterestInventoryTable1();
-    this.populateInterestInventoryTable2();
-    this.populateInterestTable();
-    this.populateIPAGraph();
+    if (!this.tablesPopulated) {
+      this.populateInterestInventoryTable1();
+      this.populateInterestInventoryTable2();
+      this.populateInterestTable();
+      this.populateIPAGraph();
+      this.tablesPopulated = true;
+    }
 
     const docDef = this.buildReport(tableOfContents);
     pdfMake.createPdf(docDef).open();
@@ -132,10 +136,10 @@ export class NewReportComponent {
   }
 
   populateInterestTable() {
-    this.interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center' }, '', '', 'Percent', 'Result']);
-    this.interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total' }, { text: 'Male' }, { text: 'Female' }, { text: 'Like' }, { text: 'IPA' }]);
+    this.interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false] }, '', '', 'Percent', 'Result']);
+    this.interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total', border: [true, false, false, false] }, { text: 'Male' }, { text: 'Female', border: [false, false, true, false] }, { text: 'Like' }, { text: 'IPA' }]);
     interests.forEach(i => {
-      this.interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, 84, 86, 83, 71, 2]);
+      this.interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, { text: '84', border: [true, false, false, false] }, 86, { text: '83', border: [false, false, true, false] }, 71, 2]);
     });
   }
 
@@ -622,6 +626,12 @@ export class NewReportComponent {
               return (columnIndex === 9) ? '#F0F0F0' : null;
             },
             defaultBorder: false,
+            hLineColor: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
+            },
             paddingTop: function (i, node) { return 5; },
             paddingBottom: function (i, node) { return 5; },
             paddingLeft: function (i, node) { return 5; },
