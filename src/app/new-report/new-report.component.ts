@@ -13,12 +13,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class NewReportComponent {
 
-  interestInventoryTable1: any = [];
-  interestInventoryTable2: any = [];
-  interestTable: any = [];
-  IPATable: any = [];
-  tablesPopulated: boolean = false;
-
   generatePDFReport() {
 
     const tableOfContents = [
@@ -55,134 +49,68 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    if (!this.tablesPopulated) {
-      this.populateInterestInventoryTable1();
-      this.populateInterestInventoryTable2();
-      this.populateInterestTable();
-      this.populateIPAGraph();
-      this.tablesPopulated = true;
-    }
+    const interestGOETable = [
+      [
+        {
+          stack: [
+            { svg: artisticIcon, width: 25 },
+            { text: 'The GOE identifies this as Interest Area 01.', fontSize: 10, margin: [30, 7, 0, 3] },
+            { text: '6 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 12.5, y1: -23,
+                  x2: 25, y2: -23,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0',
+                },
+                {
+                  type: 'line',
+                  x1: 12.5, y1: -53,
+                  x2: 12.5, y2: -23,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0',
+                },
+              ]
+            }
+          ]
+        },
+        {
+          stack: [
+            { svg: scientificIcon, width: 25 },
+            { text: 'The GOE identifies this as Interest Area 03.', fontSize: 10, margin: [30, 7, 0, 3] },
+            { text: '3 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 12.5, y1: -23,
+                  x2: 25, y2: -23,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0',
+                },
+                {
+                  type: 'line',
+                  x1: 12.5, y1: -53,
+                  x2: 12.5, y2: -23,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0',
+                },
+              ]
+            }
+          ]
+        },
+      ]
+    ];
 
-    const docDef = this.buildReport(tableOfContents);
+    const docDef = this.buildReport(tableOfContents, interestGOETable);
     pdfMake.createPdf(docDef).open();
   }
 
-  populateInterestInventoryTable1() {
-    var i;
-    for (i = 0; i < interests.length / 2; i += 2) {
-      this.interestInventoryTable1.push([
-        {
-          columns: [
-            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
-            {
-              margin: [5, 0],
-              stack: [
-                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
-            {
-              margin: [5, 0],
-              stack: [
-                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
-            }
-          ]
-        },
-      ]);
-    }
-  }
-
-  populateInterestInventoryTable2() {
-    var i;
-    for (i = interests.length / 2; i < interests.length; i += 2) {
-      this.interestInventoryTable2.push([
-        {
-          columns: [
-            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
-            {
-              margin: [5, 0],
-              stack: [
-                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
-            {
-              margin: [5, 0],
-              stack: [
-                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
-            }
-          ]
-        },
-      ]);
-    }
-  }
-
-  populateInterestTable() {
-    this.interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false] }, '', '', 'Percent', 'Result']);
-    this.interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total', border: [true, false, false, false] }, { text: 'Male' }, { text: 'Female', border: [false, false, true, false] }, { text: 'Like' }, { text: 'IPA' }]);
-    interests.forEach(i => {
-      this.interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, { text: '84', border: [true, false, false, false] }, 86, { text: '83', border: [false, false, true, false] }, 71, 2]);
-    });
-  }
-
-  populateIPAGraph() {
-    this.IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
-    interests.forEach(i => {
-      this.IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left' }, i.plikes, this.buildIPAGraphLine(i.plikes, i.color)]);
-    });
-  }
-
-  buildIPAGraphLine(width: any, color: any) {
-    var content = [];
-
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: 0, y1: 7,
-          x2: 250, y2: 7,
-          lineWidth: 15,
-          lineColor: '#F0F0F0',
-        },
-        {
-          type: 'line',
-          x1: 0, y1: 7,
-          x2: (width * 2.5), y2: 7,
-          lineWidth: 15,
-          lineColor: color,
-        },
-        {
-          type: 'line',
-          x1: 104, y1: -15,
-          x2: 104, y2: 25,
-          lineWidth: 1,
-          lineColor: 'black'
-        },
-      ], alignment: 'left'
-    });
-
-    return content;
-  }
-
-  buildReport(tableOfContents: any) {
+  buildReport(tableOfContents: any, interestGOETable: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage, pageCount) {
@@ -235,7 +163,10 @@ export class NewReportComponent {
         this.buildAssessmentSettings(),
         this.buildInterestInventory(),
         this.buildInterestAreaScores(),
-        this.buildIndividualProfileAnalysis()
+        this.buildIndividualProfileAnalysis(),
+        this.buildGOERecommendations(interestGOETable),
+        this.buildGOEJobSection(),
+        this.buildJobTable()
       ]
     }
 
@@ -526,7 +457,7 @@ export class NewReportComponent {
     content.push({
       margin: [0, 30, 0, 0],
       table: {
-        body: this.interestInventoryTable1
+        body: this.buildInterestInventoryTable1()
       },
       layout: {
         defaultBorder: false,
@@ -559,7 +490,7 @@ export class NewReportComponent {
     content.push({
       margin: [0, 30, 0, 0],
       table: {
-        body: this.interestInventoryTable2
+        body: this.buildInterestInventoryTable2()
       },
       layout: {
         defaultBorder: false,
@@ -568,6 +499,82 @@ export class NewReportComponent {
     });
 
     return content;
+  }
+
+  buildInterestInventoryTable1() {
+    var interestInventoryTable1 = [];
+
+    var i;
+    for (i = 0; i < interests.length / 2; i += 2) {
+      interestInventoryTable1.push([
+        {
+          columns: [
+            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+      ]);
+    }
+
+    return interestInventoryTable1;
+  }
+
+  buildInterestInventoryTable2() {
+    var interestInventoryTable2 = [];
+
+    var i;
+    for (i = 0; i < interests.length / 2; i += 2) {
+      interestInventoryTable2.push([
+        {
+          columns: [
+            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            {
+              margin: [5, 0],
+              stack: [
+                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
+              ]
+            }
+          ]
+        },
+      ]);
+    }
+
+    return interestInventoryTable2;
   }
 
   buildInterestAreaScores() {
@@ -619,7 +626,7 @@ export class NewReportComponent {
           width: 'auto',
           table: {
             body:
-              this.interestTable
+              this.buildInterestTable()
           },
           layout: {
             fillColor: function (rowIndex, node, columnIndex) {
@@ -644,6 +651,18 @@ export class NewReportComponent {
     });
 
     return content;
+  }
+
+  buildInterestTable() {
+    var interestTable = [];
+
+    interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false] }, '', '', 'Percent', 'Result']);
+    interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total', border: [true, false, false, false] }, { text: 'Male' }, { text: 'Female', border: [false, false, true, false] }, { text: 'Like' }, { text: 'IPA' }]);
+    interests.forEach(i => {
+      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, { text: '84', border: [true, false, false, false] }, 86, { text: '83', border: [false, false, true, false] }, 71, 2]);
+    });
+
+    return interestTable;
   }
 
   buildIndividualProfileAnalysis() {
@@ -692,7 +711,7 @@ export class NewReportComponent {
           width: 'auto',
           table: {
             body:
-              this.IPATable
+              this.buildIPATable()
           },
           layout: {
             defaultBorder: false,
@@ -703,9 +722,179 @@ export class NewReportComponent {
           }
         },
         { width: '*', text: '' },
+      ],
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
+  buildIPATable() {
+    var IPATable = [];
+
+    IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
+    interests.forEach(i => {
+      IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left' }, i.plikes, this.buildIPAGraphLine(i.plikes, i.color)]);
+    });
+
+    return IPATable;
+  }
+
+  buildIPAGraphLine(width: any, color: any) {
+    var content = [];
+
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: 250, y2: 7,
+          lineWidth: 15,
+          lineColor: '#F0F0F0',
+        },
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: (width * 2.5), y2: 7,
+          lineWidth: 15,
+          lineColor: color,
+        },
+        {
+          type: 'line',
+          x1: 104, y1: -15,
+          x2: 104, y2: 25,
+          lineWidth: 1,
+          lineColor: 'black'
+        },
+      ], alignment: 'left'
+    });
+
+    return content;
+  }
+
+  buildGOERecommendations(interestGOETable: any) {
+    var content = [];
+
+    content.push({
+      text: 'GOE Recommendations',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({ text: 'Introduction', fontSize: 12, margin: [0, 40, 0, 10] });
+    content.push({ text: 'Occupations have been divided into twelve Interest Areas as described in the Guide for Occupational Exploration (GOE) and elsewhere. The Guide for Occupational Exploration further subdivides the Interest Areas into Work Groups, based upon aptitude score requirements. Occupations that belong to the same Work Group require similar interests and similar aptitudes.', fontSize: 10 });
+    content.push({ text: 'Understanding Your Report', fontSize: 12, margin: [0, 40, 0, 10] });
+    content.push({ text: 'Reported below are career directions that match your aptitudes as well as your 5 strongest interest areas.', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({ text: 'Review your CareerScope recommendations and score results with a career guidance and counseling professional to learn about the Work Groups that best match your assessment results.', fontSize: 10 });
+    content.push({ text: 'Your Interest Areas', fontSize: 12, margin: [0, 40, 0, 20] });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              interestGOETable
+          },
+          layout: {
+            defaultBorder: false,
+            paddingTop: function (i, node) { return 5; },
+            paddingBottom: function (i, node) { return 5; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
+          }
+        },
+        { width: '*', text: '' },
+      ],
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
+  buildGOEJobSection() {
+    var content = [];
+
+    content.push({
+      text: 'GOE Recommendations',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+
+    content.push({ text: 'Concepts to Know', fontSize: 12, margin: [0, 40, 0, 10] });
+    content.push({
+      ul: [
+        { text: 'D.O.T #:', fontSize: 10, margin: [0, 0, 0, 5] },
+        { text: 'GED Req: General Education Development or both Mathematical (M) and Language (L) development.', fontSize: 10, margin: [0, 0, 0, 5] },
+        { text: 'SVP Req: Specific Vocational Preparation, the amount of time required to learn the duties and acquire the information needed for a specific occupation', fontSize: 10, margin: [0, 0, 0, 5] },
       ]
     });
 
     return content;
+  }
+
+  buildJobTable() {
+    var content = [];
+
+    content.push({ text: 'Interest Area 01 - Artistic', fontSize: 12, margin: [0, 40, 0, 10] });
+    content.push({ svg: artisticIcon, width: 25, margin: [135, -29, 0, 0] });
+    content.push({ text: 'An interest in the creative expression of feelings or ideas', margin: [0, 10, 0, 20] });
+    content.push({
+      table: {
+        body: this.buildWorkGroupTable()
+      },
+      layout: {
+        defaultBorder: false
+      }
+    });
+
+    return content;
+  }
+
+  buildWorkGroupTable() {
+    var table = [];
+
+    table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4 }, '', '', '']);
+    table.push([{ text: 'GOE 01.01 Literary Arts', fontSize: 12, colSpan: 4 }, '', '', '']);
+    table.push([{ text: 'Workers in this group write, edit, or direct the publication of prose or poetry', fontSize: 10, colSpan: 4 }, '', '', '']);
+    table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
+    table.push([{ text: 'Editor, Book', fontSize: 12 }, { text: '132.067-014', fontSize: 12 }, { text: 'M3 / L6', fontSize: 12 }, { text: '8', fontSize: 12 }]);
+
+    return table;
   }
 }
