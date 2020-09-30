@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { careerScopeLogoSVG, artisticIcon, scientificIcon } from '../svg';
 import { interests } from '../populateInterests';
+import { workgroups } from '../populateWorkgroups';
+import { WorkgroupsService } from '../workgroups.service';
+
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -12,6 +15,10 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./new-report.component.scss']
 })
 export class NewReportComponent {
+
+  constructor(
+    private ws: WorkgroupsService
+  ) { }
 
   generatePDFReport() {
 
@@ -166,7 +173,9 @@ export class NewReportComponent {
         this.buildIndividualProfileAnalysis(),
         this.buildGOERecommendations(interestGOETable),
         this.buildGOEJobSection(),
-        this.buildJobTable()
+        this.buildJobTable(0),
+        this.buildJobTable(8),
+        this.buildJobTable(10)
       ]
     }
 
@@ -856,44 +865,51 @@ export class NewReportComponent {
       ]
     });
 
-    content.push({ text: 'Concepts to Know', fontSize: 12, margin: [0, 40, 0, 10] });
-    content.push({
-      ul: [
-        { text: 'D.O.T #:', fontSize: 10, margin: [0, 0, 0, 5] },
-        { text: 'GED Req: General Education Development or both Mathematical (M) and Language (L) development.', fontSize: 10, margin: [0, 0, 0, 5] },
-        { text: 'SVP Req: Specific Vocational Preparation, the amount of time required to learn the duties and acquire the information needed for a specific occupation', fontSize: 10, margin: [0, 0, 0, 5] },
-      ]
-    });
-
     return content;
   }
 
-  buildJobTable() {
+  buildJobTable(interestIndex: number) {
     var content = [];
 
-    content.push({ text: 'Interest Area 01 - Artistic', fontSize: 12, margin: [0, 40, 0, 10] });
-    content.push({ svg: artisticIcon, width: 25, margin: [135, -29, 0, 0] });
-    content.push({ text: 'An interest in the creative expression of feelings or ideas', margin: [0, 10, 0, 20] });
+    content.push({
+      columns: [
+        { text: 'Interest Area ' + (interestIndex >= 9 ? (interestIndex + 1) : '0' + (interestIndex + 1)) + ' - ' + interests[interestIndex].name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
+        { svg: interests[interestIndex].svgLogo, width: 25, margin: [0, 35, 0, 0] }
+      ]
+    });
+    content.push({ text: interests[interestIndex].description, margin: [0, 10, 0, 20] });
     content.push({
       table: {
-        body: this.buildWorkGroupTable()
+        body: this.buildWorkGroupTable(interestIndex + 1)
       },
       layout: {
         defaultBorder: false
+      },
+      style: {
+        cellSpacing: { margin: [0, 20, 0, 0] }
       }
     });
 
     return content;
   }
 
-  buildWorkGroupTable() {
+  buildWorkGroupTable(worgroupArea: number) {
     var table = [];
 
-    table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4 }, '', '', '']);
-    table.push([{ text: 'GOE 01.01 Literary Arts', fontSize: 12, colSpan: 4 }, '', '', '']);
-    table.push([{ text: 'Workers in this group write, edit, or direct the publication of prose or poetry', fontSize: 10, colSpan: 4 }, '', '', '']);
-    table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
-    table.push([{ text: 'Editor, Book', fontSize: 12 }, { text: '132.067-014', fontSize: 12 }, { text: 'M3 / L6', fontSize: 12 }, { text: '8', fontSize: 12 }]);
+    var Artworkgroup = this.ws.workgroups.filter(group => { return group.area === worgroupArea });
+
+    Artworkgroup.forEach(group => {
+      table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4, style: 'cellSpacing' }, '', '', '']);
+      table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12, colSpan: 4 }, '', '', '']);
+      table.push([{ text: group.description, fontSize: 10, colSpan: 4 }, '', '', '']);
+      table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
+      group.jobs.forEach(job => {
+        table.push([{ text: job.name, fontSize: 12 }, { text: job.dotNum, fontSize: 12 }, { text: 'M' + job.mathGEDReq + ' / ' + job.languageGEDReq, fontSize: 12 }, { text: job.svp, fontSize: 12 }]);
+      });
+      table.push(['', '', '', '']);
+      table.push(['', '', '', '']);
+      table.push(['', '', '', '']);
+    });
 
     return table;
   }
