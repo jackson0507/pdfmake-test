@@ -192,7 +192,10 @@ export class NewReportComponent {
         this.buildGOEJobSection(),
         this.buildJobTable(0),
         this.buildJobTable(8),
-        this.buildJobTable(10)
+        this.buildJobTable(10),
+        this.buildJobDescriptionTable(0),
+        this.buildJobDescriptionTable(8),
+        this.buildJobDescriptionTable(10),
       ]
     }
 
@@ -939,12 +942,12 @@ export class NewReportComponent {
     return content;
   }
 
-  buildWorkGroupTable(worgroupArea: number) {
+  buildWorkGroupTable(workgroupArea: number) {
     var table = [];
 
-    var Artworkgroup = this.ws.workgroups.filter(group => { return group.area === worgroupArea });
+    var workgroup = this.ws.workgroups.filter(group => { return group.area === workgroupArea });
 
-    Artworkgroup.forEach(group => {
+    workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4, style: 'cellSpacing' }, '', '', '']);
       table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12, colSpan: 4 }, '', '', '']);
       table.push([{ text: group.description, fontSize: 10, colSpan: 4 }, '', '', '']);
@@ -955,6 +958,60 @@ export class NewReportComponent {
       table.push(['', '', '', '']);
       table.push(['', '', '', '']);
       table.push(['', '', '', '']);
+    });
+
+    return table;
+  }
+
+  buildJobDescriptionTable(interestIndex: number) {
+    var content = [];
+
+    content.push({
+      columns: [
+        { text: 'Interest Area ' + (interestIndex >= 9 ? (interestIndex + 1) : '0' + (interestIndex + 1)) + ' - ' + interests[interestIndex].name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
+        { svg: interests[interestIndex].svgLogo, width: 25, margin: [0, 35, 0, 0] }
+      ],
+      pageBreak: 'before'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -5, y1: 0,
+          x2: 520, y2: 0,
+          lineWidth: 1,
+          lineColor: interests[interestIndex].color,
+        }
+      ]
+    })
+    content.push({ text: interests[interestIndex].description, margin: [0, 10, 0, 20] });
+    content.push({
+      table: {
+        body: this.buildWorkGroupDescriptionTable(interestIndex + 1)
+      },
+      layout: {
+        defaultBorder: false
+      },
+      style: {
+        cellSpacing: { margin: [0, 20, 0, 0] }
+      }
+    });
+
+    return content;
+  }
+
+  buildWorkGroupDescriptionTable(workgroupArea: number) {
+    var table = [];
+
+    var workgroup = this.ws.workgroups.filter(group => { return group.area === workgroupArea });
+
+    workgroup.forEach(group => {
+      table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', style: 'cellSpacing' },]);
+      table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12 }]);
+      table.push([{ text: group.description, fontSize: 10 }]);
+      table.push(['']);
+      table.push(['']);
+      table.push(['']);
     });
 
     return table;
