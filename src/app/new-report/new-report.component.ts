@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { careerScopeLogoSVG, artisticIcon, scientificIcon } from '../svg';
+import { careerScopeLogoSVG, careerScopeLogoSVGInverse, artisticIcon, scientificIcon } from '../svg';
 import { interests } from '../populateInterests';
 import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
@@ -120,50 +120,67 @@ export class NewReportComponent {
   buildReport(tableOfContents: any, interestGOETable: any) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
-      header: function (currentPage, pageCount) {
-        return [
-          {
-            columns: [
-              {
-                stack: [
-                  {
-                    text: "Assessment Profile Report",
-                    fontSize: 9,
-                    color: '#0F4C81'
-                  }, {
-                    text: "Carly Sims   5/18/20",
-                    fontSize: 9,
-                    margin: [0, 2.5, 0, 0],
-                    color: '#0F4C81'
-                  }
-                ],
-                alignment: 'center',
-                width: 125,
-              },
-              {
-                text: 'Pg ' + currentPage.toString(),
-                fontSize: 12,
-                alignment: 'center',
-                margin: [0, 5, 0, 0],
-                color: '#0F4C81'
-              }
-            ],
-            margin: [400, 20, 0, 0]
-          },
-          {
+      header: function (currentPage) {
+        if (currentPage > 2) {
+          return [
+            {
+              columns: [
+                {
+                  stack: [
+                    {
+                      text: "Assessment Profile Report",
+                      fontSize: 9,
+                      color: '#0F4C81'
+                    }, {
+                      text: "Carly Sims   5/18/20",
+                      fontSize: 9,
+                      margin: [0, 2.5, 0, 0],
+                      color: '#0F4C81'
+                    }
+                  ],
+                  alignment: 'center',
+                  width: 125,
+                },
+                {
+                  text: 'Pg ' + currentPage.toString(),
+                  fontSize: 12,
+                  alignment: 'center',
+                  margin: [0, 5, 0, 0],
+                  color: '#0F4C81'
+                }
+              ],
+              margin: [400, 20, 0, 0]
+            },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 532, y1: -27,
+                  x2: 532, y2: 3,
+                  lineWidth: 1,
+                  lineColor: '#0F4C81',
+                }
+              ]
+            }
+          ]
+        }
+      },
+      footer: this.buildFooter(),
+      background: function (currentPage) {
+        if (currentPage === 1) {
+          return {
             canvas: [
               {
-                type: 'line',
-                x1: 532, y1: -27,
-                x2: 532, y2: 3,
+                type: 'polyline',
                 lineWidth: 1,
-                lineColor: '#0F4C81',
+                closePath: true,
+                color: '#0F4C81',
+                points: [{ x: 0, y: 750 }, { x: 550, y: 0 }, { x: 0, y: 0 }]
               }
             ]
           }
-        ]
+        }
       },
-      footer: this.buildFooter(),
       content: [
         this.buildCover(),
         this.buildTableOfContents(tableOfContents),
@@ -184,6 +201,35 @@ export class NewReportComponent {
 
   buildCover() {
     var content = [];
+
+    content.push({
+      svg: careerScopeLogoSVGInverse,
+      fit: [325, 325],
+      margin: [0, 50, 0, 0]
+    });
+    content.push({
+      text: 'Assessment Profile Report',
+      margin: [250, 250, 0, 0],
+      fontSize: 30,
+      alignment: 'right',
+      color: '#0F4C81'
+    });
+    content.push({
+      text: 'Carly Sims',
+      margin: [250, 25, 0, 0],
+      fontSize: 20,
+      alignment: 'right',
+      color: '#808080'
+    });
+    content.push({
+      text: '5/18/20',
+      fontSize: 20,
+      alignment: 'right',
+      color: '#808080',
+      pageBreak: 'after'
+    });
+
+
     content.push({
       svg: careerScopeLogoSVG,
       fit: [400, 400],
