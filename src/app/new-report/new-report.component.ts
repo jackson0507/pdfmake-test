@@ -142,7 +142,7 @@ export class NewReportComponent {
                   width: 125,
                 },
                 {
-                  text: 'Pg ' + currentPage.toString(),
+                  text: 'Pg ' + (currentPage - 1).toString(),
                   fontSize: 12,
                   alignment: 'center',
                   margin: [0, 5, 0, 0],
@@ -188,6 +188,8 @@ export class NewReportComponent {
         this.buildInterestInventory(),
         this.buildInterestAreaScores(),
         this.buildIndividualProfileAnalysis(),
+        this.buildPerformanceOnTasks(),
+        this.buildAptitudeProfile(),
         this.buildGOERecommendations(interestGOETable),
         this.buildGOEJobSection(),
         this.buildJobTable(0),
@@ -830,6 +832,143 @@ export class NewReportComponent {
     return content;
   }
 
+  buildPerformanceOnTasks() {
+    var content = [];
+
+    content.push({
+      text: 'Aptitude Assessment',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({ text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10] });
+    content.push({ text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              this.buildPerformanceTable()
+          },
+          layout: {
+            defaultBorder: false
+          }
+        },
+        { width: '*', text: '' },
+      ]
+    });
+
+    return content;
+  }
+
+  buildPerformanceTable() {
+    var performanceTable = [];
+
+    performanceTable.push([{ text: 'Task', color: '#0F4C81' }, { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push(['Object Identification', '19', '19']);
+
+    return performanceTable;
+  }
+
+  buildAptitudeProfile() {
+    var content = [];
+
+    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10] });
+    content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
+    content.push({ text: 'An aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths. Different combinations of aptitudes (listed on the left) are important in different Work Groups.', fontSize: 10, margin: [0, 0, 0, 20] });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              this.buildAptitudeProfileTable()
+          },
+          layout: {
+            defaultBorder: false
+          }
+        },
+        { width: '*', text: '' },
+      ],
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
+  buildAptitudeProfileTable() {
+    let aptitudeProfileTable = [];
+
+    aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
+    aptitudeProfileTable.push(['General Learning', 134, 96, this.buildAptitudeProfileGraph(96)]);
+    aptitudeProfileTable.push(['Verbal Aptitude', 106, 62, this.buildAptitudeProfileGraph(62)]);
+    aptitudeProfileTable.push(['Numerical Aptitude', 121, 85, this.buildAptitudeProfileGraph(85)]);
+    aptitudeProfileTable.push(['Spatial Aptitude', 106, 62, this.buildAptitudeProfileGraph(62)]);
+    aptitudeProfileTable.push(['Form Perception', 68, 23, this.buildAptitudeProfileGraph(23)]);
+    aptitudeProfileTable.push(['Clerical Perception', 106, 62, this.buildAptitudeProfileGraph(62)]);
+
+    return aptitudeProfileTable;
+  }
+
+  buildAptitudeProfileGraph(width: number) {
+    var content = [];
+
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: 250, y2: 7,
+          lineWidth: 15,
+          lineColor: '#F0F0F0',
+        },
+        {
+          type: 'line',
+          x1: 0, y1: 7,
+          x2: (width * 2.5), y2: 7,
+          lineWidth: 15,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#FFFF00',
+          fillOpacity: 0.5,
+          closePath: true,
+          points: [{ x: 75, y: -5 }, { x: 175, y: -5 }, { x: 175, y: 20 }, { x: 75, y: 20 }]
+        }
+      ], alignment: 'left'
+    });
+
+    return content;
+  }
+
   buildGOERecommendations(interestGOETable: any) {
     var content = [];
 
@@ -953,7 +1092,7 @@ export class NewReportComponent {
       table.push([{ text: group.description, fontSize: 10, colSpan: 4 }, '', '', '']);
       table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
       group.jobs.forEach(job => {
-        table.push([{ text: job.name, fontSize: 12 }, { text: job.dotNum, fontSize: 12 }, { text: 'M' + job.mathGEDReq + ' / ' + job.languageGEDReq, fontSize: 12 }, { text: job.svp, fontSize: 12 }]);
+        table.push([{ text: job.name, fontSize: 12 }, { text: job.dotNum, fontSize: 12 }, { text: 'M' + job.mathGEDReq + ' / L' + job.languageGEDReq, fontSize: 12 }, { text: job.svp, fontSize: 12 }]);
       });
       table.push(['', '', '', '']);
       table.push(['', '', '', '']);
