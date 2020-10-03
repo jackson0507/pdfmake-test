@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { careerScopeLogoSVG, careerScopeLogoSVGInverse, artisticIcon, scientificIcon } from '../svg';
+import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, artisticPillIcon, scientificPillIcon } from '../svg';
 import { interests } from '../populateInterests';
 import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
@@ -8,6 +8,23 @@ import { WorkgroupsService } from '../workgroups.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+
+const fonts = {
+  Nunito: {
+    normal: 'https://fonts.googleapis.com/css2?family=Nunito&display=swap',
+    bold: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap',
+    italics: 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400&display=swap',
+    bolditalics: 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap'
+  },
+
+  Roboto: {
+    normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
+    bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
+    italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
+    bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+  },
+}
 
 @Component({
   selector: 'app-new-report',
@@ -60,7 +77,7 @@ export class NewReportComponent {
       [
         {
           stack: [
-            { svg: artisticIcon, width: 25 },
+            { svg: artisticPillIcon, width: 100, margin: [-10, 0, 0, -5] },
             { text: 'The GOE identifies this as Interest Area 01.', fontSize: 10, margin: [30, 7, 0, 3] },
             { text: '6 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
@@ -86,7 +103,7 @@ export class NewReportComponent {
         },
         {
           stack: [
-            { svg: scientificIcon, width: 25 },
+            { svg: scientificPillIcon, width: 100, margin: [-10, 0, 0, -5] },
             { text: 'The GOE identifies this as Interest Area 03.', fontSize: 10, margin: [30, 7, 0, 3] },
             { text: '3 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
@@ -198,7 +215,10 @@ export class NewReportComponent {
         this.buildJobDescriptionTable(0),
         this.buildJobDescriptionTable(8),
         this.buildJobDescriptionTable(10),
-      ]
+      ],
+      defaultStyle: {
+        //font: 'Nunito'
+      }
     }
 
     return docDef;
@@ -511,7 +531,7 @@ export class NewReportComponent {
             { text: 'Occupations have been divided into twelve large groups, called Interest Areas, based upon the kind of activities workers perform. The CareerScope Interest Inventory includes a list of work activities from the twelve Interest Areas. This report examines your responses to the interest inventory items to help you choose the kind of work you will most enjoy!', fontSize: 10 }
           ]
         },
-        { text: 'JOB BOARD 2 PICTURE ', fontSize: 40 }
+        { svg: jobBoard, width: 200 }
       ]
     });
     content.push({
@@ -667,18 +687,31 @@ export class NewReportComponent {
       margin: [0, 40, 0, 0],
       columns: [
         {
-          width: 400,
+          width: 300,
           stack: [
             { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10] },
             { text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below.', fontSize: 10, margin: [0, 0, 0, 10] },
-            { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area. A percentile score of 50 shows average interest; 70 or higher shows above average interest as compared to other people. Percentile scores are listed below for males and females as well as for the total group.', fontSize: 10, margin: [0, 0, 0, 10] },
-            { text: 'Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.', fontSize: 10, margin: [0, 0, 0, 10] },
-            { text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column. Please refer to the Individual Profile Analysis on the next page for more detailed information.', fontSize: 10, margin: [0, 0, 0, 10] },
+            { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area.', fontSize: 10, margin: [0, 0, 0, 10] },
+            {
+              ul: [
+                { text: 'A percentile score of 50 shows average interest; 70 or higher shows above average interest', fontSize: 10 },
+                { text: '70 or higher shows above average interest as compared to other people.', fontSize: 10, margin: [0, 10, 0, 0] },
+                { text: 'Percentile scores are listed below for males and females as well as for the total group.', fontSize: 10, margin: [0, 10, 0, 0] },
+                { text: 'Your percentile scores are based upon a comparison between your results and the results of people who are 18 years of age or older.', fontSize: 10, margin: [0, 10, 0, 0] }
+              ], margin: [30, 0, 0, 0]
+            },
           ]
+        }, {
+          stack: [
+            { svg: reportTabBackground, width: 185, margin: [50, 0, 0, 0] },
+            { text: 'Your Top Interests', fontSize: 12, margin: [68, -192, 0, 0] },
+            { text: 'Your most significant Interest Areas are identified in the “IPA” column and are based upon data found in the “Percent Like” column.', fontSize: 10, margin: [68, 10, 0, 0] },
+            { text: 'Please refer to the Individual Profile Analysis on the next pages for more detailed information. between your results and the results of people who are 18 years of age or older.', fontSize: 10, margin: [68, 10, 0, 0] }
+          ], width: 215
         }
       ]
     });
-    content.push({ text: 'My Top Interest', fontSize: 12 });
+    content.push({ text: 'My Top Interest', fontSize: 12, margin: [0, 20, 0, 0] });
     content.push({
       columns: [
         { width: '*', text: '' },
@@ -761,7 +794,13 @@ export class NewReportComponent {
             { text: 'The dark vertical line in the chart is your average percentage of “LIKE” responses (XX%) across all twelve Interest Areas.', fontSize: 10 },
           ]
         },
-        { text: 'JOB BOARD 2 PICTURE ', fontSize: 40 }
+        {
+          stack: [
+            { svg: jellyBeanBackground, width: 175 },
+            { text: 'CareerScope has identified 5 Interest Areas that stand out significantly above your average level of interest!', fontSize: 10, margin: [15, -95, 0, 0], lineHeight: 1.25 }
+          ],
+          width: 150
+        }
       ]
     });
     content.push({
