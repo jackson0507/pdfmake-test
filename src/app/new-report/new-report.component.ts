@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, artisticPillIcon, scientificPillIcon } from '../svg';
+import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, reportExercises, artisticPillIcon, scientificPillIcon } from '../svg';
 import { interests } from '../populateInterests';
 import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
@@ -897,8 +897,20 @@ export class NewReportComponent {
         }
       ]
     });
-    content.push({ text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10] });
-    content.push({ text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({
+      margin: [0, 40, 0, 0],
+      columns: [
+        {
+          width: 350,
+          stack: [
+            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10] },
+            { text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] }
+          ]
+        },
+        { svg: reportExercises, width: 175 }
+      ]
+    });
+
     content.push({
       columns: [
         { width: '*', text: '' },
@@ -913,7 +925,8 @@ export class NewReportComponent {
           }
         },
         { width: '*', text: '' },
-      ]
+      ],
+      pageBreak: 'after'
     });
 
     return content;
@@ -937,9 +950,52 @@ export class NewReportComponent {
   buildAptitudeProfile() {
     var content = [];
 
+    content.push({
+      text: 'Aptitude Assessment',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
     content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10] });
     content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
-    content.push({ text: 'An aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.” Percentile (%tile) scores report the percentage of people who score below you. The graph displays your relative strengths. Different combinations of aptitudes (listed on the left) are important in different Work Groups.', fontSize: 10, margin: [0, 0, 0, 20] });
+    content.push({ text: 'Consider this:', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({
+      ul: [
+        { text: 'An aptitude score of 100 is exactly average. Scores between 80 and 120 can be thought of as “in the average range.”', fontSize: 10, margin: [20, 0, 0, 10] },
+        { text: 'Percentile (%tile) scores report the percentage of people who score below you.', fontSize: 10, margin: [20, 0, 0, 10] },
+        { text: 'The graph displays your relative strengths.', fontSize: 10, margin: [20, 0, 0, 10] },
+        { text: 'Different combinations of aptitudes are important in different Work Groups.', fontSize: 10, margin: [20, 0, 0, 50] }
+      ]
+    });
+    content.push({ 
+      canvas: [
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#FFD700',
+          //fillOpacity: 0.5,
+          closePath: true,
+          points: [{ x: 300, y: 0 }, { x: 400, y: 0 }, { x: 400, y: 250 }, { x: 300, y: 250 }]
+        }
+      ]
+    });
     content.push({
       columns: [
         { width: '*', text: '' },
@@ -950,11 +1006,24 @@ export class NewReportComponent {
               this.buildAptitudeProfileTable()
           },
           layout: {
-            defaultBorder: false
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
+            },
+            vLineWidth: function (i, node) {
+              return 0;
+            },
+            hLineColor: function (i, node) {
+              return 'gray';
+            },
+            paddingTop: function (i, node) { return 10; },
+            paddingBottom: function (i, node) { return 10; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
       ],
+      margin: [0, -250, 0, 0],
       pageBreak: 'after'
     });
 
@@ -980,6 +1049,15 @@ export class NewReportComponent {
 
     content.push({
       canvas: [
+        /*
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#FFFF00',
+          //fillOpacity: 0.5,
+          closePath: true,
+          points: [{ x: 75, y: -5 }, { x: 175, y: -5 }, { x: 175, y: 20 }, { x: 75, y: 20 }]
+        }, */
         {
           type: 'line',
           x1: 0, y1: 7,
@@ -994,14 +1072,6 @@ export class NewReportComponent {
           lineWidth: 15,
           lineColor: '#0F4C81',
         },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#FFFF00',
-          fillOpacity: 0.5,
-          closePath: true,
-          points: [{ x: 75, y: -5 }, { x: 175, y: -5 }, { x: 175, y: 20 }, { x: 75, y: 20 }]
-        }
       ], alignment: 'left'
     });
 
