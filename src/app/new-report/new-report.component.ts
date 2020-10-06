@@ -3,6 +3,7 @@ import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackg
 import { interests } from '../populateInterests';
 import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
+import { aptitudeTasks } from '../populateAptitudes';
 
 
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -207,6 +208,7 @@ export class NewReportComponent {
         this.buildIndividualProfileAnalysis(),
         this.buildPerformanceOnTasks(),
         this.buildAptitudeProfile(),
+        this.buildUnscoredAptitudes(),
         this.buildGOERecommendations(interestGOETable),
         this.buildGOEJobSection(),
         this.buildJobTable(0),
@@ -752,7 +754,7 @@ export class NewReportComponent {
     interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false] }, '', '', 'Percent', 'Result']);
     interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total', border: [true, false, false, false] }, { text: 'Male' }, { text: 'Female', border: [false, false, true, false] }, { text: 'Like' }, { text: 'IPA' }]);
     interests.forEach(i => {
-      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left' }, 10, 0, 4, { text: '84', border: [true, false, false, false] }, 86, { text: '83', border: [false, false, true, false] }, 71, 2]);
+      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: '10', margin: [0, 3, 0, 0] }, { text: '0', margin: [0, 3, 0, 0] }, { text: '4', margin: [0, 3, 0, 0] }, { text: '84', border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: '86', margin: [0, 3, 0, 0] }, { text: '83', border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: '71', margin: [0, 3, 0, 0] }, { text: 2, margin: [0, 3, 0, 0] }]);
     });
 
     return interestTable;
@@ -784,7 +786,7 @@ export class NewReportComponent {
       ]
     });
     content.push({
-      margin: [0, 40, 0, 0],
+      margin: [0, 40, 0, 40],
       columns: [
         {
           width: 350,
@@ -833,7 +835,7 @@ export class NewReportComponent {
 
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
     interests.forEach(i => {
-      IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left' }, i.plikes, this.buildIPAGraphLine(i.plikes, i.color)]);
+      IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] }, { text: i.plikes, margin: [0, 5, 0, 0] }, this.buildIPAGraphLine(i.plikes, i.color)]);
     });
 
     return IPATable;
@@ -860,12 +862,14 @@ export class NewReportComponent {
         },
         {
           type: 'line',
-          x1: 104, y1: -15,
+          x1: 104, y1: -20,
           x2: 104, y2: 25,
           lineWidth: 1,
           lineColor: 'black'
         },
-      ], alignment: 'left'
+      ], 
+      alignment: 'left',
+      margin: [0, 5, 0, 0]
     });
 
     return content;
@@ -898,7 +902,7 @@ export class NewReportComponent {
       ]
     });
     content.push({
-      margin: [0, 40, 0, 0],
+      margin: [0, 40, 0, 60],
       columns: [
         {
           width: 350,
@@ -921,7 +925,19 @@ export class NewReportComponent {
               this.buildPerformanceTable()
           },
           layout: {
-            defaultBorder: false
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
+            },
+            vLineWidth: function (i, node) {
+              return 0;
+            },
+            hLineColor: function (i, node) {
+              return 'gray';
+            },
+            paddingTop: function (i, node) { return 5; },
+            paddingBottom: function (i, node) { return 5; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -935,14 +951,10 @@ export class NewReportComponent {
   buildPerformanceTable() {
     var performanceTable = [];
 
-    performanceTable.push([{ text: 'Task', color: '#0F4C81' }, { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
-    performanceTable.push(['Object Identification', '19', '19']);
+    performanceTable.push([{ text: 'Task', color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
+    aptitudeTasks.forEach(task => {
+      performanceTable.push([{ svg: task.iconFile, width: 25 }, { text: task.name, margin: [0, 5, 75, 0] }, { text: '19', margin: [0, 5, 75, 0] }, { text: task.questionCount, margin: [0, 5, 0, 0] }]);
+    });
 
     return performanceTable;
   }
@@ -984,7 +996,7 @@ export class NewReportComponent {
         { text: 'Different combinations of aptitudes are important in different Work Groups.', fontSize: 10, margin: [20, 0, 0, 50] }
       ]
     });
-    content.push({ 
+    content.push({
       canvas: [
         {
           type: 'polyline',
@@ -1063,7 +1075,7 @@ export class NewReportComponent {
           x1: 0, y1: 7,
           x2: 250, y2: 7,
           lineWidth: 15,
-          lineColor: '#F0F0F0',
+          lineColor: '#A9A9A9',
         },
         {
           type: 'line',
@@ -1074,6 +1086,75 @@ export class NewReportComponent {
         },
       ], alignment: 'left'
     });
+
+    return content;
+  }
+
+  buildUnscoredAptitudes() {
+    var content = [];
+
+    content.push({
+      text: 'Aptitude Assessment',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({ text: 'Unscored Aptitudes', fontSize: 12, margin: [0, 40, 0, 20] });
+    content.push({ text: 'Your aptitude profile may include aptitudes that can not be calculated via online exercises.', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({ text: 'Those aptitudes may include:', fontSize: 10 });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              [
+                [{ text: 'Aptitude', color: '#0F4C81', fontSize: 10, margin: [0, 0, 40, 0] }, { text: 'Source', color: '#0F4C81', fontSize: 10 }],
+                [{ text: 'Motor Coordination (K)', fontSize: 12, margin: [0, 0, 40, 0] }, { text: 'Counselor', fontSize: 12 }],
+                [{ text: 'Finger Dexerity (F)', fontSize: 12, margin: [0, 0, 40, 0] }, { text: 'Counselor', fontSize: 12 }],
+                [{ text: 'Manual Dexerity (M)', fontSize: 12, margin: [0, 0, 40, 0] }, { text: 'Counselor', fontSize: 12 }]
+              ]
+          },
+          layout: {
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
+            },
+            vLineWidth: function (i, node) {
+              return 0;
+            },
+            hLineColor: function (i, node) {
+              return 'gray';
+            },
+            paddingTop: function (i, node) { return 10; },
+            paddingBottom: function (i, node) { return 10; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
+          }
+        },
+        { width: '*', text: '' },
+      ],
+      margin: [0, 40, 0, 40]
+    });
+    content.push({ text: 'If “Counselor” is listed as the source of information, an assumption has been made regarding the score.', fontSize: 10, margin: [0, 0, 0, 10] });
+    content.push({ text: 'If "None" is listed as the source, the performance factor will not be considered when making Work Group recommendations', fontSize: 10, pageBreak: 'after' });
 
     return content;
   }
