@@ -4,6 +4,7 @@ import { interests } from '../populateInterests';
 import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
 import { aptitudeTasks } from '../populateAptitudes';
+import { EvalueeService } from '../evaluee.service';
 
 
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -35,8 +36,12 @@ const fonts = {
 export class NewReportComponent {
 
   constructor(
-    private ws: WorkgroupsService
-  ) { }
+    private ws: WorkgroupsService,
+    private es: EvalueeService
+  ) {
+    es.loadEvaluee('2C7gl1C9dmWPwaMIvRAgAwIQrhA3');
+    es.loadRegister('85zTOc8KSwi0iB9mroGz');
+  }
 
   generatePDFReport() {
 
@@ -135,7 +140,7 @@ export class NewReportComponent {
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any, interestGOETable: any) {
+  buildReport(tableOfContents: any, interestGOETable: any, evalName: string = this.es.register.fullName) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage) {
@@ -146,11 +151,11 @@ export class NewReportComponent {
                 {
                   stack: [
                     {
-                      text: "Assessment Profile Report",
+                      text: 'Assessment Profile Report',
                       fontSize: 9,
                       color: '#0F4C81'
                     }, {
-                      text: "Carly Sims   5/18/20",
+                      text: evalName + '    5/18/20',
                       fontSize: 9,
                       margin: [0, 2.5, 0, 0],
                       color: '#0F4C81'
@@ -242,7 +247,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: 'Carly Sims',
+      text: this.es.register.fullName,
       margin: [250, 25, 0, 0],
       fontSize: 20,
       alignment: 'right',
@@ -276,7 +281,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: 'Carly Sims',
+      text: this.es.register.fullName,
       margin: [0, 25, 0, 0],
       fontSize: 20,
       alignment: 'center',
@@ -867,7 +872,7 @@ export class NewReportComponent {
           lineWidth: 1,
           lineColor: 'black'
         },
-      ], 
+      ],
       alignment: 'left',
       margin: [0, 5, 0, 0]
     });
