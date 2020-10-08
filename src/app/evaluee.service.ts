@@ -15,6 +15,9 @@ export class EvalueeService {
   register: Register;
   registerSubscription: Subscription;
 
+  evalueePortal: any;
+  evalueePortalSubscription: Subscription;
+
   constructor(private db: AngularFirestore) { }
 
   loadEvaluee(evalueeId: string) {
@@ -39,6 +42,21 @@ export class EvalueeService {
           if (res) {
             this.register = res;
             console.log('register: ', this.register);
+          } else {
+            console.log('error');
+          }
+        })
+      ).subscribe();
+    }
+  }
+
+  loadEvalueePortal(evalueeId: string) {
+    if (!this.evalueePortalSubscription) {
+      this.evalueePortalSubscription = this.db.collection('portals').doc('R04470_DNMM').collection('evaluees').doc(evalueeId).valueChanges().pipe(
+        tap(res => {
+          if (res) {
+            this.evalueePortal = res;
+            console.log('evalPort: ', this.evalueePortal);
           } else {
             console.log('error');
           }

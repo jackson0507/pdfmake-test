@@ -41,6 +41,7 @@ export class NewReportComponent {
   ) {
     es.loadEvaluee('2C7gl1C9dmWPwaMIvRAgAwIQrhA3');
     es.loadRegister('85zTOc8KSwi0iB9mroGz');
+    es.loadEvalueePortal('1001269');
   }
 
   generatePDFReport() {
@@ -140,7 +141,7 @@ export class NewReportComponent {
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any, interestGOETable: any, evalName: string = this.es.register.fullName) {
+  buildReport(tableOfContents: any, interestGOETable: any, evalName: string = this.es.evalueePortal.fullName) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header: function (currentPage) {
@@ -247,7 +248,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: this.es.register.fullName,
+      text: this.es.evalueePortal.fullName,
       margin: [250, 25, 0, 0],
       fontSize: 20,
       alignment: 'right',
@@ -281,7 +282,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: this.es.register.fullName,
+      text: this.es.evalueePortal.fullName,
       margin: [0, 25, 0, 0],
       fontSize: 20,
       alignment: 'center',
@@ -718,7 +719,61 @@ export class NewReportComponent {
         }
       ]
     });
-    content.push({ text: 'My Top Interest', fontSize: 12, margin: [0, 20, 0, 0] });
+    content.push({ text: 'Your Top Interests', fontSize: 12, margin: [0, 20, 0, 10] });
+    content.push({
+      columns: [
+        { width: '*', text: '' },
+        {
+          width: 'auto',
+          table: {
+            body:
+              this.buildInterestTopFive()
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (columnIndex === 9) ? '#F0F0F0' : null;
+            },
+            defaultBorder: false,
+            hLineColor: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
+            },
+            paddingTop: function (i, node) { return 5; },
+            paddingBottom: function (i, node) { return 5; },
+            paddingLeft: function (i, node) { return 5; },
+            paddingRight: function (i, node) { return 5; },
+          }
+        },
+        { width: '*', text: '' },
+      ],
+      pageBreak: 'after'
+    });
+    content.push({
+      text: 'Interest Inventory',
+      fontSize: 23,
+      color: '#0F4C81'
+    });
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -40, y1: 6,
+          x2: 240, y2: 6,
+          lineWidth: 3,
+          lineColor: '#0F4C81',
+        },
+        {
+          type: 'polyline',
+          lineWidth: 2,
+          color: '#0F4C81',
+          closePath: true,
+          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
+        }
+      ]
+    });
+    content.push({ text: 'Your Interest Results', fontSize: 12, margin: [0, 40, 0, 10] });
     content.push({
       columns: [
         { width: '*', text: '' },
@@ -753,14 +808,42 @@ export class NewReportComponent {
     return content;
   }
 
-  buildInterestTable() {
+  buildInterestTopFive() {
     var interestTable = [];
 
-    interestTable.push([{ text: 'Interests', colSpan: 2 }, '', { text: 'Responses', colSpan: 3, alignment: 'center' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false] }, '', '', 'Percent', 'Result']);
-    interestTable.push([{ text: 'Area Names', colSpan: 2 }, '', { text: 'Like' }, { text: '?' }, { text: 'Dislike' }, { text: 'Total', border: [true, false, false, false] }, { text: 'Male' }, { text: 'Female', border: [false, false, true, false] }, { text: 'Like' }, { text: 'IPA' }]);
+    interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
+    /*
     interests.forEach(i => {
       interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: '10', margin: [0, 3, 0, 0] }, { text: '0', margin: [0, 3, 0, 0] }, { text: '4', margin: [0, 3, 0, 0] }, { text: '84', border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: '86', margin: [0, 3, 0, 0] }, { text: '83', border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: '71', margin: [0, 3, 0, 0] }, { text: 2, margin: [0, 3, 0, 0] }]);
     });
+    */
+
+    let i;
+    for (i = 0; i < interests.length; i++) {
+      if (this.es.evalueePortal.interestScores[i].rank > 0) {
+        interestTable.push([{ svg: interests[i].svgLogo, width: 20 }, { text: interests[i].name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].like, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].unanswered, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].dislike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsMale, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].rank, margin: [0, 3, 0, 0] }]);
+      }
+    }
+
+    return interestTable;
+  }
+
+  buildInterestTable() {
+    var interestTable = [];
+
+    interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
+    /*
+    interests.forEach(i => {
+      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: '10', margin: [0, 3, 0, 0] }, { text: '0', margin: [0, 3, 0, 0] }, { text: '4', margin: [0, 3, 0, 0] }, { text: '84', border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: '86', margin: [0, 3, 0, 0] }, { text: '83', border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: '71', margin: [0, 3, 0, 0] }, { text: 2, margin: [0, 3, 0, 0] }]);
+    });
+    */
+
+    let i;
+    for (i = 0; i < interests.length; i++) {
+      interestTable.push([{ svg: interests[i].svgLogo, width: 20 }, { text: interests[i].name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].like, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].unanswered, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].dislike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsMale, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].rank, margin: [0, 3, 0, 0] }]);
+    }
 
     return interestTable;
   }
@@ -821,8 +904,8 @@ export class NewReportComponent {
           },
           layout: {
             defaultBorder: false,
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; },
+            paddingTop: function (i, node) { return 2; },
+            paddingBottom: function (i, node) { return 2; },
             paddingLeft: function (i, node) { return 5; },
             paddingRight: function (i, node) { return 5; },
           }
@@ -839,9 +922,15 @@ export class NewReportComponent {
     var IPATable = [];
 
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
+    /*
     interests.forEach(i => {
       IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] }, { text: i.plikes, margin: [0, 5, 0, 0] }, this.buildIPAGraphLine(i.plikes, i.color)]);
     });
+    */
+    let i;
+    for (i = 0; i < interests.length; i++) {
+      IPATable.push([{ svg: interests[i].svgLogo, width: 25 }, { text: interests[i].name, alignment: 'left', margin: [0, 5, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 5, 0, 0] }, this.buildIPAGraphLine(this.es.evalueePortal.interestScores[i].percentLike, interests[i].color)]);
+    }
 
     return IPATable;
   }
@@ -957,8 +1046,8 @@ export class NewReportComponent {
     var performanceTable = [];
 
     performanceTable.push([{ text: 'Task', color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
-    aptitudeTasks.forEach(task => {
-      performanceTable.push([{ svg: task.iconFile, width: 25 }, { text: task.name, margin: [0, 5, 75, 0] }, { text: '19', margin: [0, 5, 75, 0] }, { text: task.questionCount, margin: [0, 5, 0, 0] }]);
+    aptitudeTasks.forEach(t => {
+      performanceTable.push([{ svg: t.iconFile, width: 25 }, { text: t.name, margin: [0, 5, 75, 0] }, { text: this.es.evalueePortal.taskResults.find(task => task.taskId ===  t.id).correct, margin: [0, 5, 75, 0] }, { text: t.questionCount, margin: [0, 5, 0, 0] }]);
     });
 
     return performanceTable;
@@ -1051,14 +1140,24 @@ export class NewReportComponent {
     let aptitudeProfileTable = [];
 
     aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
-    aptitudeProfileTable.push(['General Learning', 134, 96, this.buildAptitudeProfileGraph(96)]);
-    aptitudeProfileTable.push(['Verbal Aptitude', 106, 62, this.buildAptitudeProfileGraph(62)]);
-    aptitudeProfileTable.push(['Numerical Aptitude', 121, 85, this.buildAptitudeProfileGraph(85)]);
-    aptitudeProfileTable.push(['Spatial Aptitude', 106, 62, this.buildAptitudeProfileGraph(62)]);
-    aptitudeProfileTable.push(['Form Perception', 68, 23, this.buildAptitudeProfileGraph(23)]);
-    aptitudeProfileTable.push(['Clerical Perception', 106, 62, this.buildAptitudeProfileGraph(62)]);
+
+    aptitudeTasks.forEach(t => {
+      aptitudeProfileTable.push([{ text: t.name }, { text: this.findScore(t.scoringMatrix, this.es.evalueePortal.taskResults.find(task => task.taskId ===  t.id).correct) }, { text: 96 }, this.buildAptitudeProfileGraph(96)]);
+    });
 
     return aptitudeProfileTable;
+  }
+
+  findScore(scoringMatrix: any, correctNum: number): number {
+    let finalScore = -1;
+
+    scoringMatrix.forEach(score => {
+      if (score[0] === correctNum) {
+        finalScore = score[1];
+      }
+    });
+
+    return finalScore;
   }
 
   buildAptitudeProfileGraph(width: number) {
