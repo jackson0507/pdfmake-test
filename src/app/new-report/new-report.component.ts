@@ -8,25 +8,9 @@ import { EvalueeService } from '../evaluee.service';
 
 
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-
-const fonts = {
-  Nunito: {
-    normal: 'https://fonts.googleapis.com/css2?family=Nunito&display=swap',
-    bold: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap',
-    italics: 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400&display=swap',
-    bolditalics: 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap'
-  },
-
-  Roboto: {
-    normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
-    bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
-    italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
-    bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
-  },
-}
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import pdfFonts from 'pdf/fonts/custom-fonts.js';
 
 @Component({
   selector: 'app-new-report',
@@ -138,13 +122,26 @@ export class NewReportComponent {
     ];
 
     const docDef = this.buildReport(tableOfContents, interestGOETable);
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+    const fonts = {
+      Nunito: {
+        normal: 'Nunito-Regular.ttf',
+        bold: 'Nunito-Bold.ttf',
+        italics: 'Nunito-Italic.ttf',
+        bolditalics: 'Nunito-BoldItalic.ttf'
+      }
+    };
+
+    pdfMake.fonts = fonts;
     pdfMake.createPdf(docDef).open();
   }
 
   buildReport(tableOfContents: any, interestGOETable: any, evalName: string = this.es.evalueePortal.fullName) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
-      header: function (currentPage) {
+      header(currentPage) {
         if (currentPage > 2) {
           return [
             {
@@ -186,11 +183,11 @@ export class NewReportComponent {
                 }
               ]
             }
-          ]
+          ];
         }
       },
       footer: this.buildFooter(),
-      background: function (currentPage) {
+      background(currentPage) {
         if (currentPage === 1) {
           return {
             canvas: [
@@ -202,7 +199,7 @@ export class NewReportComponent {
                 points: [{ x: 0, y: 750 }, { x: 550, y: 0 }, { x: 0, y: 0 }]
               }
             ]
-          }
+          };
         }
       },
       content: [
@@ -225,15 +222,15 @@ export class NewReportComponent {
         this.buildJobDescriptionTable(10),
       ],
       defaultStyle: {
-        //font: 'Nunito'
+        font: 'Nunito'
       }
-    }
+    };
 
     return docDef;
   }
 
   buildCover() {
-    var content = [];
+    const content = [];
 
     content.push({
       svg: careerScopeLogoSVGInverse,
@@ -300,7 +297,7 @@ export class NewReportComponent {
   }
 
   buildFooter() {
-    var content = [];
+    const content = [];
 
 
     content.push({
@@ -332,7 +329,7 @@ export class NewReportComponent {
   }
 
   buildTableOfContents(tableOfContents: any) {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Table of Contents',
@@ -363,12 +360,12 @@ export class NewReportComponent {
         body: tableOfContents
       },
       layout: {
-        fillColor: function (rowIndex, node, columnIndex) {
+        fillColor(rowIndex, node, columnIndex) {
           return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
         },
         defaultBorder: false,
-        paddingTop: function (i, node) { return 5; },
-        paddingBottom: function (i, node) { return 5; },
+        paddingTop(i, node) { return 5; },
+        paddingBottom(i, node) { return 5; },
       }
     });
     content.push({
@@ -382,10 +379,10 @@ export class NewReportComponent {
       layout: {
         fillColor: '#F0F0F0',
         defaultBorder: false,
-        paddingTop: function (i, node) { return 12; },
-        paddingBottom: function (i, node) { return 12; },
-        paddingLeft: function (i, node) { return 10; },
-        paddingRight: function (i, node) { return 2; },
+        paddingTop(i, node) { return 12; },
+        paddingBottom(i, node) { return 12; },
+        paddingLeft(i, node) { return 10; },
+        paddingRight(i, node) { return 2; },
       },
     });
 
@@ -393,7 +390,7 @@ export class NewReportComponent {
   }
 
   buildAssessmentSettings() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Assessment Settings',
@@ -494,10 +491,10 @@ export class NewReportComponent {
       layout: {
         fillColor: '#F0F0F0',
         defaultBorder: false,
-        paddingTop: function (i, node) { return 12; },
-        paddingBottom: function (i, node) { return 12; },
-        paddingLeft: function (i, node) { return 10; },
-        paddingRight: function (i, node) { return 2; },
+        paddingTop(i, node) { return 12; },
+        paddingBottom(i, node) { return 12; },
+        paddingLeft(i, node) { return 10; },
+        paddingRight(i, node) { return 2; },
       },
     });
 
@@ -505,7 +502,7 @@ export class NewReportComponent {
   }
 
   buildInterestInventory() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Interest Inventory',
@@ -590,9 +587,9 @@ export class NewReportComponent {
   }
 
   buildInterestInventoryTable1() {
-    var interestInventoryTable1 = [];
+    const interestInventoryTable1 = [];
 
-    var i;
+    let i;
     for (i = 0; i < interests.length / 2; i += 2) {
       interestInventoryTable1.push([
         {
@@ -628,9 +625,9 @@ export class NewReportComponent {
   }
 
   buildInterestInventoryTable2() {
-    var interestInventoryTable2 = [];
+    const interestInventoryTable2 = [];
 
-    var i;
+    let i;
     for (i = 0; i < interests.length / 2; i += 2) {
       interestInventoryTable2.push([
         {
@@ -666,7 +663,7 @@ export class NewReportComponent {
   }
 
   buildInterestAreaScores() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Interest Inventory',
@@ -730,20 +727,20 @@ export class NewReportComponent {
               this.buildInterestTopFive()
           },
           layout: {
-            fillColor: function (rowIndex, node, columnIndex) {
+            fillColor(rowIndex, node, columnIndex) {
               return (columnIndex === 9) ? '#F0F0F0' : null;
             },
             defaultBorder: false,
-            hLineColor: function (i, node) {
+            hLineColor(i, node) {
               return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
             },
-            vLineColor: function (i, node) {
+            vLineColor(i, node) {
               return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
             },
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 5; },
+            paddingBottom(i, node) { return 5; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -784,20 +781,20 @@ export class NewReportComponent {
               this.buildInterestTable()
           },
           layout: {
-            fillColor: function (rowIndex, node, columnIndex) {
+            fillColor(rowIndex, node, columnIndex) {
               return (columnIndex === 9) ? '#F0F0F0' : null;
             },
             defaultBorder: false,
-            hLineColor: function (i, node) {
+            hLineColor(i, node) {
               return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
             },
-            vLineColor: function (i, node) {
+            vLineColor(i, node) {
               return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
             },
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 5; },
+            paddingBottom(i, node) { return 5; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -809,14 +806,14 @@ export class NewReportComponent {
   }
 
   buildInterestTopFive() {
-    var interestTable = [];
+    const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
 
     interests.forEach(i => {
       const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
-      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id)
+      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
       if (evalueeScore.rank > 0) {
         interestTable.push([
           { svg: i.svgLogo, width: 20 },
@@ -837,14 +834,14 @@ export class NewReportComponent {
   }
 
   buildInterestTable() {
-    var interestTable = [];
+    const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
 
     interests.forEach(i => {
       const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
-      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id)
+      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
       interestTable.push([
         { svg: i.svgLogo, width: 20 },
         { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
@@ -863,7 +860,7 @@ export class NewReportComponent {
   }
 
   buildIndividualProfileAnalysis() {
-    var content = [];
+    const content = [];
     content.push({
       text: 'Interest Inventory',
       fontSize: 23,
@@ -918,10 +915,10 @@ export class NewReportComponent {
           },
           layout: {
             defaultBorder: false,
-            paddingTop: function (i, node) { return 2; },
-            paddingBottom: function (i, node) { return 2; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 2; },
+            paddingBottom(i, node) { return 2; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -933,7 +930,7 @@ export class NewReportComponent {
   }
 
   buildIPATable() {
-    var IPATable = [];
+    const IPATable = [];
 
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
 
@@ -951,7 +948,7 @@ export class NewReportComponent {
   }
 
   buildIPAGraphLine(width: any, color: any) {
-    var content = [];
+    const content = [];
 
     content.push({
       canvas: [
@@ -985,7 +982,7 @@ export class NewReportComponent {
   }
 
   buildPerformanceOnTasks() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Aptitude Assessment',
@@ -1034,19 +1031,19 @@ export class NewReportComponent {
               this.buildPerformanceTable()
           },
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth(i, node) {
               return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
             },
-            vLineWidth: function (i, node) {
+            vLineWidth(i, node) {
               return 0;
             },
-            hLineColor: function (i, node) {
+            hLineColor(i, node) {
               return 'gray';
             },
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 5; },
+            paddingBottom(i, node) { return 5; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -1058,7 +1055,7 @@ export class NewReportComponent {
   }
 
   buildPerformanceTable() {
-    var performanceTable = [];
+    const performanceTable = [];
 
     performanceTable.push([{ text: 'Task', color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
     aptitudeTasks.forEach(t => {
@@ -1075,7 +1072,7 @@ export class NewReportComponent {
   }
 
   buildAptitudeProfile() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Aptitude Assessment',
@@ -1117,7 +1114,7 @@ export class NewReportComponent {
           type: 'polyline',
           lineWidth: 2,
           color: '#FFD700',
-          //fillOpacity: 0.5,
+          // fillOpacity: 0.5,
           closePath: true,
           points: [{ x: 300, y: 0 }, { x: 400, y: 0 }, { x: 400, y: 250 }, { x: 300, y: 250 }]
         }
@@ -1133,19 +1130,19 @@ export class NewReportComponent {
               this.buildAptitudeProfileTable()
           },
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth(i, node) {
               return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
             },
-            vLineWidth: function (i, node) {
+            vLineWidth(i, node) {
               return 0;
             },
-            hLineColor: function (i, node) {
+            hLineColor(i, node) {
               return 'gray';
             },
-            paddingTop: function (i, node) { return 10; },
-            paddingBottom: function (i, node) { return 10; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 10; },
+            paddingBottom(i, node) { return 10; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -1158,7 +1155,7 @@ export class NewReportComponent {
   }
 
   buildAptitudeProfileTable() {
-    let aptitudeProfileTable = [];
+    const aptitudeProfileTable = [];
 
     aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
 
@@ -1187,7 +1184,7 @@ export class NewReportComponent {
   }
 
   buildAptitudeProfileGraph(width: number) {
-    var content = [];
+    const content = [];
 
     content.push({
       canvas: [
@@ -1221,7 +1218,7 @@ export class NewReportComponent {
   }
 
   buildUnscoredAptitudes() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'Aptitude Assessment',
@@ -1264,19 +1261,19 @@ export class NewReportComponent {
               ]
           },
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth(i, node) {
               return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
             },
-            vLineWidth: function (i, node) {
+            vLineWidth(i, node) {
               return 0;
             },
-            hLineColor: function (i, node) {
+            hLineColor(i, node) {
               return 'gray';
             },
-            paddingTop: function (i, node) { return 10; },
-            paddingBottom: function (i, node) { return 10; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 10; },
+            paddingBottom(i, node) { return 10; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -1290,7 +1287,7 @@ export class NewReportComponent {
   }
 
   buildGOERecommendations(interestGOETable: any) {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'GOE Recommendations',
@@ -1332,10 +1329,10 @@ export class NewReportComponent {
           },
           layout: {
             defaultBorder: false,
-            paddingTop: function (i, node) { return 5; },
-            paddingBottom: function (i, node) { return 5; },
-            paddingLeft: function (i, node) { return 5; },
-            paddingRight: function (i, node) { return 5; },
+            paddingTop(i, node) { return 5; },
+            paddingBottom(i, node) { return 5; },
+            paddingLeft(i, node) { return 5; },
+            paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
@@ -1347,7 +1344,7 @@ export class NewReportComponent {
   }
 
   buildGOEJobSection() {
-    var content = [];
+    const content = [];
 
     content.push({
       text: 'GOE Recommendations',
@@ -1377,7 +1374,7 @@ export class NewReportComponent {
   }
 
   buildJobTable(interestIndex: number) {
-    var content = [];
+    const content = [];
 
     content.push({
       columns: [
@@ -1402,9 +1399,9 @@ export class NewReportComponent {
   }
 
   buildWorkGroupTable(workgroupArea: number) {
-    var table = [];
+    const table = [];
 
-    var workgroup = this.ws.workgroups.filter(group => { return group.area === workgroupArea });
+    const workgroup = this.ws.workgroups.filter(group => group.area === workgroupArea);
 
     workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4, style: 'cellSpacing' }, '', '', '']);
@@ -1423,7 +1420,7 @@ export class NewReportComponent {
   }
 
   buildJobDescriptionTable(interestIndex: number) {
-    var content = [];
+    const content = [];
 
     content.push({
       columns: [
@@ -1442,7 +1439,7 @@ export class NewReportComponent {
           lineColor: interests[interestIndex].color,
         }
       ]
-    })
+    });
     content.push({ text: interests[interestIndex].description, margin: [0, 10, 0, 20] });
     content.push({
       table: {
@@ -1460,9 +1457,9 @@ export class NewReportComponent {
   }
 
   buildWorkGroupDescriptionTable(workgroupArea: number) {
-    var table = [];
+    const table = [];
 
-    var workgroup = this.ws.workgroups.filter(group => { return group.area === workgroupArea });
+    const workgroup = this.ws.workgroups.filter(group => group.area === workgroupArea);
 
     workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', style: 'cellSpacing' },]);
