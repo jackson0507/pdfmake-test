@@ -1,4 +1,5 @@
 export interface Interest {
+    id: number;
     interestCategory: 'Art' | 'Sci' | 'Pla' | 'Prt' | 'Mch' | 'Ind' | 'Bus' | 'Sel' | 'Acc' | 'Hum' | 'Ldi' | 'Phy';
     name: string;
     description: string;

@@ -813,18 +813,25 @@ export class NewReportComponent {
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
-    /*
-    interests.forEach(i => {
-      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: '10', margin: [0, 3, 0, 0] }, { text: '0', margin: [0, 3, 0, 0] }, { text: '4', margin: [0, 3, 0, 0] }, { text: '84', border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: '86', margin: [0, 3, 0, 0] }, { text: '83', border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: '71', margin: [0, 3, 0, 0] }, { text: 2, margin: [0, 3, 0, 0] }]);
-    });
-    */
 
-    let i;
-    for (i = 0; i < interests.length; i++) {
-      if (this.es.evalueePortal.interestScores[i].rank > 0) {
-        interestTable.push([{ svg: interests[i].svgLogo, width: 20 }, { text: interests[i].name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].like, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].unanswered, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].dislike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsMale, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].rank, margin: [0, 3, 0, 0] }]);
+    interests.forEach(i => {
+      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
+      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id)
+      if (evalueeScore.rank > 0) {
+        interestTable.push([
+          { svg: i.svgLogo, width: 20 },
+          { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
+          { text: evalueeResult.like, margin: [0, 3, 0, 0] },
+          { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
+          { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
+          { text: evalueeScore.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
+          { text: evalueeScore.vsMale, margin: [0, 3, 0, 0] },
+          { text: evalueeScore.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
+          { text: evalueeScore.percentLike, margin: [0, 3, 0, 0] },
+          { text: evalueeScore.rank, margin: [0, 3, 0, 0] }
+        ]);
       }
-    }
+    });
 
     return interestTable;
   }
@@ -834,16 +841,23 @@ export class NewReportComponent {
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
-    /*
-    interests.forEach(i => {
-      interestTable.push([{ svg: i.svgLogo, width: 20 }, { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: '10', margin: [0, 3, 0, 0] }, { text: '0', margin: [0, 3, 0, 0] }, { text: '4', margin: [0, 3, 0, 0] }, { text: '84', border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: '86', margin: [0, 3, 0, 0] }, { text: '83', border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: '71', margin: [0, 3, 0, 0] }, { text: 2, margin: [0, 3, 0, 0] }]);
-    });
-    */
 
-    let i;
-    for (i = 0; i < interests.length; i++) {
-      interestTable.push([{ svg: interests[i].svgLogo, width: 20 }, { text: interests[i].name, alignment: 'left', margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].like, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].unanswered, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestResults[i].dislike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsMale, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 3, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].rank, margin: [0, 3, 0, 0] }]);
-    }
+    interests.forEach(i => {
+      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
+      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id)
+      interestTable.push([
+        { svg: i.svgLogo, width: 20 },
+        { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
+        { text: evalueeResult.like, margin: [0, 3, 0, 0] },
+        { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
+        { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
+        { text: evalueeScore.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
+        { text: evalueeScore.vsMale, margin: [0, 3, 0, 0] },
+        { text: evalueeScore.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
+        { text: evalueeScore.percentLike, margin: [0, 3, 0, 0] },
+        { text: evalueeScore.rank, margin: [0, 3, 0, 0] }
+      ]);
+    });
 
     return interestTable;
   }
@@ -922,15 +936,16 @@ export class NewReportComponent {
     var IPATable = [];
 
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
-    /*
+
     interests.forEach(i => {
-      IPATable.push([{ svg: i.svgLogo, width: 25 }, { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] }, { text: i.plikes, margin: [0, 5, 0, 0] }, this.buildIPAGraphLine(i.plikes, i.color)]);
+      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
+      IPATable.push([
+        { svg: i.svgLogo, width: 25 },
+        { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] },
+        { text: evalueeScore.percentLike, margin: [0, 5, 0, 0] },
+        this.buildIPAGraphLine(evalueeScore.percentLike, i.color)
+      ]);
     });
-    */
-    let i;
-    for (i = 0; i < interests.length; i++) {
-      IPATable.push([{ svg: interests[i].svgLogo, width: 25 }, { text: interests[i].name, alignment: 'left', margin: [0, 5, 0, 0] }, { text: this.es.evalueePortal.interestScores[i].percentLike, margin: [0, 5, 0, 0] }, this.buildIPAGraphLine(this.es.evalueePortal.interestScores[i].percentLike, interests[i].color)]);
-    }
 
     return IPATable;
   }
@@ -1047,7 +1062,13 @@ export class NewReportComponent {
 
     performanceTable.push([{ text: 'Task', color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
     aptitudeTasks.forEach(t => {
-      performanceTable.push([{ svg: t.iconFile, width: 25 }, { text: t.name, margin: [0, 5, 75, 0] }, { text: this.es.evalueePortal.taskResults.find(task => task.taskId ===  t.id).correct, margin: [0, 5, 75, 0] }, { text: t.questionCount, margin: [0, 5, 0, 0] }]);
+      const evalueeResult = this.es.evalueePortal.taskResults.find(task => task.taskId === t.id);
+      performanceTable.push([
+        { svg: t.iconFile, width: 25 },
+        { text: t.name, margin: [0, 5, 75, 0] },
+        { text: evalueeResult.correct, margin: [0, 5, 75, 0] },
+        { text: t.questionCount, margin: [0, 5, 0, 0] }
+      ]);
     });
 
     return performanceTable;
@@ -1142,7 +1163,12 @@ export class NewReportComponent {
     aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
 
     aptitudeTasks.forEach(t => {
-      aptitudeProfileTable.push([{ text: t.name }, { text: this.findScore(t.scoringMatrix, this.es.evalueePortal.taskResults.find(task => task.taskId ===  t.id).correct) }, { text: 96 }, this.buildAptitudeProfileGraph(96)]);
+      const evalueeResult = this.es.evalueePortal.taskResults.find(task => task.taskId === t.id);
+      aptitudeProfileTable.push([
+        { text: t.name },
+        { text: this.findScore(t.scoringMatrix, evalueeResult.correct) },
+        { text: 96 }, this.buildAptitudeProfileGraph(96)
+      ]);
     });
 
     return aptitudeProfileTable;

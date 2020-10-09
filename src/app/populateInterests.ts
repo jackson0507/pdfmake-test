@@ -4,6 +4,7 @@ import { artisticIcon, scientificIcon, plantsIcon, protectIcon, mechanicalIcon, 
 
 export const interests: Interest[] = [
     {
+        id: 1,
         interestCategory: 'Art',
         name: 'Artistic',
         description: 'An interest in the creative expression of feelings or ideas.',
@@ -17,6 +18,7 @@ export const interests: Interest[] = [
         plikes: 33
     },
     {
+        id: 2,
         interestCategory: 'Sci',
         name: 'Scientific',
         description: 'An interest in discovering, collecting, and analyzing information about the natural world, and in applying scientific research findings to problems in medicine, the life sciences, and the natural sciences.',
@@ -30,6 +32,7 @@ export const interests: Interest[] = [
         plikes: 93
     },
     {
+        id: 3,
         interestCategory: 'Pla',
         name: 'Plants/Animals',
         description: 'An interest in working with plants and animals, usually outdoors.',
@@ -43,6 +46,7 @@ export const interests: Interest[] = [
         plikes: 31
     },
     {
+        id: 4,
         interestCategory: 'Prt',
         name: 'Protective',
         description: 'An interest in using authority to protect people and property.',
@@ -56,6 +60,7 @@ export const interests: Interest[] = [
         plikes: 62
     },
     {
+        id: 5,
         interestCategory: 'Mch',
         name: 'Mechanical',
         description: 'An interest in applying mechanical principles to practical situations by use of machines or hand tools.',
@@ -69,6 +74,7 @@ export const interests: Interest[] = [
         plikes: 7
     },
     {
+        id: 6,
         interestCategory: 'Ind',
         name: 'Industrial',
         description: 'An interest in repetitive, concrete, organized activities done in a factory setting.',
@@ -82,6 +88,7 @@ export const interests: Interest[] = [
         plikes: 62
     },
     {
+        id: 7,
         interestCategory: 'Bus',
         name: 'Business Detail',
         description: 'An interest in organized, clearly defined activities requiring accuracy and attention to details, primarily in an office setting.',
@@ -95,6 +102,7 @@ export const interests: Interest[] = [
         plikes: 94
     },
     {
+        id: 8,
         interestCategory: 'Sel',
         name: 'Selling',
         description: 'An interest in bringing others to a particular point of view by personal persuasion, using sales and promotional techniques.',
@@ -108,6 +116,7 @@ export const interests: Interest[] = [
         plikes: 80
     },
     {
+        id: 9,
         interestCategory: 'Acc',
         name: 'Accommodating',
         description: 'An interest in catering to the wishes and needs of others, usually on a one-to-one basis.',
@@ -121,6 +130,7 @@ export const interests: Interest[] = [
         plikes: 60
     },
     {
+        id: 10,
         interestCategory: 'Hum',
         name: 'Humanitarian',
         description: 'An interest in helping others with their mental, spiritual, social, physical, or vocational needs.',
@@ -134,6 +144,7 @@ export const interests: Interest[] = [
         plikes: 21
     },
     {
+        id: 11,
         interestCategory: 'Ldi',
         name: 'Leading/Influencing',
         description: 'An interest in leading and influencing others by using high-level verbal or numerical abilities.',
@@ -147,6 +158,7 @@ export const interests: Interest[] = [
         plikes: 81
     },
     {
+        id: 12,
         interestCategory: 'Phy',
         name: 'Physical Performing',
         description: 'An interest in physical activities performed before an audience, such as sports or daring physical feats.',
