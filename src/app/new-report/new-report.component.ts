@@ -369,7 +369,7 @@ export class NewReportComponent {
       }
     });
     content.push({
-      margin: [0, 325, 0, 0],
+      margin: [0, 275, 0, 0],
       table: {
         widths: [150],
         body: [
@@ -481,7 +481,7 @@ export class NewReportComponent {
       ]
     });
     content.push({
-      margin: [0, 200, 0, 0],
+      margin: [0, 150, 0, 0],
       table: {
         widths: [150],
         body: [
@@ -540,7 +540,7 @@ export class NewReportComponent {
       ]
     });
     content.push({
-      margin: [0, 30, 0, 0],
+      margin: [0, 10, 0, 0],
       table: {
         body: this.buildInterestInventoryTable1()
       },
