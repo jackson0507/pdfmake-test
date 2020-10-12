@@ -1073,6 +1073,7 @@ export class NewReportComponent {
 
   buildAptitudeProfile() {
     const content = [];
+    const averageRangeHeight = 300;
 
     content.push({
       text: 'Aptitude Assessment',
@@ -1116,7 +1117,7 @@ export class NewReportComponent {
           color: '#FFD700',
           // fillOpacity: 0.5,
           closePath: true,
-          points: [{ x: 300, y: 0 }, { x: 400, y: 0 }, { x: 400, y: 250 }, { x: 300, y: 250 }]
+          points: [{ x: 300, y: 0 }, { x: 420, y: 0 }, { x: 420, y: averageRangeHeight }, { x: 300, y: averageRangeHeight }]
         }
       ]
     });
@@ -1147,7 +1148,7 @@ export class NewReportComponent {
         },
         { width: '*', text: '' },
       ],
-      margin: [0, -250, 0, 0],
+      margin: [0, -averageRangeHeight - 5, 0, 0],
       pageBreak: 'after'
     });
 
@@ -1462,7 +1463,7 @@ export class NewReportComponent {
     const workgroup = this.ws.workgroups.filter(group => group.area === workgroupArea);
 
     workgroup.forEach(group => {
-      table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', style: 'cellSpacing' },]);
+      table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', style: 'cellSpacing' }, ]);
       table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12 }]);
       table.push([{ text: group.description, fontSize: 10 }]);
       table.push(['']);
