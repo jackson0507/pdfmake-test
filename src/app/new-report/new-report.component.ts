@@ -330,11 +330,11 @@ export class NewReportComponent {
 
   }
 
-  buildTableOfContents(tableOfContents: any) {
-    const content = [];
+  buildPageHeader(title: string) {
+    const content  = [];
 
     content.push({
-      text: 'Table of Contents',
+      text: title,
       fontSize: 23,
       color: '#0F4C81'
     });
@@ -356,6 +356,14 @@ export class NewReportComponent {
         }
       ]
     });
+
+    return content;
+  }
+
+  buildTableOfContents(tableOfContents: any) {
+    const content = [];
+
+    content.push(this.buildPageHeader('Table Of Contents'));
     content.push({
       margin: [0, 30, 0, 0],
       table: {
@@ -394,29 +402,7 @@ export class NewReportComponent {
   buildAssessmentSettings() {
     const content = [];
 
-    content.push({
-      text: 'Assessment Settings',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Assessment Settings'));
     content.push(
       { text: 'Audio Instructions', fontSize: 12, margin: [0, 60, 0, 12.5] },
       { text: 'Audio delivery enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
@@ -506,29 +492,7 @@ export class NewReportComponent {
   buildInterestInventory() {
     const content = [];
 
-    content.push({
-      text: 'Interest Inventory',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Interest Inventory'));
     content.push({
       margin: [0, 40, 0, 0],
       columns: [
@@ -551,29 +515,7 @@ export class NewReportComponent {
       },
       pageBreak: 'after'
     });
-    content.push({
-      text: 'Interest Inventory',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Interest Inventory'));
     content.push({
       margin: [0, 30, 0, 0],
       table: {
@@ -667,29 +609,7 @@ export class NewReportComponent {
   buildInterestAreaScores() {
     const content = [];
 
-    content.push({
-      text: 'Interest Inventory',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Interest Inventory'));
     content.push({
       margin: [0, 40, 0, 0],
       columns: [
@@ -749,29 +669,7 @@ export class NewReportComponent {
       ],
       pageBreak: 'after'
     });
-    content.push({
-      text: 'Interest Inventory',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Interest Inventory'));
     content.push({ text: 'Your Interest Results', fontSize: 12, margin: [0, 40, 0, 10] });
     content.push({
       columns: [
@@ -863,29 +761,7 @@ export class NewReportComponent {
 
   buildIndividualProfileAnalysis() {
     const content = [];
-    content.push({
-      text: 'Interest Inventory',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Interest Inventory'));
     content.push({
       margin: [0, 40, 0, 40],
       columns: [
@@ -986,29 +862,7 @@ export class NewReportComponent {
   buildPerformanceOnTasks() {
     const content = [];
 
-    content.push({
-      text: 'Aptitude Assessment',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Aptitude Assessment'));
     content.push({
       margin: [0, 40, 0, 60],
       columns: [
@@ -1077,29 +931,7 @@ export class NewReportComponent {
     const content = [];
     const averageRangeHeight = 300;
 
-    content.push({
-      text: 'Aptitude Assessment',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Aptitude Assessment'));
     content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10] });
     content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
     content.push({ text: 'Consider this:', fontSize: 10, margin: [0, 0, 0, 10] });
@@ -1212,29 +1044,7 @@ export class NewReportComponent {
   buildUnscoredAptitudes() {
     const content = [];
 
-    content.push({
-      text: 'Aptitude Assessment',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('Aptitude Assessment'));
     content.push({ text: 'Unscored Aptitudes', fontSize: 12, margin: [0, 40, 0, 20] });
     content.push({ text: 'Your aptitude profile may include aptitudes that can not be calculated via online exercises.', fontSize: 10, margin: [0, 0, 0, 10] });
     content.push({ text: 'Those aptitudes may include:', fontSize: 10 });
@@ -1281,29 +1091,7 @@ export class NewReportComponent {
   buildGOERecommendations(interestGOETable: any) {
     const content = [];
 
-    content.push({
-      text: 'GOE Recommendations',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('GOE Recommendations'));
     content.push({ text: 'Introduction', fontSize: 12, margin: [0, 40, 0, 10] });
     content.push({ text: 'Occupations have been divided into twelve Interest Areas as described in the Guide for Occupational Exploration (GOE) and elsewhere. The Guide for Occupational Exploration further subdivides the Interest Areas into Work Groups, based upon aptitude score requirements. Occupations that belong to the same Work Group require similar interests and similar aptitudes.', fontSize: 10 });
     content.push({ text: 'Understanding Your Report', fontSize: 12, margin: [0, 40, 0, 10] });
@@ -1338,29 +1126,7 @@ export class NewReportComponent {
   buildGOEJobSection() {
     const content = [];
 
-    content.push({
-      text: 'GOE Recommendations',
-      fontSize: 23,
-      color: '#0F4C81'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -40, y1: 6,
-          x2: 240, y2: 6,
-          lineWidth: 3,
-          lineColor: '#0F4C81',
-        },
-        {
-          type: 'polyline',
-          lineWidth: 2,
-          color: '#0F4C81',
-          closePath: true,
-          points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
-        }
-      ]
-    });
+    content.push(this.buildPageHeader('GOE Recommendations'));
 
     return content;
   }
