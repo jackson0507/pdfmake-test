@@ -1,6 +1,5 @@
 import { Interest } from './interests.model';
-import { artisticIcon, scientificIcon, plantsIcon, protectIcon, mechanicalIcon, industrialIcon, businessIcon, sellingIcon, accommodatingIcon, humanitarianIcon, leadingIcon, physicalIcon } from './svg';
-
+import { artisticIcon, scientificIcon, plantsIcon, protectIcon, mechanicalIcon, industrialIcon, businessIcon, sellingIcon, accommodatingIcon, humanitarianIcon, leadingIcon, physicalIcon, artisticPillIcon, scientificPillIcon, plantsPillIcon, protectPillIcon, mechanicalPillIcon, industrialPillIcon, businessPillIcon, sellingPillIcon, accommodatingPillIcon, humanitarianPillIcon, leadingPillIcon, physicalPillIcon  } from './svg';
 
 export const interests: Interest[] = [
     {
@@ -11,6 +10,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Writer, Painter, Actor, Editor, Dancer, Singer, Graphic Designer, Set Designer',
         color: '#ee509c',
         svgLogo: artisticIcon,
+        pillLogo: artisticPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [9, 24, 35, 43, 49, 57, 64, 71, 75, 79, 84, 90, 93, 96, 99]
@@ -25,6 +25,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Physician, Audiologist, Veterinarian, Biologist, Chemist, Speech Pathologist, Laboratory Technician',
         color: '#82c55b',
         svgLogo: scientificIcon,
+        pillLogo: scientificPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [14, 32, 42, 49, 56, 62, 69, 76, 79, 82, 85, 89, 94, 99, null]
@@ -39,6 +40,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Gardener, Animal Groomer, Landscaper, Forester, Animal Caretaker',
         color: '#00a88e',
         svgLogo: plantsIcon,
+        pillLogo: plantsPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [14,35,47,56,65,73,80,86,90,93,96,99,null,null,null]
@@ -53,6 +55,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Police Officer, Private Investigator, Security Guard, Bodyguard, Park Ranger, Correctional Officer',
         color: '#2b3c73',
         svgLogo: protectIcon,
+        pillLogo: protectPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [11,30,41,51,59,66,74,81,86,91,93,96,99,null,null]
@@ -67,6 +70,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Electrical Engineer, Architect, Carpenter, Chef, Mechanic, Ambulance Driver, Project Engineer, Computer Equipment Repairer',
         color: '#9676b5',
         svgLogo: mechanicalIcon,
+        pillLogo: mechanicalPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [13,31,42,51,58,64,72,79,84,88,90,94,97,null,null]
@@ -81,6 +85,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Machinist, Dry Cleaner, Baker, Welder, Laborer, Lathe Operator, Hand Packager',
         color: '#9aa2ae',
         svgLogo: industrialIcon,
+        pillLogo: industrialPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [19,47,61,70,75,80,84,87,90,93,95,97,99,null,null]
@@ -95,6 +100,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Bill Collector, Secretary, Receptionist, Customer Service Representative, Health Information Technician',
         color: '#006fba',
         svgLogo: businessIcon,
+        pillLogo: businessPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [11,26,36,42,50,57,63,69,74,79,86,92,97,null,null]
@@ -109,6 +115,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Sales Representative, Stadium Vendor, Clothing Salesperson, Telephone Solicitor, Financial Planner',
         color: '#005c27',
         svgLogo: sellingIcon,
+        pillLogo: sellingPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [12,33,47,60,68,74,80,86,90,95,98,null,null,null,null]
@@ -123,6 +130,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Manicurist, Restaurant Host, Waiter, Waitress, Personal Shopper, Flight Attendant',
         color: '#7d002e',
         svgLogo: accommodatingIcon,
+        pillLogo: accommodatingPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [12,30,45,56,66,76,84,90,93,96,98,null,null,null,null]
@@ -137,6 +145,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Home Care Aide, Physical Therapist, Nurse, Medical Assistant, Child Care Worker, Dental Hygienist, Counselor, Probation Officer',
         color: '#69489d',
         svgLogo: humanitarianIcon,
+        pillLogo: humanitarianPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [14,29,39,48,54,61,67,72,78,84,88,94,null,null,null]
@@ -151,6 +160,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Database Administrator, Paralegal, Teacher, Computer Engineer, Lawyer, Stock Broker, Computer Programmer',
         color: '#deb407',
         svgLogo: leadingIcon,
+        pillLogo: leadingPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [7,18,26,35,45,54,60,68,74,77,82,86,91,96,99]
@@ -165,6 +175,7 @@ export const interests: Interest[] = [
         exampleProfessions: 'Athlete, Coach, Movie Stunt Performer, Juggler, Sports Instructor',
         color: '#00aeef',
         svgLogo: physicalIcon,
+        pillLogo: physicalPillIcon,
         scoring: [{
             type: 'T',
             percentiles: [15,40,55,66,76,84,88,92,95,97,99,null,null,null,null]

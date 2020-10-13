@@ -6,6 +6,7 @@ export interface Interest {
     exampleProfessions: string;
     color: string;
     svgLogo: string;
+    pillLogo: string;
     scoring: InterestScorePercentiles[];
     plikes?: number; // Unsure what this is
     likes?: number;
