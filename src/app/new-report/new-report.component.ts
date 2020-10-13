@@ -158,9 +158,7 @@ export class NewReportComponent {
         this.buildUnscoredAptitudes(),
         this.buildGOERecommendations(),
         this.buildJobTables(),
-        this.buildJobDescriptionTable(0),
-        this.buildJobDescriptionTable(8),
-        this.buildJobDescriptionTable(10),
+        this.buildJobDescriptionTables()
       ],
       defaultStyle: {
         font: 'Nunito'
@@ -1185,38 +1183,42 @@ export class NewReportComponent {
     return table;
   }
 
-  buildJobDescriptionTable(interestIndex: number) {
+  buildJobDescriptionTables() {
     const content = [];
 
-    content.push({
-      columns: [
-        { text: 'Interest Area ' + (interestIndex >= 9 ? (interestIndex + 1) : '0' + (interestIndex + 1)) + ' - ' + interests[interestIndex].name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
-        { svg: interests[interestIndex].svgLogo, width: 25, margin: [0, 35, 0, 0] }
-      ],
-      pageBreak: 'before'
-    });
-    content.push({
-      canvas: [
-        {
-          type: 'line',
-          x1: -5, y1: 0,
-          x2: 520, y2: 0,
-          lineWidth: 1,
-          lineColor: interests[interestIndex].color,
+    const topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
+
+    topInterests.forEach(i => {
+      const interest = interests.find(interest => interest.id === i.interestId);
+
+      content.push({
+        columns: [
+          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
+          { svg: interest.svgLogo, width: 25, margin: [0, 35, 0, 0] }
+        ]
+      });
+      content.push({
+        canvas: [
+          {
+            type: 'line',
+            x1: -5, y1: 0,
+            x2: 520, y2: 0,
+            lineWidth: 1,
+            lineColor: interest.color,
+          }
+        ]
+      });
+      content.push({
+        table: {
+          body: this.buildWorkGroupDescriptionTable(i.interestId)
+        },
+        layout: {
+          defaultBorder: false
+        },
+        style: {
+          cellSpacing: { margin: [0, 20, 0, 0] }
         }
-      ]
-    });
-    content.push({ text: interests[interestIndex].description, margin: [0, 10, 0, 20] });
-    content.push({
-      table: {
-        body: this.buildWorkGroupDescriptionTable(interestIndex + 1)
-      },
-      layout: {
-        defaultBorder: false
-      },
-      style: {
-        cellSpacing: { margin: [0, 20, 0, 0] }
-      }
+      });
     });
 
     return content;
