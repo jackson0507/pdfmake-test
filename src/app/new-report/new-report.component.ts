@@ -5,6 +5,7 @@ import { workgroups } from '../populateWorkgroups';
 import { WorkgroupsService } from '../workgroups.service';
 import { aptitudeTasks } from '../populateAptitudes';
 import { EvalueeService } from '../evaluee.service';
+import { AptitudeService } from '../aptitude.service';
 
 
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -21,7 +22,8 @@ export class NewReportComponent {
 
   constructor(
     private ws: WorkgroupsService,
-    private es: EvalueeService
+    private es: EvalueeService,
+    private as: AptitudeService,
   ) {
     es.loadEvaluee('2C7gl1C9dmWPwaMIvRAgAwIQrhA3');
     es.loadRegister('85zTOc8KSwi0iB9mroGz');
@@ -1117,7 +1119,7 @@ export class NewReportComponent {
           color: '#FFD700',
           // fillOpacity: 0.5,
           closePath: true,
-          points: [{ x: 300, y: 0 }, { x: 420, y: 0 }, { x: 420, y: averageRangeHeight }, { x: 300, y: averageRangeHeight }]
+          points: [{ x: 305, y: 0 }, { x: 400, y: 0 }, { x: 400, y: averageRangeHeight }, { x: 310, y: averageRangeHeight }]
         }
       ]
     });
@@ -1157,31 +1159,20 @@ export class NewReportComponent {
 
   buildAptitudeProfileTable() {
     const aptitudeProfileTable = [];
+    this.as.tally();
 
     aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
 
-    aptitudeTasks.forEach(t => {
-      const evalueeResult = this.es.evalueePortal.taskResults.find(task => task.taskId === t.id);
+    this.as.aptitudes.forEach(a => {
       aptitudeProfileTable.push([
-        { text: t.name },
-        { text: this.findScore(t.scoringMatrix, evalueeResult.correct) },
-        { text: 96 }, this.buildAptitudeProfileGraph(96)
+        { text: a.name },
+        { text: a.score },
+        { text: a.percentile }, 
+        this.buildAptitudeProfileGraph(a.percentile)
       ]);
     });
 
     return aptitudeProfileTable;
-  }
-
-  findScore(scoringMatrix: any, correctNum: number): number {
-    let finalScore = -1;
-
-    scoringMatrix.forEach(score => {
-      if (score[0] === correctNum) {
-        finalScore = score[1];
-      }
-    });
-
-    return finalScore;
   }
 
   buildAptitudeProfileGraph(width: number) {
