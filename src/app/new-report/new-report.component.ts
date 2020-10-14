@@ -685,11 +685,45 @@ export class NewReportComponent {
     return content;
   }
 
+  sortInterests(a, b) {
+    if ( a.rank < b.rank ) {
+      return -1;
+    }
+    if ( a.rank > b.rank ) {
+      return 1;
+    }
+    return 0;
+  }
+
   buildInterestTopFive() {
     const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
+
+    const sortedInterests = this.es.evalueePortal.interestScores.sort(this.sortInterests);
+
+    sortedInterests.forEach(i => {
+      const interest = interests.find(interest => interest.id === i.interestId);
+      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.interestId);
+
+      if (i.rank > 0) {
+        interestTable.push([
+          { svg: interest.svgLogo, width: 20 },
+          { text: interest.name, alignment: 'left', margin: [0, 3, 0, 0] },
+          { text: evalueeResult.like, margin: [0, 3, 0, 0] },
+          { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
+          { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
+          { text: i.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
+          { text: i.vsMale, margin: [0, 3, 0, 0] },
+          { text: i.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
+          { text: i.percentLike, margin: [0, 3, 0, 0] },
+          { text: i.rank, margin: [0, 3, 0, 0] }
+        ]);
+      }
+    });
+
+    /*
 
     interests.forEach(i => {
       const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
@@ -709,6 +743,8 @@ export class NewReportComponent {
         ]);
       }
     });
+
+    */
 
     return interestTable;
   }
@@ -1121,7 +1157,7 @@ export class NewReportComponent {
           stack: [
             { svg: interests.find(interest => interest.id === topInterests[i].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
             { text: 'The GOE identifies this as Interest Area ' + (topInterests[i].interestId > 9 ? topInterests[i].interestId : '0' + topInterests[i].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: '6 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { text: this.ws.workgroups.filter(group => group.area === topInterests[i].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
             {
               canvas: [
@@ -1148,7 +1184,7 @@ export class NewReportComponent {
           stack: [
             { svg: interests.find(interest => interest.id === topInterests[i + 1].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
             { text: 'The GOE identifies this as Interest Area ' + (topInterests[i + 1].interestId > 9 ? topInterests[i + 1].interestId : '0' + topInterests[i + 1].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: '3 Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { text: this.ws.workgroups.filter(group => group.area === topInterests[i + 1].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
             {
               canvas: [
