@@ -149,6 +149,7 @@ export class NewReportComponent {
       content: [
         this.buildCover(),
         this.buildTableOfContents(tableOfContents),
+        this.buildTOC(),
         this.buildAssessmentSettings(),
         this.buildInterestInventory(),
         this.buildInterestAreaScores(),
@@ -267,14 +268,24 @@ export class NewReportComponent {
 
   }
 
-  buildPageHeader(title: string) {
+  buildPageHeader(title: string, tocItem: boolean) {
     const content = [];
 
-    content.push({
-      text: title,
-      fontSize: 23,
-      color: '#0F4C81'
-    });
+    if (tocItem) {
+      content.push({
+        text: title,
+        fontSize: 23,
+        color: '#0F4C81',
+        tocItem: true,
+        tocStyle: { color: '#0F4C81' }
+      });
+    } else {
+      content.push({
+        text: title,
+        fontSize: 23,
+        color: '#0F4C81'
+      });
+    }
     content.push({
       canvas: [
         {
@@ -300,7 +311,7 @@ export class NewReportComponent {
   buildTableOfContents(tableOfContents: any) {
     const content = [];
 
-    content.push(this.buildPageHeader('Table Of Contents'));
+    content.push(this.buildPageHeader('Table Of Contents', false));
     content.push({
       margin: [0, 30, 0, 0],
       table: {
@@ -336,10 +347,42 @@ export class NewReportComponent {
     return content;
   }
 
+  buildTOC() {
+    const content = [];
+
+    content.push(this.buildPageHeader('Table Of Contents', false));
+    content.push({
+      toc: {
+        title: { text: '' }
+      },
+      margin: [0, 20, 0, 0]
+    });
+    content.push({
+      margin: [0, 275, 0, 0],
+      table: {
+        widths: [150],
+        body: [
+          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
+        ]
+      },
+      layout: {
+        fillColor: '#F0F0F0',
+        defaultBorder: false,
+        paddingTop(i, node) { return 12; },
+        paddingBottom(i, node) { return 12; },
+        paddingLeft(i, node) { return 10; },
+        paddingRight(i, node) { return 2; },
+      },
+      pageBreak: 'after'
+    });
+
+    return content;
+  }
+
   buildAssessmentSettings() {
     const content = [];
 
-    content.push(this.buildPageHeader('Assessment Settings'));
+    content.push(this.buildPageHeader('Assessment Settings', true));
     content.push(
       { text: 'Audio Instructions', fontSize: 12, margin: [0, 60, 0, 12.5] },
       { text: 'Audio delivery enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
@@ -429,7 +472,7 @@ export class NewReportComponent {
   buildInterestInventory() {
     const content = [];
 
-    content.push(this.buildPageHeader('Interest Inventory'));
+    content.push(this.buildPageHeader('Interest Inventory', true));
     content.push({
       margin: [0, 40, 0, 0],
       columns: [
@@ -452,7 +495,7 @@ export class NewReportComponent {
       },
       pageBreak: 'after'
     });
-    content.push(this.buildPageHeader('Interest Inventory'));
+    content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({
       margin: [0, 30, 0, 0],
       table: {
@@ -546,14 +589,14 @@ export class NewReportComponent {
   buildInterestAreaScores() {
     const content = [];
 
-    content.push(this.buildPageHeader('Interest Inventory'));
+    content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({
       margin: [0, 40, 0, 0],
       columns: [
         {
           width: 300,
           stack: [
-            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10] },
+            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
             { text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area.', fontSize: 10, margin: [0, 0, 0, 10] },
             {
@@ -606,7 +649,7 @@ export class NewReportComponent {
       ],
       pageBreak: 'after'
     });
-    content.push(this.buildPageHeader('Interest Inventory'));
+    content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({ text: 'Your Interest Results', fontSize: 12, margin: [0, 40, 0, 10] });
     content.push({
       columns: [
@@ -698,14 +741,14 @@ export class NewReportComponent {
 
   buildIndividualProfileAnalysis() {
     const content = [];
-    content.push(this.buildPageHeader('Interest Inventory'));
+    content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({
       margin: [0, 40, 0, 40],
       columns: [
         {
           width: 350,
           stack: [
-            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10] },
+            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
             { text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'The dark vertical line in the chart is your average percentage of “LIKE” responses (XX%) across all twelve Interest Areas.', fontSize: 10 },
           ]
@@ -799,14 +842,14 @@ export class NewReportComponent {
   buildPerformanceOnTasks() {
     const content = [];
 
-    content.push(this.buildPageHeader('Aptitude Assessment'));
+    content.push(this.buildPageHeader('Aptitude Assessment', true));
     content.push({
       margin: [0, 40, 0, 60],
       columns: [
         {
           width: 350,
           stack: [
-            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10] },
+            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
             { text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] }
           ]
         },
@@ -868,8 +911,8 @@ export class NewReportComponent {
     const content = [];
     const averageRangeHeight = 300;
 
-    content.push(this.buildPageHeader('Aptitude Assessment'));
-    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10] });
+    content.push(this.buildPageHeader('Aptitude Assessment', false));
+    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } });
     content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
     content.push({ text: 'Consider this:', fontSize: 10, margin: [0, 0, 0, 10] });
     content.push({
@@ -981,7 +1024,7 @@ export class NewReportComponent {
   buildUnscoredAptitudes() {
     const content = [];
 
-    content.push(this.buildPageHeader('Aptitude Assessment'));
+    content.push(this.buildPageHeader('Aptitude Assessment', false));
     content.push({ text: 'Unscored Aptitudes', fontSize: 12, margin: [0, 40, 0, 20] });
     content.push({ text: 'Your aptitude profile may include aptitudes that can not be calculated via online exercises.', fontSize: 10, margin: [0, 0, 0, 10] });
     content.push({ text: 'Those aptitudes may include:', fontSize: 10 });
@@ -1028,7 +1071,7 @@ export class NewReportComponent {
   buildGOERecommendations() {
     const content = [];
 
-    content.push(this.buildPageHeader('GOE Recommendations'));
+    content.push(this.buildPageHeader('GOE Recommendations', true));
     content.push({ text: 'Introduction', fontSize: 12, margin: [0, 40, 0, 10] });
     content.push({ text: 'Occupations have been divided into twelve Interest Areas as described in the Guide for Occupational Exploration (GOE) and elsewhere. The Guide for Occupational Exploration further subdivides the Interest Areas into Work Groups, based upon aptitude score requirements. Occupations that belong to the same Work Group require similar interests and similar aptitudes.', fontSize: 10 });
     content.push({ text: 'Understanding Your Report', fontSize: 12, margin: [0, 40, 0, 10] });
@@ -1131,7 +1174,7 @@ export class NewReportComponent {
   buildJobTables() {
     const content = [];
 
-    content.push(this.buildPageHeader('GOE Recommendations'));
+    content.push(this.buildPageHeader('GOE Recommendations', false));
 
     const topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
 
