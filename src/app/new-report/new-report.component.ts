@@ -740,6 +740,12 @@ export class NewReportComponent {
   }
 
   buildIndividualProfileAnalysis() {
+    let evalPercentLikeAvg = 0;
+    interests.forEach(i => {
+      evalPercentLikeAvg += this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id).percentLike;
+    });
+    evalPercentLikeAvg = evalPercentLikeAvg / interests.length;
+
     const content = [];
     content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({
@@ -769,7 +775,7 @@ export class NewReportComponent {
           width: 'auto',
           table: {
             body:
-              this.buildIPATable()
+              this.buildIPATable(evalPercentLikeAvg)
           },
           layout: {
             defaultBorder: false,
@@ -787,7 +793,7 @@ export class NewReportComponent {
     return content;
   }
 
-  buildIPATable() {
+  buildIPATable(percentLikeAvg: number) {
     const IPATable = [];
 
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
@@ -798,14 +804,14 @@ export class NewReportComponent {
         { svg: i.svgLogo, width: 25 },
         { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] },
         { text: evalueeScore.percentLike, margin: [0, 5, 0, 0] },
-        this.buildIPAGraphLine(evalueeScore.percentLike, i.color)
+        this.buildIPAGraphLine(evalueeScore.percentLike, i.color, percentLikeAvg)
       ]);
     });
 
     return IPATable;
   }
 
-  buildIPAGraphLine(width: any, color: any) {
+  buildIPAGraphLine(width: any, color: any, percentLikeAvg: number) {
     const content = [];
 
     content.push({
@@ -826,8 +832,8 @@ export class NewReportComponent {
         },
         {
           type: 'line',
-          x1: 104, y1: -20,
-          x2: 104, y2: 25,
+          x1: (percentLikeAvg * 2.5), y1: -20,
+          x2: (percentLikeAvg * 2.5), y2: 25,
           lineWidth: 1,
           lineColor: 'black'
         },
