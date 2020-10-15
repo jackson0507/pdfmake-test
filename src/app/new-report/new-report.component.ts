@@ -19,6 +19,8 @@ import pdfFonts from 'pdf/fonts/custom-fonts.js';
 })
 export class NewReportComponent {
 
+  topInterests : any;
+
   constructor(
     private ws: WorkgroupsService,
     private es: EvalueeService,
@@ -64,6 +66,9 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the GOE/DOT', color: '#0F4C81' }, { text: 'Pg 10', color: '#0F4C81' }],
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
+
+    this.topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
+    this.topInterests.sort(this.sortInterests);
 
     const docDef = this.buildReport(tableOfContents);
 
@@ -638,7 +643,7 @@ export class NewReportComponent {
           width: 'auto',
           table: {
             body:
-              this.buildInterestTopFive()
+              this.buildTopInterestTable()
           },
           layout: {
             fillColor(rowIndex, node, columnIndex) {
@@ -707,15 +712,13 @@ export class NewReportComponent {
     return 0;
   }
 
-  buildInterestTopFive() {
+  buildTopInterestTable() {
     const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
 
-    const sortedInterests = this.es.evalueePortal.interestScores.sort(this.sortInterests);
-
-    sortedInterests.forEach(i => {
+    this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
       const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.interestId);
 
@@ -734,29 +737,6 @@ export class NewReportComponent {
         ]);
       }
     });
-
-    /*
-
-    interests.forEach(i => {
-      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
-      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
-      if (evalueeScore.rank > 0) {
-        interestTable.push([
-          { svg: i.svgLogo, width: 20 },
-          { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
-          { text: evalueeResult.like, margin: [0, 3, 0, 0] },
-          { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
-          { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
-          { text: evalueeScore.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
-          { text: evalueeScore.vsMale, margin: [0, 3, 0, 0] },
-          { text: evalueeScore.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
-          { text: evalueeScore.percentLike, margin: [0, 3, 0, 0] },
-          { text: evalueeScore.rank, margin: [0, 3, 0, 0] }
-        ]);
-      }
-    });
-
-    */
 
     return interestTable;
   }
@@ -810,7 +790,7 @@ export class NewReportComponent {
         {
           stack: [
             { svg: jellyBeanBackground, width: 175 },
-            { text: 'CareerScope has identified 5 Interest Areas that stand out significantly above your average level of interest!', fontSize: 10, margin: [15, -95, 0, 0], lineHeight: 1.25 }
+            { text: 'CareerScope has identified ' + this.topInterests.length + ' Interest Areas that stand out significantly above your average level of interest!', fontSize: 10, margin: [15, -95, 0, 0], lineHeight: 1.25 }
           ],
           width: 150
         }
@@ -1160,16 +1140,14 @@ export class NewReportComponent {
   buildInterestGOETable() {
     const interestGOETable = [];
 
-    const topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
-
     let i;
-    for (i = 0; i < topInterests.length; i += 2) {
+    for (i = 0; i < this.topInterests.length; i += 2) {
       interestGOETable.push([
         {
           stack: [
-            { svg: interests.find(interest => interest.id === topInterests[i].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
-            { text: 'The GOE identifies this as Interest Area ' + (topInterests[i].interestId > 9 ? topInterests[i].interestId : '0' + topInterests[i].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: this.ws.workgroups.filter(group => group.area === topInterests[i].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { svg: interests.find(interest => interest.id === this.topInterests[i].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
+            { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i].interestId > 9 ? this.topInterests[i].interestId : '0' + this.topInterests[i].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
+            { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
             {
               canvas: [
@@ -1194,9 +1172,9 @@ export class NewReportComponent {
         },
         {
           stack: [
-            { svg: interests.find(interest => interest.id === topInterests[i + 1].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
-            { text: 'The GOE identifies this as Interest Area ' + (topInterests[i + 1].interestId > 9 ? topInterests[i + 1].interestId : '0' + topInterests[i + 1].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: this.ws.workgroups.filter(group => group.area === topInterests[i + 1].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+            { svg: interests.find(interest => interest.id === this.topInterests[i + 1].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
+            { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i + 1].interestId > 9 ? this.topInterests[i + 1].interestId : '0' + this.topInterests[i + 1].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
+            { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i + 1].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
             {
               canvas: [
@@ -1230,9 +1208,7 @@ export class NewReportComponent {
 
     content.push(this.buildPageHeader('GOE Recommendations', false));
 
-    const topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
-
-    topInterests.forEach(i => {
+    this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
 
       content.push({
@@ -1283,9 +1259,7 @@ export class NewReportComponent {
   buildJobDescriptionTables() {
     const content = [];
 
-    const topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
-
-    topInterests.forEach(i => {
+    this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
 
       content.push({
