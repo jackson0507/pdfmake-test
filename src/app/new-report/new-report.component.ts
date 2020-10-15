@@ -271,13 +271,25 @@ export class NewReportComponent {
   buildPageHeader(title: string, tocItem: boolean) {
     const content = [];
 
-    if (tocItem) {
+    if (tocItem && (title === 'Assessment Settings' || title === 'Aptitude Assessment')) {
       content.push({
         text: title,
         fontSize: 23,
         color: '#0F4C81',
         tocItem: true,
-        tocStyle: { color: '#0F4C81' }
+        tocMargin: [5, 2.5, 0, 2.5],
+        tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' },
+        tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }
+      });
+    } else if (tocItem) {
+      content.push({
+        text: title,
+        fontSize: 23,
+        color: '#0F4C81',
+        tocItem: true,
+        tocMargin: [5, 2.5, 0, 2.5],
+        tocStyle: { color: '#0F4C81' },
+        tocNumberStyle: { color: '#0F4C81' }
       });
     } else {
       content.push({
@@ -358,7 +370,7 @@ export class NewReportComponent {
       margin: [0, 20, 0, 0]
     });
     content.push({
-      margin: [0, 275, 0, 0],
+      margin: [0, 300, 0, 0],
       table: {
         widths: [150],
         body: [
@@ -596,7 +608,7 @@ export class NewReportComponent {
         {
           width: 300,
           stack: [
-            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
+            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' }, tocNumberStyle: { color: '#0F4C81' } },
             { text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area.', fontSize: 10, margin: [0, 0, 0, 10] },
             {
@@ -790,7 +802,7 @@ export class NewReportComponent {
         {
           width: 350,
           stack: [
-            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
+            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81' }, tocNumberStyle: { color: '#0F4C81' } },
             { text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'The dark vertical line in the chart is your average percentage of “LIKE” responses (XX%) across all twelve Interest Areas.', fontSize: 10 },
           ]
@@ -891,7 +903,7 @@ export class NewReportComponent {
         {
           width: 350,
           stack: [
-            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } },
+            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' } },
             { text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] }
           ]
         },
@@ -954,7 +966,7 @@ export class NewReportComponent {
     const averageRangeHeight = 300;
 
     content.push(this.buildPageHeader('Aptitude Assessment', false));
-    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' } });
+    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' } });
     content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
     content.push({ text: 'Consider this:', fontSize: 10, margin: [0, 0, 0, 10] });
     content.push({
