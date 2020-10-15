@@ -711,7 +711,7 @@ export class NewReportComponent {
     const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
 
     const sortedInterests = this.es.evalueePortal.interestScores.sort(this.sortInterests);
 
@@ -723,14 +723,14 @@ export class NewReportComponent {
         interestTable.push([
           { svg: interest.svgLogo, width: 20 },
           { text: interest.name, alignment: 'left', margin: [0, 3, 0, 0] },
-          { text: evalueeResult.like, margin: [0, 3, 0, 0] },
-          { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
-          { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
-          { text: i.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
-          { text: i.vsMale, margin: [0, 3, 0, 0] },
-          { text: i.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
-          { text: i.percentLike, margin: [0, 3, 0, 0] },
-          { text: i.rank, margin: [0, 3, 0, 0] }
+          { text: evalueeResult.like, alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: evalueeResult.unanswered, alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: evalueeResult.dislike, alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.totalScore, border: [true, false, false, false], alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.vsMale, alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.vsFemale, border: [false, false, true, false], alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.percentLike, alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.rank, alignment: 'center', margin: [0, 3, 0, 0] }
         ]);
       }
     });
@@ -765,7 +765,7 @@ export class NewReportComponent {
     const interestTable = [];
 
     interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81' }, { text: 'IPA', color: '#0F4C81' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
 
     interests.forEach(i => {
       const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
@@ -773,14 +773,14 @@ export class NewReportComponent {
       interestTable.push([
         { svg: i.svgLogo, width: 20 },
         { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
-        { text: evalueeResult.like, margin: [0, 3, 0, 0] },
-        { text: evalueeResult.unanswered, margin: [0, 3, 0, 0] },
-        { text: evalueeResult.dislike, margin: [0, 3, 0, 0] },
-        { text: evalueeScore.totalScore, border: [true, false, false, false], margin: [0, 3, 0, 0] },
-        { text: evalueeScore.vsMale, margin: [0, 3, 0, 0] },
-        { text: evalueeScore.vsFemale, border: [false, false, true, false], margin: [0, 3, 0, 0] },
-        { text: evalueeScore.percentLike, margin: [0, 3, 0, 0] },
-        { text: evalueeScore.rank, margin: [0, 3, 0, 0] }
+        { text: evalueeResult.like, alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeResult.unanswered, alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeResult.dislike, alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.totalScore, border: [true, false, false, false], alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.vsMale, alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.vsFemale, border: [false, false, true, false], alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.percentLike, alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.rank, alignment: 'center', margin: [0, 3, 0, 0] }
       ]);
     });
 
