@@ -151,7 +151,7 @@ export class NewReportComponent {
       },
       content: [
         this.buildCover(),
-        this.buildTableOfContents(tableOfContents),
+        // this.buildTableOfContents(tableOfContents),
         this.buildTOC(),
         this.buildAssessmentSettings(),
         this.buildInterestInventory(),
@@ -370,7 +370,7 @@ export class NewReportComponent {
       toc: {
         title: { text: '' }
       },
-      margin: [0, 30, 0, 0]
+      margin: [0, 30, 200, 0]
     });
     content.push({
       margin: [0, 300, 0, 0],
@@ -953,7 +953,7 @@ export class NewReportComponent {
 
   buildAptitudeProfile() {
     const content = [];
-    const averageRangeHeight = 300;
+    const averageRangeHeight = 270;
 
     content.push(this.buildPageHeader('Aptitude Assessment', false));
     content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' } });
