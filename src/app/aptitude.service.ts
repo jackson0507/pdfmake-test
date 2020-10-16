@@ -12,13 +12,12 @@ export class AptitudeService {
   aptitudeTasks: AptitudeTask[] = [];
   percentileMatrix: [number, number][] = [];
   tasksComplete = 0;
-  quizInProgress: boolean = false;
+  quizInProgress = false;
 
   constructor(private es: EvalueeService) {
     this.aptitudes = aptitudes;
     this.aptitudeTasks = aptitudeTasks;
     this.populatePercentiles();
-    es.loadEvalueePortal('1028192');
   }
 
 
@@ -32,7 +31,7 @@ export class AptitudeService {
     const generalAptitude = this.aptitudes.find(a => a.type === 'General');
 
     this.aptitudeTasks.forEach(task => {
-      const total = this.es.evalueePortal.taskResults.find(t => t.taskId === task.id).correct;
+      const total = this.es.evaluee.taskResults.find(t => t.taskId === task.id).correct;
       const score = task.scoringMatrix[total] ? task.scoringMatrix[total][1] : 0;
       if (task.generalScoringMatrix) {
         const gaScore = task.generalScoringMatrix[total][1];

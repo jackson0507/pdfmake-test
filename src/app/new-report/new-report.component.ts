@@ -25,12 +25,10 @@ export class NewReportComponent {
     private ws: WorkgroupsService,
     private es: EvalueeService,
     private as: AptitudeService,
-  ) {
-    es.loadEvalueePortal('1028192');
-  }
+  ) { }
 
-  generatePDFReport() {
-
+  async generatePDFReport() {
+    await this.es.loadEvaluee('R04470_DNMM', '1028192');
     const tableOfContents = [
       [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0] }, { text: 'Pg 3', color: '#0F4C81' }],
       [{
@@ -65,7 +63,7 @@ export class NewReportComponent {
       [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
     ];
 
-    this.topInterests = this.es.evalueePortal.interestScores.filter(interest => interest.rank > 0);
+    this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
     this.topInterests.sort(this.sortInterests);
 
     const docDef = this.buildReport(tableOfContents);
@@ -85,7 +83,7 @@ export class NewReportComponent {
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any, evalName: string = this.es.evalueePortal.fullName) {
+  buildReport(tableOfContents: any, evalName: string = this.es.evaluee.fullName) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header(currentPage) {
@@ -188,7 +186,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: this.es.evalueePortal.fullName,
+      text: this.es.evaluee.fullName,
       margin: [250, 25, 0, 0],
       fontSize: 20,
       alignment: 'right',
@@ -222,7 +220,7 @@ export class NewReportComponent {
       color: '#0F4C81'
     });
     content.push({
-      text: this.es.evalueePortal.fullName,
+      text: this.es.evaluee.fullName,
       margin: [0, 25, 0, 0],
       fontSize: 20,
       alignment: 'center',
@@ -718,7 +716,7 @@ export class NewReportComponent {
 
     this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
-      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.interestId);
+      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.interestId);
 
       if (i.rank > 0) {
         interestTable.push([
@@ -746,8 +744,8 @@ export class NewReportComponent {
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
 
     interests.forEach(i => {
-      const evalueeResult = this.es.evalueePortal.interestResults.find(interest => interest.interestId === i.id);
-      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
+      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.id);
+      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
       interestTable.push([
         { svg: i.svgLogo, width: 20 },
         { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
@@ -768,7 +766,7 @@ export class NewReportComponent {
   buildIndividualProfileAnalysis() {
     let evalPercentLikeAvg = 0;
     interests.forEach(i => {
-      evalPercentLikeAvg += this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id).percentLike;
+      evalPercentLikeAvg += this.es.evaluee.interestScores.find(interest => interest.interestId === i.id).percentLike;
     });
     evalPercentLikeAvg = evalPercentLikeAvg / interests.length;
 
@@ -831,7 +829,7 @@ export class NewReportComponent {
     IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
 
     interests.forEach(i => {
-      const evalueeScore = this.es.evalueePortal.interestScores.find(interest => interest.interestId === i.id);
+      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
       IPATable.push([
         { svg: i.svgLogo, width: 25 },
         { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] },
@@ -939,7 +937,7 @@ export class NewReportComponent {
 
     performanceTable.push([{ text: 'Task', fontSize: 10, color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', fontSize: 10, color: '#0F4C81' }, { text: 'Attempted', fontSize: 10, color: '#0F4C81' }]);
     aptitudeTasks.forEach(t => {
-      const evalueeResult = this.es.evalueePortal.taskResults.find(task => task.taskId === t.id);
+      const evalueeResult = this.es.evaluee.taskResults.find(task => task.taskId === t.id);
       performanceTable.push([
         { svg: t.iconFile, width: 25 },
         { text: t.name, margin: [0, 5, 75, 0] },

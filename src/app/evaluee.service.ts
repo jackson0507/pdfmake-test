@@ -1,29 +1,25 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Evaluee } from './evaluee.model';
+import { tap, first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvalueeService {
-  evalueePortal: any;
-  evalueePortalSubscription: Subscription;
+  evaluee: Evaluee;
 
   constructor(private db: AngularFirestore) { }
 
-  loadEvalueePortal(evalueeId: string) {
-    if (!this.evalueePortalSubscription) {
-      this.evalueePortalSubscription = this.db.collection('portals').doc('R04470_DNMM').collection('evaluees').doc(evalueeId).valueChanges().pipe(
-        tap(res => {
-          if (res) {
-            this.evalueePortal = res;
-            console.log('evalPort: ', this.evalueePortal);
-          } else {
-            console.log('error');
-          }
-        })
-      ).subscribe();
-    }
+  loadEvaluee(portalId: string, evalueeId: string): Promise<Evaluee> {
+    const docRef = this.db.collection('portals').doc(portalId).collection('evaluees').doc<Evaluee>(evalueeId);
+    return docRef.valueChanges().pipe(
+      first(),
+      tap (res => {
+        if (res) {
+          this.evaluee = res;
+        }
+      })
+    ).toPromise();
   }
 }
