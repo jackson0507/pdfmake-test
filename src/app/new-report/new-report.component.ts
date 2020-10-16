@@ -19,16 +19,14 @@ import pdfFonts from 'pdf/fonts/custom-fonts.js';
 })
 export class NewReportComponent {
 
-  topInterests : any;
+  topInterests: any;
 
   constructor(
     private ws: WorkgroupsService,
     private es: EvalueeService,
     private as: AptitudeService,
   ) {
-    es.loadEvaluee('2C7gl1C9dmWPwaMIvRAgAwIQrhA3');
-    es.loadRegister('85zTOc8KSwi0iB9mroGz');
-    es.loadEvalueePortal('1001269');
+    es.loadEvalueePortal('1028192');
   }
 
   generatePDFReport() {
@@ -372,7 +370,7 @@ export class NewReportComponent {
       toc: {
         title: { text: '' }
       },
-      margin: [0, 20, 0, 0]
+      margin: [0, 30, 0, 0]
     });
     content.push({
       margin: [0, 300, 0, 0],
@@ -703,10 +701,10 @@ export class NewReportComponent {
   }
 
   sortInterests(a, b) {
-    if ( a.rank < b.rank ) {
+    if (a.rank < b.rank) {
       return -1;
     }
-    if ( a.rank > b.rank ) {
+    if (a.rank > b.rank) {
       return 1;
     }
     return 0;
@@ -808,7 +806,13 @@ export class NewReportComponent {
           layout: {
             defaultBorder: false,
             paddingTop(i, node) { return 2; },
-            paddingBottom(i, node) { return 2; },
+            paddingBottom(i, node) {
+              if (i === 0) {
+                return 12;
+              } else {
+                return 2;
+              }
+            },
             paddingLeft(i, node) { return 5; },
             paddingRight(i, node) { return 5; },
           }
@@ -860,7 +864,7 @@ export class NewReportComponent {
         },
         {
           type: 'line',
-          x1: (percentLikeAvg * 2.5), y1: -20,
+          x1: (percentLikeAvg * 2.5), y1: -10,
           x2: (percentLikeAvg * 2.5), y2: 25,
           lineWidth: 1,
           lineColor: 'black'
@@ -878,7 +882,7 @@ export class NewReportComponent {
 
     content.push(this.buildPageHeader('Aptitude Assessment', true));
     content.push({
-      margin: [0, 40, 0, 60],
+      margin: [0, 20, 0, 60],
       columns: [
         {
           width: 350,
@@ -902,7 +906,7 @@ export class NewReportComponent {
           },
           layout: {
             hLineWidth(i, node) {
-              return (i === 0 || i === node.table.body.length) ? 0 : 0.5;
+              return (i === 0 || i === 1 || i === node.table.body.length) ? 0 : 0.5;
             },
             vLineWidth(i, node) {
               return 0;
@@ -911,7 +915,13 @@ export class NewReportComponent {
               return 'gray';
             },
             paddingTop(i, node) { return 5; },
-            paddingBottom(i, node) { return 5; },
+            paddingBottom(i, node) {
+              if (i === 0) {
+                return 10;
+              } else {
+                return 5;
+              }
+            },
             paddingLeft(i, node) { return 5; },
             paddingRight(i, node) { return 5; },
           }
@@ -927,7 +937,7 @@ export class NewReportComponent {
   buildPerformanceTable() {
     const performanceTable = [];
 
-    performanceTable.push([{ text: 'Task', color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', color: '#0F4C81' }, { text: 'Attempted', color: '#0F4C81' }]);
+    performanceTable.push([{ text: 'Task', fontSize: 10, color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', fontSize: 10, color: '#0F4C81' }, { text: 'Attempted', fontSize: 10, color: '#0F4C81' }]);
     aptitudeTasks.forEach(t => {
       const evalueeResult = this.es.evalueePortal.taskResults.find(task => task.taskId === t.id);
       performanceTable.push([
@@ -971,9 +981,9 @@ export class NewReportComponent {
     });
     content.push({
       columns: [
-        { width: '*', text: '' },
+        { width: 30, text: '' },
         {
-          width: 'auto',
+          width: 600,
           table: {
             body:
               this.buildAptitudeProfileTable()
@@ -994,7 +1004,7 @@ export class NewReportComponent {
             paddingRight(i, node) { return 5; },
           }
         },
-        { width: '*', text: '' },
+        { width: 30, text: '' },
       ],
       margin: [0, -averageRangeHeight - 5, 0, 0],
       pageBreak: 'after'
