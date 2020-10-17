@@ -1213,7 +1213,7 @@ export class NewReportComponent {
       table.push([{ text: group.description, fontSize: 10, colSpan: 4 }, '', '', '']);
       table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
       group.jobs.forEach(job => {
-        table.push([{ text: job.name, fontSize: 12 }, { text: job.dotNum, fontSize: 12 }, { text: 'M' + job.mathGEDReq + ' / L' + job.languageGEDReq, fontSize: 12 }, { text: job.svp, fontSize: 12 }]);
+        table.push([{ text: job.name, fontSize: 10 }, { text: job.dotNum, fontSize: 10 }, { text: 'M' + job.mathGEDReq + ' / L' + job.languageGEDReq, fontSize: 10 }, { text: job.svp, fontSize: 10 }]);
       });
       table.push(['', '', '', '']);
       table.push(['', '', '', '']);
