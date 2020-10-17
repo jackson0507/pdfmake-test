@@ -1,4 +1,9 @@
-// import { Timestamp } from '@firebase/firestore-types';
+// TODO: I swapped which timestamp was commented out and used firestore timestamp on exerciseComplete
+
+// import { Timestamp } from '../../node_modules/rxjs/internal/operators/timestamp';
+import { Timestamp } from '@firebase/firestore-types';
+
+// TODO: switch id's back to string
 
 export interface Evaluee {
     sqlId?: string; // legacy SQL ID, won't be used for new evaluees
@@ -13,7 +18,7 @@ export interface Evaluee {
     lastActivity?: string;
     lastActivityDate?: Date;
     interestComplete?: Date;
-    exercisesComplete?: Date;
+    exercisesComplete?: Timestamp;
     topInterests?: {interest: number, rank: number}[];
     lastImported?: Date;
     // templateId
@@ -53,7 +58,7 @@ export interface Evaluee {
 
 // From Evaluee_answers
 interface EvalueeAnswer {
-    taskId: string;  // The interest questionaire is a task for this purpose
+    taskId: number;  // The interest questionaire is a task for this purpose
     questionId: number;
     answer: number;
 }
@@ -61,7 +66,7 @@ interface EvalueeAnswer {
 
 // From Evaluee_results
 interface TaskResult {
-    taskId: string;
+    taskId: number;
     correct: number;
     incorrect: number;
     unanswered: number;
@@ -69,15 +74,15 @@ interface TaskResult {
 
 
 interface InterestResult {
-    interestId: string;
+    interestId: number;
     like: number;
     dislike: number;
     unanswered: number;
 }
 
 // evaluee_interests
-interface InterestScore {
-    interestId: string;
+export interface InterestScore {
+    interestId: number;
     percentLike: number;
     totalScore: number;
     vsMale: number;
@@ -91,7 +96,7 @@ interface InterestScore {
 
 // evaluee_aptitudes
 interface AptitudeScore {
-    aptitudeId: string;
+    aptitudeId: number;
     score: number;
     // TODO: look into how each of these is computed, do we need to store?
     percentile_score: number;

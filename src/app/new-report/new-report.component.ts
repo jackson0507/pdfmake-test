@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, reportExercises } from '../svg';
 import { interests } from '../populateInterests';
+import { InterestScore } from '../evaluee.model';
 import { WorkgroupsService } from '../workgroups.service';
 import { aptitudeTasks } from '../populateAptitudes';
 import { EvalueeService } from '../evaluee.service';
@@ -19,7 +20,8 @@ import pdfFonts from 'pdf/fonts/custom-fonts.js';
 })
 export class NewReportComponent {
 
-  topInterests: any;
+  topInterests: InterestScore[];
+  today = new Date().toLocaleDateString();
 
   constructor(
     private ws: WorkgroupsService,
@@ -27,46 +29,22 @@ export class NewReportComponent {
     private as: AptitudeService,
   ) { }
 
+  /*
+  createDate() {
+    const dd = String(this.today.getDate()).padStart(2, '0');
+    const mm = String(this.today.getMonth() + 1).padStart(2, '0');
+    const yyyy = this.today.getFullYear();
+
+    this.today = mm + '/' + dd + '/' + yyyy;
+  }*/
+
   async generatePDFReport() {
     await this.es.loadEvaluee('R04470_DNMM', '1028192');
-    const tableOfContents = [
-      [{ text: 'Assessment Settings', color: '#0F4C81', margin: [0, 0, 200, 0] }, { text: 'Pg 3', color: '#0F4C81' }],
-      [{
-        stack: [
-          { text: 'Interest Inventory', color: '#0F4C81', margin: [0, 0, 0, 5] },
-          { text: '   Interest Scores', color: '#0F4C81', preserveLeadingSpaces: true },
-          { text: '   Individual Profile Analysis', color: '#0F4C81', preserveLeadingSpaces: true },
-        ]
-      },
-      {
-        stack: [
-          { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
-          { text: 'Pg 5', color: '#0F4C81' },
-          { text: 'Pg 6', color: '#0F4C81' },
-        ]
-      }],
-      [{
-        stack: [
-          { text: 'Aptitude Assessment', color: '#0F4C81', margin: [0, 0, 0, 5] },
-          { text: '   Performance on tasks', color: '#0F4C81', preserveLeadingSpaces: true },
-          { text: '   Aptitude Profile', color: '#0F4C81', preserveLeadingSpaces: true },
-        ]
-      },
-      {
-        stack: [
-          { text: 'Pg 4', color: '#0F4C81', margin: [0, 0, 0, 5] },
-          { text: 'Pg 5', color: '#0F4C81' },
-          { text: 'Pg 6', color: '#0F4C81' },
-        ]
-      }],
-      [{ text: 'Recommendations from the GOE/DOT', color: '#0F4C81' }, { text: 'Pg 10', color: '#0F4C81' }],
-      [{ text: 'Recommendations from the DOE', color: '#0F4C81' }, { text: 'Pg 15', color: '#0F4C81' }],
-    ];
 
     this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
     this.topInterests.sort(this.sortInterests);
 
-    const docDef = this.buildReport(tableOfContents);
+    const docDef = this.buildReport();
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -83,7 +61,7 @@ export class NewReportComponent {
     pdfMake.createPdf(docDef).open();
   }
 
-  buildReport(tableOfContents: any, evalName: string = this.es.evaluee.fullName) {
+  buildReport(evalName: string = this.es.evaluee.fullName, today: string = this.today) {
     const docDef = {
       pageMargins: [40, 80, 40, 80],
       header(currentPage) {
@@ -98,7 +76,7 @@ export class NewReportComponent {
                       fontSize: 9,
                       color: '#0F4C81'
                     }, {
-                      text: evalName + '    5/18/20',
+                      text: evalName + '    ' + today,
                       fontSize: 9,
                       margin: [0, 2.5, 0, 0],
                       color: '#0F4C81'
@@ -149,7 +127,6 @@ export class NewReportComponent {
       },
       content: [
         this.buildCover(),
-        // this.buildTableOfContents(tableOfContents),
         this.buildTOC(),
         this.buildAssessmentSettings(),
         this.buildInterestInventory(),
@@ -193,7 +170,7 @@ export class NewReportComponent {
       color: '#808080'
     });
     content.push({
-      text: '5/18/20',
+      text: this.today,
       fontSize: 20,
       alignment: 'right',
       color: '#808080',
@@ -227,12 +204,19 @@ export class NewReportComponent {
       color: '#808080'
     });
     content.push({
-      text: '5/18/20',
+      text: this.today,
+      margin: [0, 0, 0, 10],
       fontSize: 20,
       alignment: 'center',
       color: '#808080',
-      pageBreak: 'after'
     });
+    content.push({
+      text: 'Assessment taken on: ' + (new Date(this.es.evaluee.exercisesComplete.toDate())).toDateString(),
+      fontSize: 16,
+      alignment: 'center',
+      color: '#808080',
+      pageBreak: 'after'
+    })
 
     return content;
   }
@@ -316,45 +300,6 @@ export class NewReportComponent {
           points: [{ x: 223, y: 6 }, { x: 237, y: 6 }, { x: 230, y: 12 }]
         }
       ]
-    });
-
-    return content;
-  }
-
-  buildTableOfContents(tableOfContents: any) {
-    const content = [];
-
-    content.push(this.buildPageHeader('Table Of Contents', false));
-    content.push({
-      margin: [0, 30, 0, 0],
-      table: {
-        body: tableOfContents
-      },
-      layout: {
-        fillColor(rowIndex, node, columnIndex) {
-          return (rowIndex % 2 === 0) ? '#F0F0F0' : null;
-        },
-        defaultBorder: false,
-        paddingTop(i, node) { return 5; },
-        paddingBottom(i, node) { return 5; },
-      }
-    });
-    content.push({
-      margin: [0, 275, 0, 0],
-      table: {
-        widths: [150],
-        body: [
-          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
-        ]
-      },
-      layout: {
-        fillColor: '#F0F0F0',
-        defaultBorder: false,
-        paddingTop(i, node) { return 12; },
-        paddingBottom(i, node) { return 12; },
-        paddingLeft(i, node) { return 10; },
-        paddingRight(i, node) { return 2; },
-      },
     });
 
     return content;
@@ -645,17 +590,24 @@ export class NewReportComponent {
             fillColor(rowIndex, node, columnIndex) {
               return (columnIndex === 9) ? '#F0F0F0' : null;
             },
-            defaultBorder: false,
+            hLineWidth(i, node) {
+              return (i === 0 || i === 1 || i === 2 || i === node.table.body.length) ? 0 : 1;
+            },
+            vLineWidth(i, node) {
+              return (i === 5 || i === 8 ? 1 : 0);
+            },
             hLineColor(i, node) {
-              return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
+              return '#D3D3D3';
             },
             vLineColor(i, node) {
-              return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
+              return '#D3D3D3';
             },
-            paddingTop(i, node) { return 5; },
-            paddingBottom(i, node) { return 5; },
-            paddingLeft(i, node) { return 5; },
-            paddingRight(i, node) { return 5; },
+            paddingTop(i, node) { return 10; },
+            paddingBottom(i, node) { 
+              return (i === 0) ? 0 : 10; 
+            },
+            paddingLeft(i, node) { return 7.5; },
+            paddingRight(i, node) { return 7.5; },
           }
         },
         { width: '*', text: '' },
@@ -677,17 +629,24 @@ export class NewReportComponent {
             fillColor(rowIndex, node, columnIndex) {
               return (columnIndex === 9) ? '#F0F0F0' : null;
             },
-            defaultBorder: false,
+            hLineWidth(i, node) {
+              return (i === 0 || i === 1 || i === 2 || i === node.table.body.length) ? 0 : 1;
+            },
+            vLineWidth(i, node) {
+              return (i === 5 || i === 8 ? 1 : 0);
+            },
             hLineColor(i, node) {
-              return (i === 0 || i === node.table.body.length) ? 'gray' : 'gray';
+              return '#D3D3D3';
             },
             vLineColor(i, node) {
-              return (i === 0 || i === node.table.widths.length) ? 'gray' : 'gray';
+              return '#D3D3D3';
             },
-            paddingTop(i, node) { return 5; },
-            paddingBottom(i, node) { return 5; },
-            paddingLeft(i, node) { return 5; },
-            paddingRight(i, node) { return 5; },
+            paddingTop(i, node) { return 10; },
+            paddingBottom(i, node) { 
+              return (i === 0) ? 0 : 10; 
+            },
+            paddingLeft(i, node) { return 7.5; },
+            paddingRight(i, node) { return 7.5; },
           }
         },
         { width: '*', text: '' },
@@ -715,19 +674,19 @@ export class NewReportComponent {
     interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
 
     this.topInterests.forEach(i => {
-      const interest = interests.find(interest => interest.id === i.interestId);
+      const topInterest = interests.find(interest => interest.id === i.interestId);
       const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.interestId);
 
       if (i.rank > 0) {
         interestTable.push([
-          { svg: interest.svgLogo, width: 20 },
-          { text: interest.name, alignment: 'left', margin: [0, 3, 0, 0] },
+          { svg: topInterest.svgLogo, width: 20 },
+          { text: topInterest.name, alignment: 'left', margin: [0, 3, 0, 0] },
           { text: evalueeResult.like, alignment: 'center', margin: [0, 3, 0, 0] },
           { text: evalueeResult.unanswered, alignment: 'center', margin: [0, 3, 0, 0] },
           { text: evalueeResult.dislike, alignment: 'center', margin: [0, 3, 0, 0] },
-          { text: i.totalScore, border: [true, false, false, false], alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.totalScore, alignment: 'center', margin: [0, 3, 0, 0] },
           { text: i.vsMale, alignment: 'center', margin: [0, 3, 0, 0] },
-          { text: i.vsFemale, border: [false, false, true, false], alignment: 'center', margin: [0, 3, 0, 0] },
+          { text: i.vsFemale, alignment: 'center', margin: [0, 3, 0, 0] },
           { text: i.percentLike, alignment: 'center', margin: [0, 3, 0, 0] },
           { text: i.rank, alignment: 'center', margin: [0, 3, 0, 0] }
         ]);
@@ -752,9 +711,9 @@ export class NewReportComponent {
         { text: evalueeResult.like, alignment: 'center', margin: [0, 3, 0, 0] },
         { text: evalueeResult.unanswered, alignment: 'center', margin: [0, 3, 0, 0] },
         { text: evalueeResult.dislike, alignment: 'center', margin: [0, 3, 0, 0] },
-        { text: evalueeScore.totalScore, border: [true, false, false, false], alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.totalScore, alignment: 'center', margin: [0, 3, 0, 0] },
         { text: evalueeScore.vsMale, alignment: 'center', margin: [0, 3, 0, 0] },
-        { text: evalueeScore.vsFemale, border: [false, false, true, false], alignment: 'center', margin: [0, 3, 0, 0] },
+        { text: evalueeScore.vsFemale, alignment: 'center', margin: [0, 3, 0, 0] },
         { text: evalueeScore.percentLike, alignment: 'center', margin: [0, 3, 0, 0] },
         { text: evalueeScore.rank, alignment: 'center', margin: [0, 3, 0, 0] }
       ]);
@@ -802,14 +761,18 @@ export class NewReportComponent {
               this.buildIPATable(evalPercentLikeAvg)
           },
           layout: {
-            defaultBorder: false,
+            hLineWidth(i, node) {
+              return (i === 0 || i === 1 || i === node.table.body.length) ? 0 : 1;
+            },
+            vLineWidth(i, node) {
+              return 0;
+            },
+            hLineColor(i, node) {
+              return '#D3D3D3';
+            },
             paddingTop(i, node) { return 2; },
             paddingBottom(i, node) {
-              if (i === 0) {
-                return 12;
-              } else {
-                return 2;
-              }
+              return (i === 0) ? 12 : 2;
             },
             paddingLeft(i, node) { return 5; },
             paddingRight(i, node) { return 5; },
@@ -831,9 +794,9 @@ export class NewReportComponent {
     interests.forEach(i => {
       const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
       IPATable.push([
-        { svg: i.svgLogo, width: 25 },
-        { text: i.name, alignment: 'left', margin: [0, 5, 0, 0] },
-        { text: evalueeScore.percentLike, margin: [0, 5, 0, 0] },
+        { svg: i.svgLogo, width: 25, margin: [0, 2.5, 0, 0] },
+        { text: i.name, alignment: 'left', margin: [0, 7.5, 0, 0] },
+        { text: evalueeScore.percentLike, alignment: 'center', margin: [0, 7.5, 0, 0] },
         this.buildIPAGraphLine(evalueeScore.percentLike, i.color, percentLikeAvg)
       ]);
     });
@@ -848,15 +811,15 @@ export class NewReportComponent {
       canvas: [
         {
           type: 'line',
-          x1: 0, y1: 7,
-          x2: 250, y2: 7,
+          x1: 0, y1: 10,
+          x2: 250, y2: 10,
           lineWidth: 15,
           lineColor: '#F0F0F0',
         },
         {
           type: 'line',
-          x1: 0, y1: 7,
-          x2: (width * 2.5), y2: 7,
+          x1: 0, y1: 10,
+          x2: (width * 2.5), y2: 10,
           lineWidth: 15,
           lineColor: color,
         },
@@ -914,11 +877,7 @@ export class NewReportComponent {
             },
             paddingTop(i, node) { return 5; },
             paddingBottom(i, node) {
-              if (i === 0) {
-                return 10;
-              } else {
-                return 5;
-              }
+              return (i === 0 || i === 1) ? 10 : 5
             },
             paddingLeft(i, node) { return 5; },
             paddingRight(i, node) { return 5; },
