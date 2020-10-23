@@ -476,27 +476,49 @@ export class NewReportComponent {
       interestInventoryTable1.push([
         {
           columns: [
-            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            { svg: interests[i].svgLogo, width: 25, margin: [0, 25, 0, 0] },
             {
-              margin: [5, 0],
+              margin: [5, 0, 0, 0],
               stack: [
                 { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                {
+                  canvas: [
+                    {
+                      type: 'line',
+                      x1: -35, y1: -10,
+                      x2: 200, y2: -10,
+                      lineWidth: 1,
+                      lineColor: interests[i].color,
+                    }
+                  ]
+                },
                 { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 8 }
+              ], width: 200
             }
-          ]
+          ], margin: [0, 0, 20, 0]
         },
         {
           columns: [
-            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            { svg: interests[i + 1].svgLogo, width: 25, margin: [0, 25, 0, 0] },
             {
               margin: [5, 0],
               stack: [
                 { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                {
+                  canvas: [
+                    {
+                      type: 'line',
+                      x1: -35, y1: -10,
+                      x2: 200, y2: -10,
+                      lineWidth: 1,
+                      lineColor: interests[i + 1].color,
+                    }
+                  ]
+                },
                 { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 8 }
+              ], width: 200
             }
           ]
         },
@@ -510,31 +532,53 @@ export class NewReportComponent {
     const interestInventoryTable2 = [];
 
     let i;
-    for (i = 0; i < interests.length / 2; i += 2) {
+    for (i = interests.length / 2; i < interests.length; i += 2) {
       interestInventoryTable2.push([
         {
           columns: [
-            { svg: interests[i].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            { svg: interests[i].svgLogo, width: 25, margin: [0, 25, 0, 0] },
             {
-              margin: [5, 0],
+              margin: [5, 0, 0, 0],
               stack: [
                 { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                {
+                  canvas: [
+                    {
+                      type: 'line',
+                      x1: -35, y1: -10,
+                      x2: 200, y2: -10,
+                      lineWidth: 1,
+                      lineColor: interests[i].color,
+                    }
+                  ]
+                },
                 { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
+                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 8 }
+              ], width: 200
             }
-          ]
+          ], margin: [0, 0, 20, 0]
         },
         {
           columns: [
-            { svg: interests[i + 1].svgLogo, width: 35, margin: [0, 19, 0, 0] },
+            { svg: interests[i + 1].svgLogo, width: 25, margin: [0, 25, 0, 0] },
             {
               margin: [5, 0],
               stack: [
                 { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
+                {
+                  canvas: [
+                    {
+                      type: 'line',
+                      x1: -35, y1: -10,
+                      x2: 200, y2: -10,
+                      lineWidth: 1,
+                      lineColor: interests[i + 1].color,
+                    }
+                  ]
+                },
                 { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 10 }
-              ]
+                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 8 }
+              ], width: 200
             }
           ]
         },
