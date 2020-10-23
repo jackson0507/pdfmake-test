@@ -39,7 +39,7 @@ export class NewReportComponent {
   }*/
 
   async generatePDFReport() {
-    await this.es.loadEvaluee('R04470_DNMM', '1028192');
+    await this.es.loadEvaluee('R04470_DNMM', '1038734');
 
     this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
     this.topInterests.sort(this.sortInterests);
@@ -135,7 +135,7 @@ export class NewReportComponent {
         this.buildPerformanceOnTasks(),
         this.buildAptitudeProfile(),
         this.buildUnscoredAptitudes(),
-        this.buildGOERecommendations(),
+        //this.buildGOERecommendations(),
         this.buildJobTables(),
         this.buildJobDescriptionTables()
       ],
@@ -603,8 +603,8 @@ export class NewReportComponent {
               return '#D3D3D3';
             },
             paddingTop(i, node) { return 10; },
-            paddingBottom(i, node) { 
-              return (i === 0) ? 0 : 10; 
+            paddingBottom(i, node) {
+              return (i === 0) ? 0 : 10;
             },
             paddingLeft(i, node) { return 7.5; },
             paddingRight(i, node) { return 7.5; },
@@ -642,8 +642,8 @@ export class NewReportComponent {
               return '#D3D3D3';
             },
             paddingTop(i, node) { return 10; },
-            paddingBottom(i, node) { 
-              return (i === 0) ? 0 : 10; 
+            paddingBottom(i, node) {
+              return (i === 0) ? 0 : 10;
             },
             paddingLeft(i, node) { return 7.5; },
             paddingRight(i, node) { return 7.5; },
@@ -1068,6 +1068,7 @@ export class NewReportComponent {
 
     return content;
   }
+  /*
 
   buildGOERecommendations() {
     const content = [];
@@ -1170,6 +1171,8 @@ export class NewReportComponent {
     return interestGOETable;
   }
 
+  */
+
   buildJobTables() {
     const content = [];
 
@@ -1185,17 +1188,19 @@ export class NewReportComponent {
         ]
       });
       content.push({ text: interest.description, margin: [0, 10, 0, 20] });
-      content.push({
-        table: {
-          body: this.buildWorkGroupTable(i.interestId)
-        },
-        layout: {
-          defaultBorder: false
-        },
-        style: {
-          cellSpacing: { margin: [0, 20, 0, 0] }
-        }
-      });
+      if (i.interestId !== 12) {
+        content.push({
+          table: {
+            body: this.buildWorkGroupTable(i.interestId)
+          },
+          layout: {
+            defaultBorder: false
+          },
+          style: {
+            cellSpacing: { margin: [0, 20, 0, 0] }
+          }
+        });
+      }
     });
 
 
@@ -1246,17 +1251,19 @@ export class NewReportComponent {
           }
         ]
       });
-      content.push({
-        table: {
-          body: this.buildWorkGroupDescriptionTable(i.interestId)
-        },
-        layout: {
-          defaultBorder: false
-        },
-        style: {
-          cellSpacing: { margin: [0, 20, 0, 0] }
-        }
-      });
+      if (i.interestId !== 12) {
+        content.push({
+          table: {
+            body: this.buildWorkGroupDescriptionTable(i.interestId)
+          },
+          layout: {
+            defaultBorder: false
+          },
+          style: {
+            cellSpacing: { margin: [0, 20, 0, 0] }
+          }
+        });
+      }
     });
 
     return content;
