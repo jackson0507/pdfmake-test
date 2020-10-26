@@ -140,7 +140,15 @@ export class NewReportComponent {
         this.buildJobDescriptionTables()
       ],
       defaultStyle: {
-        font: 'Nunito'
+        font: 'Nunito',
+        fontSize: 10
+      },
+      styles: {
+        tableHeader: {
+          italics: true,
+          fontSize: 10,
+          color: '#0F4C81'
+        }
       }
     };
 
@@ -263,8 +271,8 @@ export class NewReportComponent {
         color: '#0F4C81',
         tocItem: true,
         tocMargin: [5, 2.5, 0, 2.5],
-        tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' },
-        tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }
+        tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12  },
+        tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 }
       });
     } else if (tocItem) {
       content.push({
@@ -273,8 +281,8 @@ export class NewReportComponent {
         color: '#0F4C81',
         tocItem: true,
         tocMargin: [5, 2.5, 0, 2.5],
-        tocStyle: { color: '#0F4C81' },
-        tocNumberStyle: { color: '#0F4C81' }
+        tocStyle: { color: '#0F4C81', fontSize: 12 },
+        tocNumberStyle: { color: '#0F4C81', fontSize: 12 }
       });
     } else {
       content.push({
@@ -422,6 +430,7 @@ export class NewReportComponent {
         paddingLeft(i, node) { return 10; },
         paddingRight(i, node) { return 2; },
       },
+      pageBreak: 'after'
     });
 
     return content;
@@ -598,7 +607,7 @@ export class NewReportComponent {
         {
           width: 300,
           stack: [
-            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81' }, tocNumberStyle: { color: '#0F4C81' } },
+            { text: 'Interest Area Scores', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81', fontSize: 12 }, tocNumberStyle: { color: '#0F4C81', fontSize: 12 } },
             { text: 'Your total number of “LIKE,” “?” and “DISLIKE” responses for each Interest Area are reported below.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'Percentile scores show the percentage of other people who gave fewer “LIKE” responses than you did in each Interest Area.', fontSize: 10, margin: [0, 0, 0, 10] },
             {
@@ -691,7 +700,7 @@ export class NewReportComponent {
             },
             paddingLeft(i, node) { return 7.5; },
             paddingRight(i, node) { return 7.5; },
-          }
+          },
         },
         { width: '*', text: '' },
       ],
@@ -714,8 +723,8 @@ export class NewReportComponent {
   buildTopInterestTable() {
     const interestTable = [];
 
-    interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
+    interestTable.push([{ text: 'Interests', colSpan: 2, style:'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style:'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style:'tableHeader'  }, '', '', { text: 'Percent', style:'tableHeader'  }, { text: 'Result', style:'tableHeader' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, style:'tableHeader' }, '', { text: 'Like', style:'tableHeader' }, { text: '?', style:'tableHeader' }, { text: 'Dislike', style:'tableHeader' }, { text: 'Total', border: [true, false, false, false], style:'tableHeader' }, { text: 'Male', style:'tableHeader' }, { text: 'Female', border: [false, false, true, false], style:'tableHeader' }, { text: 'Like', alignment: 'center', style:'tableHeader' }, { text: 'IPA', alignment: 'center', style:'tableHeader' }]);
 
     this.topInterests.forEach(i => {
       const topInterest = interests.find(interest => interest.id === i.interestId);
@@ -743,8 +752,8 @@ export class NewReportComponent {
   buildInterestTable() {
     const interestTable = [];
 
-    interestTable.push([{ text: 'Interests', colSpan: 2, color: '#0F4C81' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', color: '#0F4C81' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], color: '#0F4C81' }, '', '', { text: 'Percent', color: '#0F4C81' }, { text: 'Result', color: '#0F4C81' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, color: '#0F4C81' }, '', { text: 'Like', color: '#0F4C81' }, { text: '?', color: '#0F4C81' }, { text: 'Dislike', color: '#0F4C81' }, { text: 'Total', border: [true, false, false, false], color: '#0F4C81' }, { text: 'Male', color: '#0F4C81' }, { text: 'Female', border: [false, false, true, false], color: '#0F4C81' }, { text: 'Like', color: '#0F4C81', alignment: 'center' }, { text: 'IPA', color: '#0F4C81', alignment: 'center' }]);
+    interestTable.push([{ text: 'Interests', colSpan: 2, style:'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style:'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style:'tableHeader'  }, '', '', { text: 'Percent', style:'tableHeader'  }, { text: 'Result', style:'tableHeader' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, style:'tableHeader' }, '', { text: 'Like', style:'tableHeader' }, { text: '?', style:'tableHeader' }, { text: 'Dislike', style:'tableHeader' }, { text: 'Total', border: [true, false, false, false], style:'tableHeader' }, { text: 'Male', style:'tableHeader' }, { text: 'Female', border: [false, false, true, false], style:'tableHeader' }, { text: 'Like', alignment: 'center', style:'tableHeader' }, { text: 'IPA', alignment: 'center', style:'tableHeader' }]);
 
     interests.forEach(i => {
       const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.id);
@@ -781,7 +790,7 @@ export class NewReportComponent {
         {
           width: 350,
           stack: [
-            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81' }, tocNumberStyle: { color: '#0F4C81' } },
+            { text: 'Individual Profile Analysis', fontSize: 12, margin: [0, 0, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fontSize: 12 }, tocNumberStyle: { color: '#0F4C81', fontSize: 12 } },
             { text: 'The table below reports and displays the percentage of “LIKE” responses that you recorded within each of the twelve Interest Areas.', fontSize: 10, margin: [0, 0, 0, 10] },
             { text: 'The dark vertical line in the chart is your average percentage of “LIKE” responses (XX%) across all twelve Interest Areas.', fontSize: 10 },
           ]
@@ -833,7 +842,7 @@ export class NewReportComponent {
   buildIPATable(percentLikeAvg: number) {
     const IPATable = [];
 
-    IPATable.push([{ text: 'Interest Area', colSpan: 2, color: '#0F4C81' }, '', { text: '% Like', color: '#0F4C81' }, { text: 'IPA (XX%)', color: '#0F4C81' }]);
+    IPATable.push([{ text: 'Interest Area', colSpan: 2, style: 'tableHeader' }, '', { text: '% Like', style: 'tableHeader' }, { text: 'IPA (XX%)', style: 'tableHeader', margin: [(percentLikeAvg * 2.5) - 22, 0, 0, 0] }]);
 
     interests.forEach(i => {
       const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
@@ -892,7 +901,7 @@ export class NewReportComponent {
         {
           width: 350,
           stack: [
-            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' } },
+            { text: 'Performance on Tasks', fontSize: 12, margin: [0, 40, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 0], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 } },
             { text: 'The table below reports the number of correct answers and the number of questions you attempted in each assessment task', fontSize: 10, margin: [0, 0, 0, 10] }
           ]
         },
@@ -938,7 +947,7 @@ export class NewReportComponent {
   buildPerformanceTable() {
     const performanceTable = [];
 
-    performanceTable.push([{ text: 'Task', fontSize: 10, color: '#0F4C81', colSpan: 2 }, '', { text: 'Correct', fontSize: 10, color: '#0F4C81' }, { text: 'Attempted', fontSize: 10, color: '#0F4C81' }]);
+    performanceTable.push([{ text: 'Task', colSpan: 2, style: 'tableHeader' }, '', { text: 'Correct', style: 'tableHeader' }, { text: 'Attempted', style: 'tableHeader' }]);
     aptitudeTasks.forEach(t => {
       const evalueeResult = this.es.evaluee.taskResults.find(task => task.taskId === t.id);
       performanceTable.push([
@@ -957,7 +966,7 @@ export class NewReportComponent {
     const averageRangeHeight = 270;
 
     content.push(this.buildPageHeader('Aptitude Assessment', false));
-    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0' }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0' } });
+    content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 } });
     content.push({ text: 'The table below reports and graphically displays your aptitudes as standard scores and as percentile scores.  Both types of scores involve the comparison of your performace against the performace of other adults.', fontSize: 10, margin: [0, 0, 0, 20] });
     content.push({ text: 'Consider this:', fontSize: 10, margin: [0, 0, 0, 10] });
     content.push({
@@ -973,10 +982,11 @@ export class NewReportComponent {
         {
           type: 'polyline',
           lineWidth: 2,
-          color: '#FFD700',
+          color: '#E8E8E8',
+          lineColor: '#20B2AA',
           // fillOpacity: 0.5,
           closePath: true,
-          points: [{ x: 305, y: 0 }, { x: 400, y: 0 }, { x: 400, y: averageRangeHeight }, { x: 310, y: averageRangeHeight }]
+          points: [{ x: 285, y: 0 }, { x: 364, y: 0 }, { x: 364, y: averageRangeHeight }, { x: 285, y: averageRangeHeight }]
         }
       ]
     });
@@ -1018,7 +1028,7 @@ export class NewReportComponent {
     const aptitudeProfileTable = [];
     this.as.tally();
 
-    aptitudeProfileTable.push([{ text: 'Aptitude', color: '#0F4C81' }, { text: 'Score', color: '#0F4C81' }, { text: '%tile', color: '#0F4C81' }, { text: 'Average Range', color: '#0F4C81', alignment: 'center' }]);
+    aptitudeProfileTable.push([{ text: 'Aptitude', style: 'tableHeader' }, { text: 'Score', style: 'tableHeader' }, { text: '%tile', style: 'tableHeader' }, { text: 'Average Range', style: 'tableHeader', alignment: 'center' }]);
 
     this.as.aptitudes.forEach(a => {
       aptitudeProfileTable.push([
@@ -1047,11 +1057,14 @@ export class NewReportComponent {
           points: [{ x: 75, y: -5 }, { x: 175, y: -5 }, { x: 175, y: 20 }, { x: 75, y: 20 }]
         }, */
         {
-          type: 'line',
-          x1: 0, y1: 7,
-          x2: 250, y2: 7,
-          lineWidth: 15,
-          lineColor: '#A9A9A9',
+          type: 'polyline',
+          points: [{x: 0, y: 0}, {x: 250, y: 0}, {x: 250, y: 15}, {x: 0, y: 15}],
+          color: 'white',
+          //x1: 0, y1: 7,
+          //x2: 250, y2: 7,
+          lineWidth: 2,
+          //lineColor: '#A9A9A9',
+          lineColor: '#0F4C81'
         },
         {
           type: 'line',
@@ -1220,7 +1233,7 @@ export class NewReportComponent {
   buildJobTables() {
     const content = [];
 
-    content.push(this.buildPageHeader('GOE Recommendations', false));
+    content.push(this.buildPageHeader('GOE Recommendations', true));
 
     this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
