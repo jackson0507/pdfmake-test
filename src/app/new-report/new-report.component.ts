@@ -217,14 +217,8 @@ export class NewReportComponent {
       fontSize: 20,
       alignment: 'center',
       color: '#808080',
-    });
-    content.push({
-      text: 'Assessment taken on: ' + (new Date(this.es.evaluee.exercisesComplete.toDate())).toDateString(),
-      fontSize: 16,
-      alignment: 'center',
-      color: '#808080',
       pageBreak: 'after'
-    })
+    });
 
     return content;
   }
@@ -258,7 +252,6 @@ export class NewReportComponent {
     });
 
     return content;
-
   }
 
   buildPageHeader(title: string, tocItem: boolean) {
@@ -271,7 +264,7 @@ export class NewReportComponent {
         color: '#0F4C81',
         tocItem: true,
         tocMargin: [5, 2.5, 0, 2.5],
-        tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12  },
+        tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 },
         tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 }
       });
     } else if (tocItem) {
@@ -324,11 +317,11 @@ export class NewReportComponent {
       margin: [0, 30, 200, 0]
     });
     content.push({
-      margin: [0, 300, 0, 0],
+      margin: [0, 325, 0, 0],
       table: {
         widths: [150],
         body: [
-          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
+          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81', fontSize: 12 }]
         ]
       },
       layout: {
@@ -350,7 +343,27 @@ export class NewReportComponent {
 
     content.push(this.buildPageHeader('Assessment Settings', true));
     content.push(
-      { text: 'Audio Instructions', fontSize: 12, margin: [0, 60, 0, 12.5] },
+      { text: 'Assessment Date', fontSize: 12, margin: [0, 60, 0, 12.5] },
+      {
+        columns: [
+          { text: 'Taken on:', fontSize: 10 },
+          { text: (new Date(this.es.evaluee.exercisesComplete.toDate())).toDateString(), fontSize: 10, color: '#0F4C81', margin: [-210, 0, 0, 0] }
+        ], margin: [0, 0, 0, 0]
+      }
+    );
+    content.push({
+      canvas: [
+        {
+          type: 'line',
+          x1: -20, y1: 10,
+          x2: 300, y2: 10,
+          lineWidth: 1,
+          lineColor: '#F0F0F0',
+        },
+      ]
+    });
+    content.push(
+      { text: 'Audio Instructions', fontSize: 12, margin: [0, 10, 0, 12.5] },
       { text: 'Audio delivery enabled?', fontSize: 10, margin: [0, 0, 0, 7.25] },
       { text: 'Yes', fontSize: 10, color: '#0F4C81' }
     );
@@ -415,11 +428,11 @@ export class NewReportComponent {
       ]
     });
     content.push({
-      margin: [0, 150, 0, 0],
+      margin: [0, 100, 0, 0],
       table: {
         widths: [150],
         body: [
-          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81' }]
+          [{ text: 'Visit www.careerscope.net to view your highlighted results & engage with your newly discovered paths!', color: '#0F4C81', fontSize: 12 }]
         ]
       },
       layout: {
@@ -723,8 +736,8 @@ export class NewReportComponent {
   buildTopInterestTable() {
     const interestTable = [];
 
-    interestTable.push([{ text: 'Interests', colSpan: 2, style:'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style:'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style:'tableHeader'  }, '', '', { text: 'Percent', style:'tableHeader'  }, { text: 'Result', style:'tableHeader' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, style:'tableHeader' }, '', { text: 'Like', style:'tableHeader' }, { text: '?', style:'tableHeader' }, { text: 'Dislike', style:'tableHeader' }, { text: 'Total', border: [true, false, false, false], style:'tableHeader' }, { text: 'Male', style:'tableHeader' }, { text: 'Female', border: [false, false, true, false], style:'tableHeader' }, { text: 'Like', alignment: 'center', style:'tableHeader' }, { text: 'IPA', alignment: 'center', style:'tableHeader' }]);
+    interestTable.push([{ text: 'Interests', colSpan: 2, style: 'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style: 'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style: 'tableHeader' }, '', '', { text: 'Percent', style: 'tableHeader' }, { text: 'Result', style: 'tableHeader' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', border: [true, false, false, false], style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', border: [false, false, true, false], style: 'tableHeader' }, { text: 'Like', alignment: 'center', style: 'tableHeader' }, { text: 'IPA', alignment: 'center', style: 'tableHeader' }]);
 
     this.topInterests.forEach(i => {
       const topInterest = interests.find(interest => interest.id === i.interestId);
@@ -752,8 +765,8 @@ export class NewReportComponent {
   buildInterestTable() {
     const interestTable = [];
 
-    interestTable.push([{ text: 'Interests', colSpan: 2, style:'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style:'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style:'tableHeader'  }, '', '', { text: 'Percent', style:'tableHeader'  }, { text: 'Result', style:'tableHeader' }]);
-    interestTable.push([{ text: 'Area Names', colSpan: 2, style:'tableHeader' }, '', { text: 'Like', style:'tableHeader' }, { text: '?', style:'tableHeader' }, { text: 'Dislike', style:'tableHeader' }, { text: 'Total', border: [true, false, false, false], style:'tableHeader' }, { text: 'Male', style:'tableHeader' }, { text: 'Female', border: [false, false, true, false], style:'tableHeader' }, { text: 'Like', alignment: 'center', style:'tableHeader' }, { text: 'IPA', alignment: 'center', style:'tableHeader' }]);
+    interestTable.push([{ text: 'Interests', colSpan: 2, style: 'tableHeader' }, '', { text: 'Responses', colSpan: 3, alignment: 'center', style: 'tableHeader' }, '', '', { text: 'Percentiles', colSpan: 3, alignment: 'center', border: [true, false, true, false], style: 'tableHeader' }, '', '', { text: 'Percent', style: 'tableHeader' }, { text: 'Result', style: 'tableHeader' }]);
+    interestTable.push([{ text: 'Area Names', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', border: [true, false, false, false], style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', border: [false, false, true, false], style: 'tableHeader' }, { text: 'Like', alignment: 'center', style: 'tableHeader' }, { text: 'IPA', alignment: 'center', style: 'tableHeader' }]);
 
     interests.forEach(i => {
       const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.id);
@@ -963,7 +976,7 @@ export class NewReportComponent {
 
   buildAptitudeProfile() {
     const content = [];
-    const averageRangeHeight = 270;
+    const averageRangeHeight = 250;
 
     content.push(this.buildPageHeader('Aptitude Assessment', false));
     content.push({ text: 'Aptitude Profile', fontSize: 12, margin: [0, 20, 0, 10], tocItem: true, tocMargin: [20, 0, 0, 2.5], tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 }, tocNumberStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 } });
@@ -1058,7 +1071,7 @@ export class NewReportComponent {
         }, */
         {
           type: 'polyline',
-          points: [{x: 0, y: 0}, {x: 250, y: 0}, {x: 250, y: 15}, {x: 0, y: 15}],
+          points: [{ x: 0, y: 0 }, { x: 250, y: 0 }, { x: 250, y: 15 }, { x: 0, y: 15 }],
           color: 'white',
           //x1: 0, y1: 7,
           //x2: 250, y2: 7,
