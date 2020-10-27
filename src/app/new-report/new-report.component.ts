@@ -135,7 +135,7 @@ export class NewReportComponent {
         this.buildPerformanceOnTasks(),
         this.buildAptitudeProfile(),
         this.buildUnscoredAptitudes(),
-        //this.buildGOERecommendations(),
+        this.buildGOERecommendations(),
         this.buildJobTables(),
         this.buildJobDescriptionTables()
       ],
@@ -1078,7 +1078,7 @@ export class NewReportComponent {
 
     return content;
   }
-  /*
+
 
   buildGOERecommendations() {
     const content = [];
@@ -1118,12 +1118,32 @@ export class NewReportComponent {
   buildInterestGOETable() {
     const interestGOETable = [];
 
+    // TODO: redesign table to be able to work with odd length top Interests arrays
+
     let i;
-    for (i = 0; i < this.topInterests.length; i += 2) {
+    for (i = 0; i < this.topInterests.length - 1; i += 2) {
+      const topInterest = interests.find(interest => interest.id === this.topInterests[i].interestId);
+      const topInterest2 = interests.find(interest => interest.id === this.topInterests[i + 1].interestId);
       interestGOETable.push([
         {
           stack: [
-            { svg: interests.find(interest => interest.id === this.topInterests[i].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
+            {
+              columns: [
+                { svg: topInterest.svgLogo, width: 20, margin: [3, 0, 0, 3] },
+                { text: topInterest.name, fontSize: 12, margin: [15, 4, 0, 0] }
+              ]
+            },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0, y1: 0,
+                  x2: 225, y2: 0,
+                  lineWidth: 1.2,
+                  lineColor: topInterest.color,
+                }
+              ]
+            },
             { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i].interestId > 9 ? this.topInterests[i].interestId : '0' + this.topInterests[i].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
             { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
@@ -1150,7 +1170,23 @@ export class NewReportComponent {
         },
         {
           stack: [
-            { svg: interests.find(interest => interest.id === this.topInterests[i + 1].interestId).pillLogo, width: 100, margin: [-10, 0, 0, -5] },
+            {
+              columns: [
+                { svg: topInterest2.svgLogo, width: 20, margin: [3, 0, 0, 3] },
+                { text: topInterest2.name, fontSize: 12, margin: [15, 4, 0, 0] }
+              ]
+            },
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0, y1: 0,
+                  x2: 225, y2: 0,
+                  lineWidth: 1.2,
+                  lineColor: topInterest2.color,
+                }
+              ]
+            },
             { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i + 1].interestId > 9 ? this.topInterests[i + 1].interestId : '0' + this.topInterests[i + 1].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
             { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i + 1].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
             { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
@@ -1181,12 +1217,12 @@ export class NewReportComponent {
     return interestGOETable;
   }
 
-  */
+
 
   buildJobTables() {
     const content = [];
 
-    content.push(this.buildPageHeader('GOE Recommendations', true));
+    content.push(this.buildPageHeader('GOE Recommendations', false));
 
     this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
