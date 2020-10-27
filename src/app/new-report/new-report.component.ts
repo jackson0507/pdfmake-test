@@ -468,7 +468,7 @@ export class NewReportComponent {
     content.push({
       margin: [0, 10, 0, 0],
       table: {
-        body: this.buildInterestInventoryTable1()
+        body: this.buildInterestInventoryTable(0, interests.length / 2)
       },
       layout: {
         defaultBorder: false,
@@ -479,7 +479,7 @@ export class NewReportComponent {
     content.push({
       margin: [0, 30, 0, 0],
       table: {
-        body: this.buildInterestInventoryTable2()
+        body: this.buildInterestInventoryTable(interests.length / 2, interests.length)
       },
       layout: {
         defaultBorder: false,
@@ -490,12 +490,12 @@ export class NewReportComponent {
     return content;
   }
 
-  buildInterestInventoryTable1() {
-    const interestInventoryTable1 = [];
+  buildInterestInventoryTable(start: number, end: number) {
+    const interestInventoryTable = [];
 
     let i;
-    for (i = 0; i < interests.length / 2; i += 2) {
-      interestInventoryTable1.push([
+    for (i = start; i < end; i += 2) {
+      interestInventoryTable.push([
         {
           columns: [
             { svg: interests[i].svgLogo, width: 25, margin: [0, 25, 0, 0] },
@@ -547,67 +547,7 @@ export class NewReportComponent {
       ]);
     }
 
-    return interestInventoryTable1;
-  }
-
-  buildInterestInventoryTable2() {
-    const interestInventoryTable2 = [];
-
-    let i;
-    for (i = interests.length / 2; i < interests.length; i += 2) {
-      interestInventoryTable2.push([
-        {
-          columns: [
-            { svg: interests[i].svgLogo, width: 25, margin: [0, 25, 0, 0] },
-            {
-              margin: [5, 0, 0, 0],
-              stack: [
-                { text: interests[i].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                {
-                  canvas: [
-                    {
-                      type: 'line',
-                      x1: -35, y1: -10,
-                      x2: 200, y2: -10,
-                      lineWidth: 1,
-                      lineColor: interests[i].color,
-                    }
-                  ]
-                },
-                { text: interests[i].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i].exampleProfessions, color: '#0F4C81', fontSize: 8 }
-              ], width: 200
-            }
-          ], margin: [0, 0, 20, 0]
-        },
-        {
-          columns: [
-            { svg: interests[i + 1].svgLogo, width: 25, margin: [0, 25, 0, 0] },
-            {
-              margin: [5, 0],
-              stack: [
-                { text: interests[i + 1].name, fontSize: 12, margin: [0, 30, 0, 15] },
-                {
-                  canvas: [
-                    {
-                      type: 'line',
-                      x1: -35, y1: -10,
-                      x2: 200, y2: -10,
-                      lineWidth: 1,
-                      lineColor: interests[i + 1].color,
-                    }
-                  ]
-                },
-                { text: interests[i + 1].description, fontSize: 10, margin: [0, 0, 0, 10] },
-                { text: interests[i + 1].exampleProfessions, color: '#0F4C81', fontSize: 8 }
-              ], width: 200
-            }
-          ]
-        },
-      ]);
-    }
-
-    return interestInventoryTable2;
+    return interestInventoryTable;
   }
 
   buildInterestAreaScores() {
