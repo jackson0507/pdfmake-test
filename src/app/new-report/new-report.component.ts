@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, reportExercises } from '../svg';
+import { careerScopeLogoSVG, careerScopeLogoSVGInverse, jobBoard, jellyBeanBackground, reportTabBackground, reportExercises, checkmark } from '../svg';
 import { interests } from '../populateInterests';
 import { InterestScore } from '../evaluee.model';
 import { WorkgroupsService } from '../workgroups.service';
@@ -1253,8 +1253,19 @@ export class NewReportComponent {
 
       content.push({
         columns: [
-          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
-          { svg: interest.svgLogo, width: 25, margin: [0, 35, 0, 0] }
+          { svg: interest.svgLogo, width: 25, margin: [0, 33, 10, 0] },
+          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
+        ]
+      });
+      content.push({
+        canvas: [
+          {
+            type: 'line',
+            x1: -10, y1: -5,
+            x2: 515, y2: -5,
+            lineWidth: 1.2,
+            lineColor: interest.color,
+          }
         ]
       });
       content.push({ text: interest.description, margin: [0, 10, 0, 20] });
@@ -1284,7 +1295,14 @@ export class NewReportComponent {
 
     workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4, style: 'cellSpacing' }, '', '', '']);
-      table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12, colSpan: 4 }, '', '', '']);
+      table.push([{
+        columns: [
+          { svg: checkmark, width: 15, margin: [-20, 0, 0, 0] },
+          { text: 'GOE ' + group.prefix, bold: true, fontSize: 12, margin: [-16, 0, 0, 0] },
+          { text: ' ' + group.name, fontSize: 12, margin: [-195, 0, 0, 0] }
+        ], colSpan: 4
+      }]);
+      // table.push([{ text: group.prefix + ' ' + group.name, fontSize: 12, colSpan: 4 }, '', '', '']);
       table.push([{ text: group.description, fontSize: 10, colSpan: 4 }, '', '', '']);
       table.push([{ text: 'Job Title', fontSize: 8, color: '#0F4C81' }, { text: 'D.O.T #', fontSize: 8, color: '#0F4C81' }, { text: 'GED Req', fontSize: 8, color: '#0F4C81' }, { text: 'SVP Req', fontSize: 8, color: '#0F4C81' }]);
       group.jobs.forEach(job => {
@@ -1306,17 +1324,17 @@ export class NewReportComponent {
 
       content.push({
         columns: [
-          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [0, 40, 5, 10], width: 'auto' },
-          { svg: interest.svgLogo, width: 25, margin: [0, 35, 0, 0] }
+          { svg: interest.svgLogo, width: 25, margin: [0, 33, 10, 0] },
+          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
         ]
       });
       content.push({
         canvas: [
           {
             type: 'line',
-            x1: -5, y1: 0,
-            x2: 520, y2: 0,
-            lineWidth: 1,
+            x1: -10, y1: -5,
+            x2: 515, y2: -5,
+            lineWidth: 1.2,
             lineColor: interest.color,
           }
         ]
