@@ -12,6 +12,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import pdfFonts from 'pdf/fonts/custom-fonts.js';
+import { Interest } from '../interests.model';
 
 @Component({
   selector: 'app-new-report',
@@ -1118,106 +1119,75 @@ export class NewReportComponent {
   buildInterestGOETable() {
     const interestGOETable = [];
 
-    // TODO: redesign table to be able to work with odd length top Interests arrays
-
-    let i;
-    for (i = 0; i < this.topInterests.length - 1; i += 2) {
-      const topInterest = interests.find(interest => interest.id === this.topInterests[i].interestId);
-      const topInterest2 = interests.find(interest => interest.id === this.topInterests[i + 1].interestId);
-      interestGOETable.push([
-        {
-          stack: [
-            {
-              columns: [
-                { svg: topInterest.svgLogo, width: 20, margin: [3, 0, 0, 3] },
-                { text: topInterest.name, fontSize: 12, margin: [15, 4, 0, 0] }
-              ]
-            },
-            {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 0, y1: 0,
-                  x2: 225, y2: 0,
-                  lineWidth: 1.2,
-                  lineColor: topInterest.color,
-                }
-              ]
-            },
-            { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i].interestId > 9 ? this.topInterests[i].interestId : '0' + this.topInterests[i].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
-            { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
-            {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 12.5, y1: -23,
-                  x2: 25, y2: -23,
-                  lineWidth: 1,
-                  lineColor: '#E0E0E0',
-                },
-                {
-                  type: 'line',
-                  x1: 12.5, y1: -53,
-                  x2: 12.5, y2: -23,
-                  lineWidth: 1,
-                  lineColor: '#E0E0E0',
-                },
-              ]
-            }
-          ],
-          margin: [0, 0, 0, 10]
-        },
-        {
-          stack: [
-            {
-              columns: [
-                { svg: topInterest2.svgLogo, width: 20, margin: [3, 0, 0, 3] },
-                { text: topInterest2.name, fontSize: 12, margin: [15, 4, 0, 0] }
-              ]
-            },
-            {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 0, y1: 0,
-                  x2: 225, y2: 0,
-                  lineWidth: 1.2,
-                  lineColor: topInterest2.color,
-                }
-              ]
-            },
-            { text: 'The GOE identifies this as Interest Area ' + (this.topInterests[i + 1].interestId > 9 ? this.topInterests[i + 1].interestId : '0' + this.topInterests[i + 1].interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-            { text: this.ws.workgroups.filter(group => group.area === this.topInterests[i + 1].interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
-            { text: '31 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
-            {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 12.5, y1: -23,
-                  x2: 25, y2: -23,
-                  lineWidth: 1,
-                  lineColor: '#E0E0E0',
-                },
-                {
-                  type: 'line',
-                  x1: 12.5, y1: -53,
-                  x2: 12.5, y2: -23,
-                  lineWidth: 1,
-                  lineColor: '#E0E0E0',
-                },
-              ]
-            }
-          ],
-          margin: [0, 0, 0, 10]
-        },
-      ]);
-    }
+    const self = this;
+    this.topInterests.forEach(function (topInterest, i) {
+      const interest = interests.find(interest => interest.id === topInterest.interestId);
+      if (i % 2 === 0 && i !== self.topInterests.length - 1) {
+        const interest2 = interests.find(interest => interest.id === self.topInterests[i + 1].interestId);
+        interestGOETable.push([
+          self.buildInterestGOEStub(interest, topInterest),
+          self.buildInterestGOEStub(interest2, self.topInterests[i + 1])
+        ]);
+      } else if (i % 2 === 0 ) {
+        interestGOETable.push([
+          self.buildInterestGOEStub(interest, topInterest),
+          ''
+        ]);
+      }
+    });
 
     return interestGOETable;
   }
 
+  buildInterestGOEStub(interest: Interest, interestScore: InterestScore) {
+    const stub = [];
 
+    stub.push({
+      stack: [
+        {
+          columns: [
+            { svg: interest.svgLogo, width: 20, margin: [3, 0, 0, 3] },
+            { text: interest.name, fontSize: 12, margin: [15, 4, 0, 0] }
+          ]
+        },
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 0, y1: 0,
+              x2: 225, y2: 0,
+              lineWidth: 1.2,
+              lineColor: interest.color,
+            }
+          ]
+        },
+        { text: 'The GOE identifies this as Interest Area ' + (interestScore.interestId > 9 ? interestScore.interestId : '0' + interestScore.interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
+        { text: this.ws.workgroups.filter(group => group.area === interestScore.interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+        { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 12.5, y1: -23,
+              x2: 25, y2: -23,
+              lineWidth: 1,
+              lineColor: '#E0E0E0',
+            },
+            {
+              type: 'line',
+              x1: 12.5, y1: -53,
+              x2: 12.5, y2: -23,
+              lineWidth: 1,
+              lineColor: '#E0E0E0',
+            },
+          ]
+        }
+      ],
+      margin: [0, 0, 0, 10]
+    });
+
+    return stub;
+  }
 
   buildJobTables() {
     const content = [];
