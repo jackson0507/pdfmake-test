@@ -30,17 +30,8 @@ export class NewReportComponent {
     private as: AptitudeService,
   ) { }
 
-  /*
-  createDate() {
-    const dd = String(this.today.getDate()).padStart(2, '0');
-    const mm = String(this.today.getMonth() + 1).padStart(2, '0');
-    const yyyy = this.today.getFullYear();
-
-    this.today = mm + '/' + dd + '/' + yyyy;
-  }*/
-
   async generatePDFReport() {
-    await this.es.loadEvaluee('R04470_DNMM', '1038734');
+    await this.es.loadEvaluee('R04470_DNMM', '1038691');
 
     this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
     this.topInterests.sort(this.sortInterests);
@@ -1139,8 +1130,16 @@ export class NewReportComponent {
     return interestGOETable;
   }
 
+  // TODO: Update Job matches from hardcoded to dyanmic
+
   buildInterestGOEStub(interest: Interest, interestScore: InterestScore) {
     const stub = [];
+
+    const workgroups = this.ws.workgroups.filter(group => group.area === interestScore.interestId);
+    let jobCount = 0;
+    workgroups.forEach(workgroup => {
+      jobCount += workgroup.jobs.length;
+    });
 
     stub.push({
       stack: [
@@ -1162,21 +1161,21 @@ export class NewReportComponent {
           ]
         },
         { text: 'The GOE identifies this as Interest Area ' + (interestScore.interestId > 9 ? interestScore.interestId : '0' + interestScore.interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
-        { text: this.ws.workgroups.filter(group => group.area === interestScore.interestId).length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
-        { text: '56 Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
+        { text: workgroups.length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
+        { text: jobCount + ' Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
         {
           canvas: [
             {
               type: 'line',
-              x1: 12.5, y1: -23,
-              x2: 25, y2: -23,
+              x1: 12.5, y1: -26,
+              x2: 25, y2: -26,
               lineWidth: 1,
               lineColor: '#E0E0E0',
             },
             {
               type: 'line',
               x1: 12.5, y1: -53,
-              x2: 12.5, y2: -23,
+              x2: 12.5, y2: -26,
               lineWidth: 1,
               lineColor: '#E0E0E0',
             },
@@ -1192,10 +1191,10 @@ export class NewReportComponent {
   buildJobTables() {
     const content = [];
 
-    content.push(this.buildPageHeader('GOE Recommendations', false));
-
     this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
+
+      content.push(this.buildPageHeader('GOE Recommendations', false));
 
       content.push({
         columns: [
@@ -1225,7 +1224,7 @@ export class NewReportComponent {
           },
           style: {
             cellSpacing: { margin: [0, 20, 0, 0] }
-          }
+          }, pageBreak: 'after'
         });
       }
     });
@@ -1268,6 +1267,8 @@ export class NewReportComponent {
     this.topInterests.forEach(i => {
       const interest = interests.find(interest => interest.id === i.interestId);
 
+      content.push(this.buildPageHeader('GOE Recommendations', false));
+
       content.push({
         columns: [
           { svg: interest.svgLogo, width: 25, margin: [0, 33, 10, 0] },
@@ -1295,7 +1296,7 @@ export class NewReportComponent {
           },
           style: {
             cellSpacing: { margin: [0, 20, 0, 0] }
-          }
+          }, pageBreak: 'after'
         });
       }
     });
