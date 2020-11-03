@@ -31,7 +31,8 @@ export class NewReportComponent {
   ) { }
 
   async generatePDFReport() {
-    await this.es.loadEvaluee('R04470_DNMM', '1038691');
+    await this.es.loadEvaluee('R04470_DNMM', '1038734');
+    console.log(this.es.evaluee);
 
     this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
     this.topInterests.sort(this.sortInterests);
@@ -208,8 +209,7 @@ export class NewReportComponent {
       margin: [0, 0, 0, 10],
       fontSize: 20,
       alignment: 'center',
-      color: '#808080',
-      pageBreak: 'after'
+      color: '#808080'
     });
 
     return content;
@@ -254,6 +254,7 @@ export class NewReportComponent {
         text: title,
         fontSize: 23,
         color: '#0F4C81',
+        pageBreak: 'before',
         tocItem: true,
         tocMargin: [5, 2.5, 0, 2.5],
         tocStyle: { color: '#0F4C81', fillColor: '#F0F0F0', fontSize: 12 },
@@ -264,6 +265,7 @@ export class NewReportComponent {
         text: title,
         fontSize: 23,
         color: '#0F4C81',
+        pageBreak: 'before',
         tocItem: true,
         tocMargin: [5, 2.5, 0, 2.5],
         tocStyle: { color: '#0F4C81', fontSize: 12 },
@@ -273,7 +275,8 @@ export class NewReportComponent {
       content.push({
         text: title,
         fontSize: 23,
-        color: '#0F4C81'
+        color: '#0F4C81',
+        pageBreak: 'before'
       });
     }
     content.push({
@@ -323,8 +326,7 @@ export class NewReportComponent {
         paddingBottom(i, node) { return 12; },
         paddingLeft(i, node) { return 10; },
         paddingRight(i, node) { return 2; },
-      },
-      pageBreak: 'after'
+      }
     });
 
     return content;
@@ -434,8 +436,7 @@ export class NewReportComponent {
         paddingBottom(i, node) { return 12; },
         paddingLeft(i, node) { return 10; },
         paddingRight(i, node) { return 2; },
-      },
-      pageBreak: 'after'
+      }
     });
 
     return content;
@@ -464,8 +465,7 @@ export class NewReportComponent {
       },
       layout: {
         defaultBorder: false,
-      },
-      pageBreak: 'after'
+      }
     });
     content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({
@@ -475,8 +475,7 @@ export class NewReportComponent {
       },
       layout: {
         defaultBorder: false,
-      },
-      pageBreak: 'after'
+      }
     });
 
     return content;
@@ -609,8 +608,7 @@ export class NewReportComponent {
           }
         },
         { width: '*', text: '' },
-      ],
-      pageBreak: 'after'
+      ]
     });
     content.push(this.buildPageHeader('Interest Inventory', false));
     content.push({ text: 'Your Interest Results', fontSize: 12, margin: [0, 40, 0, 10] });
@@ -648,8 +646,7 @@ export class NewReportComponent {
           },
         },
         { width: '*', text: '' },
-      ],
-      pageBreak: 'after'
+      ]
     });
 
     return content;
@@ -777,8 +774,7 @@ export class NewReportComponent {
           }
         },
         { width: '*', text: '' },
-      ],
-      pageBreak: 'after'
+      ]
     });
 
     return content;
@@ -875,15 +871,14 @@ export class NewReportComponent {
             },
             paddingTop(i, node) { return 5; },
             paddingBottom(i, node) {
-              return (i === 0 || i === 1) ? 10 : 5
+              return (i === 0) ? 10 : 5
             },
             paddingLeft(i, node) { return 5; },
             paddingRight(i, node) { return 5; },
           }
         },
         { width: '*', text: '' },
-      ],
-      pageBreak: 'after'
+      ]
     });
 
     return content;
@@ -962,8 +957,7 @@ export class NewReportComponent {
         },
         { width: 30, text: '' },
       ],
-      margin: [0, -averageRangeHeight - 5, 0, 0],
-      pageBreak: 'after'
+      margin: [0, -averageRangeHeight - 5, 0, 0]
     });
 
     return content;
@@ -971,19 +965,19 @@ export class NewReportComponent {
 
   buildAptitudeProfileTable() {
     const aptitudeProfileTable = [];
-    this.as.tally();
 
     aptitudeProfileTable.push([{ text: 'Aptitude', style: 'tableHeader' }, { text: 'Score', style: 'tableHeader' }, { text: '%tile', style: 'tableHeader' }, { text: 'Average Range', style: 'tableHeader', alignment: 'center' }]);
 
-    this.as.aptitudes.forEach(a => {
-      aptitudeProfileTable.push([
-        { text: a.name },
-        { text: a.score },
-        { text: a.percentile },
-        this.buildAptitudeProfileGraph(a.percentile)
-      ]);
-    });
-
+   this.as.aptitudes.forEach(a => {
+     const aptitudeScore = this.es.evaluee.aptitudeScores.find(score => score.aptitude === a.type);
+     aptitudeProfileTable.push([
+       { text: a.name },
+       { text: aptitudeScore.score },
+       { text: aptitudeScore.percentile_score },
+       this.buildAptitudeProfileGraph(aptitudeScore.percentile_score)
+     ]);
+   });
+   
     return aptitudeProfileTable;
   }
 
@@ -1066,7 +1060,7 @@ export class NewReportComponent {
       margin: [0, 40, 0, 40]
     });
     content.push({ text: 'If “Counselor” is listed as the source of information, an assumption has been made regarding the score.', fontSize: 10, margin: [0, 0, 0, 10] });
-    content.push({ text: 'If "None" is listed as the source, the performance factor will not be considered when making Work Group recommendations', fontSize: 10, pageBreak: 'after' });
+    content.push({ text: 'If "None" is listed as the source, the performance factor will not be considered when making Work Group recommendations', fontSize: 10 });
 
     return content;
   }
@@ -1100,8 +1094,7 @@ export class NewReportComponent {
           }
         },
         { width: '*', text: '' },
-      ],
-      pageBreak: 'after'
+      ]
     });
 
     return content;
@@ -1224,7 +1217,7 @@ export class NewReportComponent {
           },
           style: {
             cellSpacing: { margin: [0, 20, 0, 0] }
-          }, pageBreak: 'after'
+          }
         });
       }
     });
@@ -1296,7 +1289,7 @@ export class NewReportComponent {
           },
           style: {
             cellSpacing: { margin: [0, 20, 0, 0] }
-          }, pageBreak: 'after'
+          }
         });
       }
     });

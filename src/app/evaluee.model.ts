@@ -96,7 +96,7 @@ export interface InterestScore {
 
 // evaluee_aptitudes
 interface AptitudeScore {
-    aptitudeId: number;
+    aptitude: string;
     score: number;
     // TODO: look into how each of these is computed, do we need to store?
     percentile_score: number;

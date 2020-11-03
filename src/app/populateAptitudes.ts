@@ -88,7 +88,7 @@ export const aptitudeTasks: AptitudeTask[] = [
 
     {
         id: 12,
-        name: 'Numerical Reasoning',
+        name: 'Numerical Reason',
         description: 'Solve mathematical word problems',
         iconFile: numericalReasoningIcon,
         color: '#2F78C0',
