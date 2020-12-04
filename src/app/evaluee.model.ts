@@ -6,15 +6,17 @@ import { Timestamp } from '@firebase/firestore-types';
 // TODO: switch id's back to string
 
 export interface Evaluee {
-    sqlId?: string; // legacy SQL ID, won't be used for new evaluees
-    logonName: string; // continue to use?
-    fullName: string; // convert first / last to full name
-    birthdate: Date;
+    uid: string;
+    portalId: string;
+    logonName: string;
+    fullName: string;
+    birthdate: Timestamp;
     age: number;
-    currentGrade: number;
-    // From evaluee_admins may be an array
+    currentGrade?: string;
     status: 'completed' | 'in progress' | 'new' | 'reviewed';
-    occubrowseAccess: boolean;
+    occubrowseAccess: 'Y' | 'N';
+    sqlId?: number;
+    
     lastActivity?: string;
     lastActivityDate?: Date;
     interestComplete?: Date;
@@ -74,7 +76,7 @@ interface TaskResult {
 
 
 interface InterestResult {
-    interestId: number;
+    interestCategory: 'Art' | 'Sci' | 'Pla' | 'Prt' | 'Mch' | 'Ind' | 'Bus' | 'Sel' | 'Acc' | 'Hum' | 'Ldi' | 'Phy';
     like: number;
     dislike: number;
     unanswered: number;
@@ -82,7 +84,7 @@ interface InterestResult {
 
 // evaluee_interests
 export interface InterestScore {
-    interestId: number;
+    interestCategory: 'Art' | 'Sci' | 'Pla' | 'Prt' | 'Mch' | 'Ind' | 'Bus' | 'Sel' | 'Acc' | 'Hum' | 'Ldi' | 'Phy';
     percentLike: number;
     totalScore: number;
     vsMale: number;
@@ -96,7 +98,7 @@ export interface InterestScore {
 
 // evaluee_aptitudes
 interface AptitudeScore {
-    aptitude: string;
+    aptitude: 'General' | 'Verbal' | 'Numerical' | 'Spatial' | 'Form' | 'Clerical';
     score: number;
     // TODO: look into how each of these is computed, do we need to store?
     percentile_score: number;

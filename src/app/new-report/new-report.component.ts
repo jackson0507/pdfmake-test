@@ -31,7 +31,7 @@ export class NewReportComponent {
   ) { }
 
   async generatePDFReport() {
-    await this.es.loadEvaluee('R04470_DNMM', '1038734');
+    await this.es.loadEvaluee('000000_VRI-DEMO', '939692');
     console.log(this.es.evaluee);
 
     this.topInterests = this.es.evaluee.interestScores.filter(interest => interest.rank > 0);
@@ -669,8 +669,8 @@ export class NewReportComponent {
     interestTable.push([{ text: 'Area Names', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', border: [true, false, false, false], style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', border: [false, false, true, false], style: 'tableHeader' }, { text: 'Like', alignment: 'center', style: 'tableHeader' }, { text: 'IPA', alignment: 'center', style: 'tableHeader' }]);
 
     this.topInterests.forEach(i => {
-      const topInterest = interests.find(interest => interest.id === i.interestId);
-      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.interestId);
+      const topInterest = interests.find(interest => interest.interestCategory === i.interestCategory);
+      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestCategory === i.interestCategory);
 
       if (i.rank > 0) {
         interestTable.push([
@@ -698,8 +698,8 @@ export class NewReportComponent {
     interestTable.push([{ text: 'Area Names', colSpan: 2, style: 'tableHeader' }, '', { text: 'Like', style: 'tableHeader' }, { text: '?', style: 'tableHeader' }, { text: 'Dislike', style: 'tableHeader' }, { text: 'Total', border: [true, false, false, false], style: 'tableHeader' }, { text: 'Male', style: 'tableHeader' }, { text: 'Female', border: [false, false, true, false], style: 'tableHeader' }, { text: 'Like', alignment: 'center', style: 'tableHeader' }, { text: 'IPA', alignment: 'center', style: 'tableHeader' }]);
 
     interests.forEach(i => {
-      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestId === i.id);
-      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
+      const evalueeResult = this.es.evaluee.interestResults.find(interest => interest.interestCategory === i.interestCategory);
+      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestCategory === i.interestCategory);
       interestTable.push([
         { svg: i.svgLogo, width: 20 },
         { text: i.name, alignment: 'left', margin: [0, 3, 0, 0] },
@@ -720,7 +720,7 @@ export class NewReportComponent {
   buildIndividualProfileAnalysis() {
     let evalPercentLikeAvg = 0;
     interests.forEach(i => {
-      evalPercentLikeAvg += this.es.evaluee.interestScores.find(interest => interest.interestId === i.id).percentLike;
+      evalPercentLikeAvg += this.es.evaluee.interestScores.find(interest => interest.interestCategory === i.interestCategory).percentLike;
     });
     evalPercentLikeAvg = evalPercentLikeAvg / interests.length;
 
@@ -786,7 +786,7 @@ export class NewReportComponent {
     IPATable.push([{ text: 'Interest Area', colSpan: 2, style: 'tableHeader' }, '', { text: '% Like', style: 'tableHeader' }, { text: 'IPA (XX%)', style: 'tableHeader', margin: [(percentLikeAvg * 2.5) - 22, 0, 0, 0] }]);
 
     interests.forEach(i => {
-      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestId === i.id);
+      const evalueeScore = this.es.evaluee.interestScores.find(interest => interest.interestCategory === i.interestCategory);
       IPATable.push([
         { svg: i.svgLogo, width: 25, margin: [0, 2.5, 0, 0] },
         { text: i.name, alignment: 'left', margin: [0, 7.5, 0, 0] },
@@ -856,6 +856,7 @@ export class NewReportComponent {
         {
           width: 'auto',
           table: {
+            widths: ['*', 200, 50, 50],
             body:
               this.buildPerformanceTable()
           },
@@ -892,9 +893,9 @@ export class NewReportComponent {
       const evalueeResult = this.es.evaluee.taskResults.find(task => task.taskId === t.id);
       performanceTable.push([
         { svg: t.iconFile, width: 25 },
-        { text: t.name, margin: [0, 5, 75, 0] },
-        { text: evalueeResult.correct, margin: [0, 5, 75, 0] },
-        { text: t.questionCount, margin: [0, 5, 0, 0] }
+        { text: t.name, margin: [0, 5, 0, 0] },
+        { text: evalueeResult.correct, margin: [0, 5, 0, 0] },
+        { text: t.questionCount - evalueeResult.unanswered, margin: [0, 5, 0, 0] }
       ]);
     });
 
@@ -1105,9 +1106,9 @@ export class NewReportComponent {
 
     const self = this;
     this.topInterests.forEach(function (topInterest, i) {
-      const interest = interests.find(interest => interest.id === topInterest.interestId);
+      const interest = interests.find(interest => interest.interestCategory === topInterest.interestCategory);
       if (i % 2 === 0 && i !== self.topInterests.length - 1) {
-        const interest2 = interests.find(interest => interest.id === self.topInterests[i + 1].interestId);
+        const interest2 = interests.find(interest => interest.interestCategory === self.topInterests[i + 1].interestCategory);
         interestGOETable.push([
           self.buildInterestGOEStub(interest, topInterest),
           self.buildInterestGOEStub(interest2, self.topInterests[i + 1])
@@ -1128,7 +1129,7 @@ export class NewReportComponent {
   buildInterestGOEStub(interest: Interest, interestScore: InterestScore) {
     const stub = [];
 
-    const workgroups = this.ws.workgroups.filter(group => group.area === interestScore.interestId);
+    const workgroups = this.ws.workgroups.filter(group => group.interestCategory === interestScore.interestCategory);
     let jobCount = 0;
     workgroups.forEach(workgroup => {
       jobCount += workgroup.jobs.length;
@@ -1153,7 +1154,7 @@ export class NewReportComponent {
             }
           ]
         },
-        { text: 'The GOE identifies this as Interest Area ' + (interestScore.interestId > 9 ? interestScore.interestId : '0' + interestScore.interestId) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
+        { text: 'The GOE identifies this as Interest Area ' + (interest.id > 9 ? interest.id : '0' + interest.id) + '.', fontSize: 10, margin: [30, 7, 0, 3] },
         { text: workgroups.length + ' Work Groups', fontSize: 10, margin: [30, 0, 0, 3] },
         { text: jobCount + ' Job matches', fontSize: 10, margin: [30, 0, 0, 3] },
         {
@@ -1185,14 +1186,14 @@ export class NewReportComponent {
     const content = [];
 
     this.topInterests.forEach(i => {
-      const interest = interests.find(interest => interest.id === i.interestId);
+      const interest = interests.find(interest => interest.interestCategory === i.interestCategory);
 
       content.push(this.buildPageHeader('GOE Recommendations', false));
 
       content.push({
         columns: [
           { svg: interest.svgLogo, width: 25, margin: [0, 33, 10, 0] },
-          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
+          { text: 'Interest Area ' + (interest.id > 9 ? interest.id : '0' + interest.id) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
         ]
       });
       content.push({
@@ -1207,10 +1208,10 @@ export class NewReportComponent {
         ]
       });
       content.push({ text: interest.description, margin: [0, 10, 0, 20] });
-      if (i.interestId !== 12) {
+      if (i.interestCategory !== 'Phy') {
         content.push({
           table: {
-            body: this.buildWorkGroupTable(i.interestId)
+            body: this.buildWorkGroupTable(i.interestCategory)
           },
           layout: {
             defaultBorder: false
@@ -1226,10 +1227,10 @@ export class NewReportComponent {
     return content;
   }
 
-  buildWorkGroupTable(workgroupArea: number) {
+  buildWorkGroupTable(workgroupCategory: string) {
     const table = [];
 
-    const workgroup = this.ws.workgroups.filter(group => group.area === workgroupArea);
+    const workgroup = this.ws.workgroups.filter(group => group.interestCategory === workgroupCategory);
 
     workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', colSpan: 4, style: 'cellSpacing' }, '', '', '']);
@@ -1258,14 +1259,14 @@ export class NewReportComponent {
     const content = [];
 
     this.topInterests.forEach(i => {
-      const interest = interests.find(interest => interest.id === i.interestId);
+      const interest = interests.find(interest => interest.interestCategory === i.interestCategory);
 
       content.push(this.buildPageHeader('GOE Recommendations', false));
 
       content.push({
         columns: [
           { svg: interest.svgLogo, width: 25, margin: [0, 33, 10, 0] },
-          { text: 'Interest Area ' + (i.interestId > 9 ? i.interestId : '0' + i.interestId) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
+          { text: 'Interest Area ' + (interest.id > 9 ? interest.id : '0' + interest.id) + ' - ' + interest.name, fontSize: 12, margin: [5, 40, 0, 10], width: 'auto' },
         ]
       });
       content.push({
@@ -1279,10 +1280,10 @@ export class NewReportComponent {
           }
         ]
       });
-      if (i.interestId !== 12) {
+      if (i.interestCategory !== 'Phy') {
         content.push({
           table: {
-            body: this.buildWorkGroupDescriptionTable(i.interestId)
+            body: this.buildWorkGroupDescriptionTable(i.interestCategory)
           },
           layout: {
             defaultBorder: false
@@ -1297,10 +1298,10 @@ export class NewReportComponent {
     return content;
   }
 
-  buildWorkGroupDescriptionTable(workgroupArea: number) {
+  buildWorkGroupDescriptionTable(workgroupCategory: string) {
     const table = [];
 
-    const workgroup = this.ws.workgroups.filter(group => group.area === workgroupArea);
+    const workgroup = this.ws.workgroups.filter(group => group.interestCategory === workgroupCategory);
 
     workgroup.forEach(group => {
       table.push([{ text: 'Work Group', fontSize: 8, color: '#0F4C81', style: 'cellSpacing' },]);
